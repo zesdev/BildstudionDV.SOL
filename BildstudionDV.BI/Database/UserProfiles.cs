@@ -19,6 +19,18 @@ namespace BildstudionDV.BI.Database
         {
             context = _context;
             usersdb = context.database.GetCollection<UserProfileModel>("users");
+            if(usersdb.Find<UserProfileModel>(x => x.UserName == "admin").ToList().Count == 0)
+            {
+               
+                var userModel = new UserProfileModel
+                {
+                    UserName = "admin",
+                    Password = "Logon123#¤"
+                };
+                var newpassword = new PasswordHasher<UserProfileModel>().HashPassword(userModel, userModel.Password);
+                userModel.Password = newpassword;
+                usersdb.InsertOne(userModel);
+            }
         }
 
         public List<UserProfileModel> GetAllUsers()

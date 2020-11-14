@@ -31,7 +31,7 @@ namespace BildstudionDV.Test
                 Password= "Logon123"
             };
             usersDb.AddUser(userModel);
-            Assert.AreEqual(1, usersDb.GetAllUsers().Count);
+            Assert.AreEqual(2, usersDb.GetAllUsers().Count);
         }
         [Test]
         public void a2TestChangePassword()
@@ -50,11 +50,11 @@ namespace BildstudionDV.Test
             Assert.AreEqual("Användaren existerar ej", usersDb.Login("adolf", "bragrejerattyskland"));
         }
         [Test]
-        public void z1TestAddUserProfile()
+        public void z1RemoveUserProfile()
         {
             var user = usersDb.GetAllUsers().First(x => x.UserName == "erik");
             usersDb.RemoveUser(user.Id);
-            Assert.AreEqual(0, usersDb.GetAllUsers().Count);
+            Assert.AreEqual(1, usersDb.GetAllUsers().Count);
         }
     }
 }
