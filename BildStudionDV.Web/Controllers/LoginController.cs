@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using System.Security.Claims;
 
 namespace BildStudionDV.Web.Controllers
@@ -12,6 +14,7 @@ namespace BildStudionDV.Web.Controllers
         [HttpGet]
         public ActionResult UserLogin()
         {
+
             return View();
         }
 
@@ -33,7 +36,6 @@ namespace BildStudionDV.Web.Controllers
 
                 var userPrincipal = new ClaimsPrincipal(new[] { grandmaIdentity });
                 HttpContext.SignInAsync(userPrincipal);
-
                 return RedirectToAction("Index", "Home");
             }
 

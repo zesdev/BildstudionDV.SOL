@@ -338,3 +338,6 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/BildstudionDV.Test/App.config
+/BildStudionDV.Web/app.config
+/BildStudionDV.Web/webb.config

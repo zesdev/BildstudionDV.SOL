@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BildStudionDV.Web", "BildSt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BildstudionDV.Test", "BildstudionDV.Test\BildstudionDV.Test.csproj", "{1F824037-E006-4CB6-9A27-889BCB4780DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BildstudionDV.Dal", "BildstudionDV.Dal\BildstudionDV.Dal.csproj", "{9A54612E-5D8C-4CDB-98D5-E1345931351D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BildstudionDV.BI", "BildstudionDV.BI\BildstudionDV.BI.csproj", "{09F24315-A533-4B4D-9777-A66F126BB021}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{1F824037-E006-4CB6-9A27-889BCB4780DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F824037-E006-4CB6-9A27-889BCB4780DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F824037-E006-4CB6-9A27-889BCB4780DE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9A54612E-5D8C-4CDB-98D5-E1345931351D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9A54612E-5D8C-4CDB-98D5-E1345931351D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9A54612E-5D8C-4CDB-98D5-E1345931351D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9A54612E-5D8C-4CDB-98D5-E1345931351D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{09F24315-A533-4B4D-9777-A66F126BB021}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{09F24315-A533-4B4D-9777-A66F126BB021}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09F24315-A533-4B4D-9777-A66F126BB021}.Release|Any CPU.ActiveCfg = Release|Any CPU
