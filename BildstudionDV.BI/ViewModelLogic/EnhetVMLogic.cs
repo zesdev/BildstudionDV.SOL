@@ -8,7 +8,7 @@ using System.Text;
 
 namespace BildstudionDV.BI.ViewModelLogic
 {
-    public class EnhetVMLogic
+    public class EnhetVMLogic : IEnhetVMLogic
     {
         Enhet enhetDb;
         GruppVMLogic gruppVMLogic;

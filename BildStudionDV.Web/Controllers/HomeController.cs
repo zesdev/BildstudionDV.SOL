@@ -1,4 +1,5 @@
 ﻿using BildstudionDV.BI.Context;
+using BildstudionDV.BI.ViewModelLogic;
 using BildStudionDV.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -16,22 +17,17 @@ namespace BildStudionDV.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private IBildStudionDVContext context;
-        public HomeController(IBildStudionDVContext _context)
+        private IUserProfileVMLogic userLogic;
+
+        public HomeController(IUserProfileVMLogic _userLogic)
         {
-            context = _context;
+            userLogic = _userLogic;
         }
+
         [Authorize]
         public IActionResult Index()
         {
             return View();
-        }
-
-        [Authorize]
-        public ActionResult Users()
-        {
-            var uses = new Users();
-            return View(uses.GetUsers());
         }
         [Authorize]
         public ActionResult Logout()
@@ -39,6 +35,5 @@ namespace BildStudionDV.Web.Controllers
             HttpContext.SignOutAsync();
             return RedirectToAction("Index");
         }
-
     }
 }

@@ -12,10 +12,12 @@ namespace BildstudionDV.BI.Database
     {
         BildStudionDVContext context;
         IMongoCollection<DeltagareModel> deltagaredb;
-        public Deltagare(BildStudionDVContext _context)
+        Närvaro närvaroDb;
+        public Deltagare(BildStudionDVContext _context, Närvaro _närvaroDb)
         {
             context = _context;
             deltagaredb = context.database.GetCollection<DeltagareModel>("deltagare");
+            närvaroDb = _närvaroDb;
         }
         public void AddDeltagare(DeltagareModel model)
         {
@@ -23,6 +25,8 @@ namespace BildstudionDV.BI.Database
         }
         public void RemoveDeltagare(ObjectId Id)
         {
+
+            närvaroDb.RemoveAllAttendenceForDeltagare(Id);
             deltagaredb.DeleteOne<DeltagareModel>(x => x.Id == Id);
         }
         public List<DeltagareModel> GetAllDeltagarModels()

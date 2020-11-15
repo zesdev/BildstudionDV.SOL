@@ -4,6 +4,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BildstudionDV.BI.Database
@@ -33,6 +34,15 @@ namespace BildstudionDV.BI.Database
             return attendenceitem;
         }
 
+        internal void RemoveAllAttendenceForDeltagare(ObjectId deltagarId)
+        {
+            var attendenceModels = närvarodb.Find<AttendenceModel>(x => x.DeltagarIdInQuestion == deltagarId).ToList();
+            foreach (var model in attendenceModels)
+            {
+                RemoveAttendence(model.Id);
+            }
+        }
+
         public List<AttendenceModel> GetAllAttendenceItems()
         {
             var list = närvarodb.Find<AttendenceModel>(x => true).ToList();
@@ -46,11 +56,26 @@ namespace BildstudionDV.BI.Database
             UpdateProperty("Torsdag", model.Id, model.Torsdag.ToString());
             UpdateProperty("Fredag", model.Id, model.Fredag.ToString());
         }
+
+        internal List<AttendenceModel> GetAttendenceItemsFörDeltagare(ObjectId deltagarId)
+        {
+            return närvarodb.Find<AttendenceModel>(x => x.DeltagarIdInQuestion == deltagarId).ToList();
+        }
+
         private void UpdateProperty(string property, ObjectId IdOfItemBeingEdited, string newpropertyContent)
         {
             var filter = Builders<AttendenceModel>.Filter.Eq("Id", IdOfItemBeingEdited);
             var update = Builders<AttendenceModel>.Update.Set(property, newpropertyContent);
             närvarodb.UpdateOne(filter, update);
+        }
+
+        internal List<AttendenceModel> GetAttendenceForDate(DateTime date)
+        {
+
+            var list = närvarodb.Find<AttendenceModel>(x => true).ToList();
+            var sortedList = list.Where(x => x.DateConcerning.ToString("yy, MM, dd") == date.ToString("yy, MM, dd")).ToList();
+            
+            return sortedList;
         }
     }
 }

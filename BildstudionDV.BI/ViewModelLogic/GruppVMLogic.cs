@@ -8,7 +8,7 @@ using System.Text;
 
 namespace BildstudionDV.BI.ViewModelLogic
 {
-    public class GruppVMLogic
+    public class GruppVMLogic : IGruppVMLogic
     {
         Grupp gruppDb;
         InventarieVMLogic inventarieVMLogic;

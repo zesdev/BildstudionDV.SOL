@@ -13,7 +13,7 @@ namespace BildstudionDV.BI.Models.Jobb
     {
         public ObjectId Id { get; set; }
         public ObjectId JobbId { get; set; }
-        public DelJobbStatus StatusPåJobbet { get; set; }
+        public string StatusPåJobbet { get; set; }
         public string Namn { get; set; }
         public string VemGör { get; set; }
     }

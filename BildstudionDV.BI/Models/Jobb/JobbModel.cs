@@ -22,9 +22,9 @@ namespace BildstudionDV.BI.Models.Jobb
         public ObjectId Id { get; set; }
         public ObjectId KundId { get; set; }
         public string Title { get; set; }
-        public JobbTyp TypAvJobb { get; set; }
-        public PrioritetTyp TypAvPrioritet { get; set; }
-        public StatusTyp StatusPåJobbet { get; set; }
+        public string TypAvJobb { get; set; }
+        public string TypAvPrioritet { get; set; }
+        public string StatusPåJobbet { get; set; }
         public DateTime DatumRegistrerat { get; set; }
     }
 }

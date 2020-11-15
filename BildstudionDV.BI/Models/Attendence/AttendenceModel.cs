@@ -14,15 +14,15 @@ namespace BildstudionDV.BI.Models.Attendence
         public ObjectId Id { get; set; }
         public ObjectId DeltagarIdInQuestion { get; set; }
         public DateTime DateConcerning { get; set; }
-        public AttendenceOption Måndag { get; set; }
-        public AttendenceOption Tisdag { get; set; }
-        public AttendenceOption Onsdag { get; set; }
-        public AttendenceOption Torsdag { get; set; }
-        public AttendenceOption Fredag { get; set; }
-        public WorkDay ExpectedMåndag { get; set; }
-        public WorkDay ExpectedTisdag { get; set; }
-        public WorkDay ExpectedOnsdag { get; set; }
-        public WorkDay ExpectedTorsdag { get; set; }
-        public WorkDay ExpectedFredag { get; set; }
+        public string Måndag { get; set; }
+        public string Tisdag { get; set; }
+        public string Onsdag { get; set; }
+        public string Torsdag { get; set; }
+        public string Fredag { get; set; }
+        public string ExpectedMåndag { get; set; }
+        public string ExpectedTisdag { get; set; }
+        public string ExpectedOnsdag { get; set; }
+        public string ExpectedTorsdag { get; set; }
+        public string ExpectedFredag { get; set; }
     }
 }

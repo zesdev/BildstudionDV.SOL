@@ -8,7 +8,7 @@ using System.Text;
 
 namespace BildstudionDV.BI.ViewModelLogic
 {
-    public class InventarieVMLogic
+    public class InventarieVMLogic : IInventarieVMLogic
     {
         Inventarie inventarieDb;
         public InventarieVMLogic(Inventarie _inventarieDb)

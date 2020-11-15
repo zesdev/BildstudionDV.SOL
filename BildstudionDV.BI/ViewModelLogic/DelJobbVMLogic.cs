@@ -8,7 +8,7 @@ using System.Text;
 
 namespace BildstudionDV.BI.ViewModelLogic
 {
-    public class DelJobbVMLogic
+    public class DelJobbVMLogic : IDelJobbVMLogic
     {
         DelJobb delJobbDb;
         public DelJobbVMLogic(DelJobb _delJobbDb)
@@ -20,7 +20,7 @@ namespace BildstudionDV.BI.ViewModelLogic
             var model = new DelJobbModel
             {
                 Id = viewModel.Id,
-                StatusPåJobbet = viewModel.StatusPåJobbet,
+                StatusPåJobbet = viewModel.StatusPåJobbet.ToString(),
                 JobbId = viewModel.JobbId,
                 Namn = viewModel.Namn,
                 VemGör = viewModel.VemGör
@@ -35,7 +35,7 @@ namespace BildstudionDV.BI.ViewModelLogic
             {
                 var viewModel = new DelJobbViewModel
                 {
-                    StatusPåJobbet = model.StatusPåJobbet,
+                    StatusPåJobbet = HelperConvertLogic.GetDelJobbStatusFromString(model.StatusPåJobbet),
                     Id = model.Id,
                     JobbId = jobbId,
                     Namn = model.Namn,
@@ -47,11 +47,12 @@ namespace BildstudionDV.BI.ViewModelLogic
         }
         public void AddDelJobb(DelJobbViewModel viewModel)
         {
-            var model = new DelJobbModel {
-            StatusPåJobbet = viewModel.StatusPåJobbet,
-            JobbId = viewModel.JobbId,
-            Namn = viewModel.Namn,
-            VemGör = viewModel.VemGör
+            var model = new DelJobbModel
+            {
+                StatusPåJobbet = viewModel.StatusPåJobbet.ToString(),
+                JobbId = viewModel.JobbId,
+                Namn = viewModel.Namn,
+                VemGör = viewModel.VemGör
             };
             delJobbDb.AddDelJobb(model);
         }

@@ -10,7 +10,7 @@ using System.Text;
 
 namespace BildstudionDV.BI.ViewModelLogic
 {
-    public class UserProfileVMLogic
+    public class UserProfileVMLogic : IUserProfileVMLogic
     {
         UserProfiles usersDb;
         public UserProfileVMLogic(UserProfiles _usersDb)
@@ -55,6 +55,18 @@ namespace BildstudionDV.BI.ViewModelLogic
                 returningList.Add(viewModel);
             }
             return returningList;
+        }
+
+        public string ChangePassword(UserProfileViewModel userModel)
+        {
+            var model = new UserProfileModel
+            {
+                UserName = userModel.UserName,
+                Password = userModel.Password,
+                NewPassword = userModel.NewPassword,
+                OldPassword = userModel.OldPassword
+            };
+            return usersDb.ChangePassword(model);
         }
     }
 }

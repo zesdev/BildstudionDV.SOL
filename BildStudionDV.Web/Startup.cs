@@ -1,4 +1,6 @@
 using BildstudionDV.BI.Context;
+using BildstudionDV.BI.Database;
+using BildstudionDV.BI.ViewModelLogic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,7 +27,46 @@ namespace BildStudionDV.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Add(new ServiceDescriptor(typeof(IBildStudionDVContext), new BildStudionDVContext(ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location).AppSettings.Settings["username"].Value, ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location).AppSettings.Settings["password"].Value)));
+            var username = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location).AppSettings.Settings["username"].Value;
+            var password = ConfigurationManager.OpenExeConfiguration(Assembly.GetExecutingAssembly().Location).AppSettings.Settings["password"].Value;
+
+            var context = new BildStudionDVContext(username, password);
+
+            var deljobbDb = new DelJobb(context);
+            var jobbDb = new Jobb(context, deljobbDb);
+            var kundDb = new Kund(context, jobbDb);
+            //kundjobbslogic
+            var deljobbVm = new DelJobbVMLogic(deljobbDb);
+            var jobbVM = new JobbVMLogic(jobbDb, deljobbVm);
+            var kundVM = new KundVMLogic(kundDb, jobbVM);
+
+            var inventarieDb = new Inventarie(context);
+            var gruppDb = new Grupp(context, inventarieDb);
+            var enhetDb = new Enhet(context, gruppDb);
+            //inventarielogic
+            var inventarieVM = new InventarieVMLogic(inventarieDb);
+            var gruppVM = new GruppVMLogic(gruppDb, inventarieVM);
+            var enhetVM = new EnhetVMLogic(enhetDb, gruppVM);
+
+            //userlogic
+            var usersDb = new UserProfiles(context);
+            var userProfileVM = new UserProfileVMLogic(usersDb);
+
+            var närvaroDb = new Närvaro(context);
+            var deltagareDb = new Deltagare(context, närvaroDb);
+            //närvarologic
+            var deltagarVM = new DeltagareVMLogic(deltagareDb);
+            var närvaroVM = new NärvaroVMLogic(närvaroDb, deltagareDb);
+            services.Add(new ServiceDescriptor(typeof(IDelJobbVMLogic), deljobbVm));
+            services.Add(new ServiceDescriptor(typeof(IJobbVMLogic), jobbVM));
+            services.Add(new ServiceDescriptor(typeof(IKundVMLogic), kundVM));
+            services.Add(new ServiceDescriptor(typeof(IInventarieVMLogic), inventarieVM));
+            services.Add(new ServiceDescriptor(typeof(IGruppVMLogic), gruppVM));
+            services.Add(new ServiceDescriptor(typeof(IEnhetVMLogic), enhetVM));
+            services.Add(new ServiceDescriptor(typeof(IUserProfileVMLogic), userProfileVM));
+            services.Add(new ServiceDescriptor(typeof(IDeltagareVMLogic), deltagarVM));
+            services.Add(new ServiceDescriptor(typeof(INärvaroVMLogic), närvaroVM));
+
             services.AddAuthentication("CookieAuthentication")
          .AddCookie("CookieAuthentication", config =>
          {

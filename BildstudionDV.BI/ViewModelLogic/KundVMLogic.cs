@@ -8,7 +8,7 @@ using System.Text;
 
 namespace BildstudionDV.BI.ViewModelLogic
 {
-    public class KundVMLogic
+    public class KundVMLogic : IKundVMLogic
     {
         Kund kundDb;
         JobbVMLogic jobbVMLogic;

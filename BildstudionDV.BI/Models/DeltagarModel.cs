@@ -14,11 +14,11 @@ namespace BildstudionDV.BI.Models
     {
         public ObjectId Id { get; set; }
         public string DeltagarNamn { get; set; }
-        public WorkDay Måndag { get; set; }
-        public WorkDay Tisdag { get; set; }
-        public WorkDay Onsdag { get; set; }
-        public WorkDay Torsdag { get; set; }
-        public WorkDay Fredag { get; set; }
+        public string Måndag { get; set; }
+        public string Tisdag { get; set; }
+        public string Onsdag { get; set; }
+        public string Torsdag { get; set; }
+        public string Fredag { get; set; }
         public bool IsActive { get; set; }
     }
 }

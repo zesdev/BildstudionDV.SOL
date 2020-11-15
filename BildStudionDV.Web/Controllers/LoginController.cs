@@ -1,4 +1,6 @@
-﻿using BildStudionDV.Web.Models;
+﻿using BildstudionDV.BI.ViewModelLogic;
+using BildstudionDV.BI.ViewModels;
+using BildStudionDV.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -11,6 +13,11 @@ namespace BildStudionDV.Web.Controllers
 {
     public class LoginController : Controller
     {
+        private IUserProfileVMLogic userLogic;
+        public LoginController(IUserProfileVMLogic _userLogic)
+        {
+            userLogic = _userLogic;
+        }
         [HttpGet]
         public ActionResult UserLogin()
         {
@@ -19,24 +26,26 @@ namespace BildStudionDV.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult UserLogin([Bind] Users user)
+        public ActionResult UserLogin([Bind] UserProfileViewModel user)
         {
-            // username = anet  
-            var users = new Users();
-            var allUsers = users.GetUsers().FirstOrDefault();
-            if (users.GetUsers().Any(u => u.UserName == user.UserName))
+            var allUsers = userLogic.GetUserViewModels();
+            if (allUsers.Any(x => x.UserName.ToLower() == user.UserName))
             {
-                var userClaims = new List<Claim>()
+                if (userLogic.Login(user) == "Inloggad")
+                {
+                    var userClaims = new List<Claim>()
                 {
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Email, "anet@test.com"),
+                new Claim(ClaimTypes.Email, ""),
                  };
 
-                var grandmaIdentity = new ClaimsIdentity(userClaims, "User Identity");
+                    var grandmaIdentity = new ClaimsIdentity(userClaims, "User Identity");
 
-                var userPrincipal = new ClaimsPrincipal(new[] { grandmaIdentity });
-                HttpContext.SignInAsync(userPrincipal);
-                return RedirectToAction("Index", "Home");
+                    var userPrincipal = new ClaimsPrincipal(new[] { grandmaIdentity });
+                    HttpContext.SignInAsync(userPrincipal);
+
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
             return View(user);

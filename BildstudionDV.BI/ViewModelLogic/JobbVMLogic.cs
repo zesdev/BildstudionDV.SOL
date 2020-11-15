@@ -9,10 +9,11 @@ using System.Text;
 
 namespace BildstudionDV.BI.ViewModelLogic
 {
-    public class JobbVMLogic
+    public class JobbVMLogic : IJobbVMLogic
     {
         Jobb jobbDb;
         DelJobbVMLogic delJobbVMLogic;
+
         public JobbVMLogic(Jobb _jobbDb, DelJobbVMLogic _deljobbVMLogic)
         {
             jobbDb = _jobbDb;
@@ -23,12 +24,12 @@ namespace BildstudionDV.BI.ViewModelLogic
             var model = new JobbModel
             {
                 DatumRegistrerat = viewModel.DatumRegistrerat,
-                StatusPåJobbet = viewModel.StatusPåJobbet,
+                StatusPåJobbet = viewModel.StatusPåJobbet.ToString(),
                 Id = viewModel.Id,
                 KundId = viewModel.KundId,
                 Title = viewModel.Title,
-                TypAvJobb = viewModel.TypAvJobb,
-                TypAvPrioritet = viewModel.TypAvPrioritet
+                TypAvJobb = viewModel.TypAvJobb.ToString(),
+                TypAvPrioritet = viewModel.TypAvPrioritet.ToString()
             };
             jobbDb.UpdateJobb(model);
         }
@@ -40,14 +41,14 @@ namespace BildstudionDV.BI.ViewModelLogic
             {
                 var viewModel = new JobbViewModel
                 {
-                    StatusPåJobbet = model.StatusPåJobbet,
+                    StatusPåJobbet = HelperConvertLogic.GetStatusTypFromString(model.StatusPåJobbet),
                     DatumRegistrerat = model.DatumRegistrerat,
                     delJobbs = delJobbVMLogic.GetDelJobbsInJobb(model.Id),
                     Id = model.Id,
                     KundId = model.KundId,
                     Title = model.Title,
-                    TypAvJobb = model.TypAvJobb,
-                    TypAvPrioritet = model.TypAvPrioritet
+                    TypAvJobb = HelperConvertLogic.GetJobbTypFromString(model.TypAvJobb),
+                    TypAvPrioritet = HelperConvertLogic.GetPrioritetTypFromString(model.TypAvPrioritet)
                 };
                 returningList.Add(viewModel);
             }
@@ -58,14 +59,14 @@ namespace BildstudionDV.BI.ViewModelLogic
             var model = jobbDb.GetJobb(jobbId);
             var viewModel = new JobbViewModel
             {
-                StatusPåJobbet = model.StatusPåJobbet,
+                StatusPåJobbet = HelperConvertLogic.GetStatusTypFromString(model.StatusPåJobbet),
                 DatumRegistrerat = model.DatumRegistrerat,
                 delJobbs = delJobbVMLogic.GetDelJobbsInJobb(model.Id),
                 Id = model.Id,
                 KundId = model.KundId,
                 Title = model.Title,
-                TypAvJobb = model.TypAvJobb,
-                TypAvPrioritet = model.TypAvPrioritet
+                TypAvJobb = HelperConvertLogic.GetJobbTypFromString(model.TypAvJobb),
+                TypAvPrioritet = HelperConvertLogic.GetPrioritetTypFromString(model.TypAvPrioritet)
             };
             return viewModel;
         }
@@ -76,6 +77,20 @@ namespace BildstudionDV.BI.ViewModelLogic
         public void RemoveAllJobsInKund(ObjectId kundId)
         {
             jobbDb.RemoveAllJobbsFörKund(kundId);
+        }
+
+        public void AddJobb(JobbViewModel kundJobb)
+        {
+            var model = new JobbModel
+            {
+                StatusPåJobbet = kundJobb.StatusPåJobbet.ToString(),
+                DatumRegistrerat = kundJobb.DatumRegistrerat,
+                KundId = kundJobb.KundId,
+                Title = kundJobb.Title,
+                TypAvJobb = kundJobb.TypAvJobb.ToString(),
+                TypAvPrioritet = kundJobb.TypAvPrioritet.ToString()
+            };
+            jobbDb.AddJobb(model);
         }
     }
 }

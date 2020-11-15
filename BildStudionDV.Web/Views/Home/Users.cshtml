@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BildStudionDV.Web.Models.Users>
+﻿@model List<BildstudionDV.BI.ViewModels.UserProfileViewModel>
 
 @{
     ViewData["Title"] = "Users";
@@ -9,18 +9,8 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Id)
+                @Html.DisplayNameFor(model => model.First().UserName)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmailId)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -28,16 +18,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.UserName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EmailId)
                 </td>
             </tr>
 
