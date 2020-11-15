@@ -53,9 +53,9 @@ namespace BildStudionDV.Web.Controllers
         public IActionResult AddDeltagare(DeltagareViewModel viewModel)
         {
             if (viewModel.DeltagarNamn == null)
-                return Redirect();
+                return Redirect("../Närvaro/AddDeltagare?message=InkorrektInmatning");
             deltagarLogic.AddDeltagare(viewModel);
-            return Redirect("../Närvaro/AddDeltagare?message=InkorrektInmatning");
+            return RedirectToAction("index");
         }
         [Authorize]
         public IActionResult EditDeltagare(int id, string message)
@@ -82,6 +82,18 @@ namespace BildStudionDV.Web.Controllers
                 return Redirect("../Närvaro/EditDeltagare?id="+viewModel.IdAcesss.ToString()+"&message=InkorrektInmatning");
             deltagarLogic.UpdateDeltagare(viewModel);
             return RedirectToAction("index");
+        }
+        [Authorize]
+        public IActionResult Attendence()
+        {
+            return View();
+        }
+        public IActionResult GetAttendenceForDate(string date)
+        {
+            var dateConverted = Convert.ToDateTime(date);
+            var attendenceData = närvaroLogic.GetAttendenceForDate(dateConverted);
+
+            return Content();
         }
     }
 }

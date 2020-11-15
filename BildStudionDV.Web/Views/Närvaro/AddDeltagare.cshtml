@@ -1,61 +1,66 @@
 ﻿@model BildstudionDV.BI.ViewModels.DeltagareViewModel
 
 <b>
+    <input type="button" class="btn btn-info" onclick='window.location.href = "../Närvaro/index"' value="Tillbaka till Index" /><br />
+
     <font color="red">@ViewBag.Message</font>
     <br />
-    @Html.BeginForm()
+
+    @using (Html.BeginForm())
     {
-    @Html.LabelFor(x => x.DeltagarNamn)<br />
-    @Html.TextBoxFor(x => x.DeltagarNamn)<br />
-    @Html.LabelFor(x => x.Måndag)<br />
-    @Html.DropDownListFor(x => x.Måndag, new List<SelectListItem>
-{
-    new SelectListItem { Text = "--Välj--", Value ="2" },
-    new SelectListItem { Text = "Heldag", Value ="0" },
-    new SelectListItem { Text = "Halvdag", Value ="1" },
-    new SelectListItem { Text = "_", Value ="2" }
+        @Html.LabelFor(x => x.DeltagarNamn)<br />
+        @Html.TextBoxFor(x => x.DeltagarNamn)<br />
+        @Html.LabelFor(x => x.Måndag)<br />
+        @Html.DropDownListFor(x => x.Måndag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value ="2" },
+        new SelectListItem { Text = "Heldag", Value ="0" },
+        new SelectListItem { Text = "Halvdag", Value ="1" },
+        new SelectListItem { Text = "_", Value ="2" }
 
-})
-    <br />
-    @Html.LabelFor(x => x.Tisdag) <br />
-    @Html.DropDownListFor(x => x.Tisdag, new List<SelectListItem>
-{
-    new SelectListItem { Text = "--Välj--", Value ="2" },
-    new SelectListItem { Text = "Heldag", Value ="0" },
-    new SelectListItem { Text = "Halvdag", Value ="1" },
-    new SelectListItem { Text = "_", Value ="2" }
+    })
+        <br />
+        @Html.LabelFor(x => x.Tisdag) <br />
+        @Html.DropDownListFor(x => x.Tisdag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value ="2" },
+        new SelectListItem { Text = "Heldag", Value ="0" },
+        new SelectListItem { Text = "Halvdag", Value ="1" },
+        new SelectListItem { Text = "_", Value ="2" }
 
-})
-    <br />
-    @Html.LabelFor(x => x.Onsdag) <br />
-    @Html.DropDownListFor(x => x.Onsdag, new List<SelectListItem>
-{
-    new SelectListItem { Text = "--Välj--", Value ="2" },
-    new SelectListItem { Text = "Heldag", Value ="0" },
-    new SelectListItem { Text = "Halvdag", Value ="1" },
-    new SelectListItem { Text = "_", Value ="2" }
+    })
+        <br />
+        @Html.LabelFor(x => x.Onsdag) <br />
+        @Html.DropDownListFor(x => x.Onsdag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value ="2" },
+        new SelectListItem { Text = "Heldag", Value ="0" },
+        new SelectListItem { Text = "Halvdag", Value ="1" },
+        new SelectListItem { Text = "_", Value ="2" }
 
-})
-    <br />
-    @Html.LabelFor(x => x.Torsdag) <br />
-    @Html.DropDownListFor(x => x.Torsdag, new List<SelectListItem>
-{
-    new SelectListItem { Text = "--Välj--", Value ="2" },
-    new SelectListItem { Text = "Heldag", Value ="0" },
-    new SelectListItem { Text = "Halvdag", Value ="1" },
-    new SelectListItem { Text = "_", Value ="2" }
+    })
+        <br />
+        @Html.LabelFor(x => x.Torsdag) <br />
+        @Html.DropDownListFor(x => x.Torsdag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value ="2" },
+        new SelectListItem { Text = "Heldag", Value ="0" },
+        new SelectListItem { Text = "Halvdag", Value ="1" },
+        new SelectListItem { Text = "_", Value ="2" }
 
-})
-    <br />
-    @Html.LabelFor(x => x.Fredag) <br />
-    @Html.DropDownListFor(x => x.Fredag, new List<SelectListItem>
-{
-    new SelectListItem { Text = "--Välj--", Value ="2" },
-    new SelectListItem { Text = "Heldag", Value ="0" },
-    new SelectListItem { Text = "Halvdag", Value ="1" },
-    new SelectListItem { Text = "_", Value ="2" }
+    })
+        <br />
+        @Html.LabelFor(x => x.Fredag) <br />
+        @Html.DropDownListFor(x => x.Fredag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value ="2" },
+        new SelectListItem { Text = "Heldag", Value ="0" },
+        new SelectListItem { Text = "Halvdag", Value ="1" },
+        new SelectListItem { Text = "_", Value ="2" }
 
-})
-    <br />
-    <button type="submit" class="btn btn-success">Lägg till deltagare</button>
+    })
+        <br />
+        <button type="submit" class="btn btn-success">Lägg till deltagare</button>
+
+    }
 </b>
