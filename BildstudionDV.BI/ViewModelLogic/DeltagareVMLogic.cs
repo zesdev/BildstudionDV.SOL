@@ -4,6 +4,7 @@ using BildstudionDV.BI.ViewModels;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BildstudionDV.BI.ViewModelLogic
@@ -17,8 +18,18 @@ namespace BildstudionDV.BI.ViewModelLogic
         }
         public void AddDeltagare(DeltagareViewModel viewModel)
         {
+            int index = 0;
+            try
+            {
+                var lastDeltagare = deltagareDb.GetAllDeltagarModels().LastOrDefault();
+                index = lastDeltagare.IdAccess + 1;
+            }
+            catch
+            {
+            }
             var model = new DeltagareModel
             {
+                IdAccess = index,
                 DeltagarNamn = viewModel.DeltagarNamn,
                 Måndag = viewModel.Måndag.ToString(),
                 Tisdag = viewModel.Tisdag.ToString(),
@@ -41,6 +52,7 @@ namespace BildstudionDV.BI.ViewModelLogic
             {
                 var viewModel = new DeltagareViewModel
                 {
+                    IdAcesss = model.IdAccess,
                     DeltagarNamn = model.DeltagarNamn,
                     Fredag = HelperConvertLogic.GetWorkDayFromString(model.Fredag),
                     Torsdag = HelperConvertLogic.GetWorkDayFromString(model.Torsdag),
@@ -59,6 +71,7 @@ namespace BildstudionDV.BI.ViewModelLogic
             var model = deltagareDb.GetDeltagare(Id);
             var viewModel = new DeltagareViewModel
             {
+                IdAcesss = model.IdAccess,
                 DeltagarNamn = model.DeltagarNamn,
                 Fredag = HelperConvertLogic.GetWorkDayFromString(model.Fredag),
                 Torsdag = HelperConvertLogic.GetWorkDayFromString(model.Fredag),
@@ -74,6 +87,7 @@ namespace BildstudionDV.BI.ViewModelLogic
         {
             var model = new DeltagareModel
             {
+                IdAccess = viewModel.IdAcesss,
                 DeltagarNamn = viewModel.DeltagarNamn,
                 Fredag = viewModel.Fredag.ToString(),
                 Torsdag = viewModel.Torsdag.ToString(),

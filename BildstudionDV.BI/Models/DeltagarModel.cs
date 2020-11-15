@@ -13,6 +13,7 @@ namespace BildstudionDV.BI.Models
     public class DeltagareModel
     {
         public ObjectId Id { get; set; }
+        public int IdAccess { get; set; }
         public string DeltagarNamn { get; set; }
         public string Måndag { get; set; }
         public string Tisdag { get; set; }

@@ -25,14 +25,10 @@
     <td>@deltagare.Deltagarn.DeltagarNamn</td>
     <td>@deltagare.PercentageAttendence %</td>
     <td>
-        <form action="EditDeltagare?@deltagare.Deltagarn.Id.ToString()">
-            <button class="btn btn-info">Redigera @deltagare.Deltagarn.DeltagarNamn</button>
-        </form>
+        <input type="button" class="btn btn-info" onclick='window.location.href = "../Närvaro/editdeltagare?id=@deltagare.Deltagarn.IdAcesss"' value="Redigera @deltagare.Deltagarn.DeltagarNamn" />
     </td>
     <td>
-        <form action="RemoveDeltagare">
-            <button class="btn btn-danger">Ta Bort @deltagare.Deltagarn.DeltagarNamn</button>
-        </form>
+        <input type="button" class="btn btn-danger" onclick='window.location.href = "../Närvaro/removedeltagare?id=@deltagare.Deltagarn.IdAcesss"' value="Ta Bort @deltagare.Deltagarn.DeltagarNamn" />
     </td>
 </tr>
     }

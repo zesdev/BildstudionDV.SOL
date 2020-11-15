@@ -25,7 +25,6 @@ namespace BildstudionDV.BI.Database
         }
         public void RemoveDeltagare(ObjectId Id)
         {
-
             närvaroDb.RemoveAllAttendenceForDeltagare(Id);
             deltagaredb.DeleteOne<DeltagareModel>(x => x.Id == Id);
         }

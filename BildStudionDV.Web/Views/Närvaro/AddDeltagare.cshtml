@@ -1,58 +1,56 @@
 ﻿@model BildstudionDV.BI.ViewModels.DeltagareViewModel
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
 
-@Html.BeginForm()
-{
+<b>
+    <font color="red">@ViewBag.Message</font>
+    <br />
+    @Html.BeginForm()
+    {
     @Html.LabelFor(x => x.DeltagarNamn)<br />
     @Html.TextBoxFor(x => x.DeltagarNamn)<br />
-    @Html.LabelFor(x => x.Måndag)
+    @Html.LabelFor(x => x.Måndag)<br />
     @Html.DropDownListFor(x => x.Måndag, new List<SelectListItem>
 {
-    new SelectListItem { Text = "--Välj--", Value ="-1" },
+    new SelectListItem { Text = "--Välj--", Value ="2" },
     new SelectListItem { Text = "Heldag", Value ="0" },
     new SelectListItem { Text = "Halvdag", Value ="1" },
     new SelectListItem { Text = "_", Value ="2" }
 
 })
     <br />
-    @Html.LabelFor(x => x.Tisdag)
+    @Html.LabelFor(x => x.Tisdag) <br />
     @Html.DropDownListFor(x => x.Tisdag, new List<SelectListItem>
 {
-    new SelectListItem { Text = "--Välj--", Value ="-1" },
+    new SelectListItem { Text = "--Välj--", Value ="2" },
     new SelectListItem { Text = "Heldag", Value ="0" },
     new SelectListItem { Text = "Halvdag", Value ="1" },
     new SelectListItem { Text = "_", Value ="2" }
 
 })
     <br />
-    @Html.LabelFor(x => x.Onsdag)
+    @Html.LabelFor(x => x.Onsdag) <br />
     @Html.DropDownListFor(x => x.Onsdag, new List<SelectListItem>
 {
-    new SelectListItem { Text = "--Välj--", Value ="-1" },
+    new SelectListItem { Text = "--Välj--", Value ="2" },
     new SelectListItem { Text = "Heldag", Value ="0" },
     new SelectListItem { Text = "Halvdag", Value ="1" },
     new SelectListItem { Text = "_", Value ="2" }
 
 })
     <br />
-    @Html.LabelFor(x => x.Torsdag)
+    @Html.LabelFor(x => x.Torsdag) <br />
     @Html.DropDownListFor(x => x.Torsdag, new List<SelectListItem>
 {
-    new SelectListItem { Text = "--Välj--", Value ="-1" },
+    new SelectListItem { Text = "--Välj--", Value ="2" },
     new SelectListItem { Text = "Heldag", Value ="0" },
     new SelectListItem { Text = "Halvdag", Value ="1" },
     new SelectListItem { Text = "_", Value ="2" }
 
 })
     <br />
-    @Html.LabelFor(x => x.Fredag)
+    @Html.LabelFor(x => x.Fredag) <br />
     @Html.DropDownListFor(x => x.Fredag, new List<SelectListItem>
 {
-    new SelectListItem { Text = "--Välj--", Value ="-1" },
+    new SelectListItem { Text = "--Välj--", Value ="2" },
     new SelectListItem { Text = "Heldag", Value ="0" },
     new SelectListItem { Text = "Halvdag", Value ="1" },
     new SelectListItem { Text = "_", Value ="2" }
@@ -60,4 +58,4 @@
 })
     <br />
     <button type="submit" class="btn btn-success">Lägg till deltagare</button>
-}
+</b>
