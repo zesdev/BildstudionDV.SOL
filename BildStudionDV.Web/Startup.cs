@@ -1,5 +1,6 @@
 using BildstudionDV.BI.Context;
 using BildstudionDV.BI.Database;
+using BildstudionDV.BI.MainLogic;
 using BildstudionDV.BI.ViewModelLogic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -54,9 +55,13 @@ namespace BildStudionDV.Web
 
             var närvaroDb = new Närvaro(context);
             var deltagareDb = new Deltagare(context, närvaroDb);
+
             //närvarologic
             var deltagarVM = new DeltagareVMLogic(deltagareDb);
             var närvaroVM = new NärvaroVMLogic(närvaroDb, deltagareDb);
+
+            DeltagarViewLogic deltagarViewLogic = new DeltagarViewLogic(deltagarVM, närvaroVM);
+
             services.Add(new ServiceDescriptor(typeof(IDelJobbVMLogic), deljobbVm));
             services.Add(new ServiceDescriptor(typeof(IJobbVMLogic), jobbVM));
             services.Add(new ServiceDescriptor(typeof(IKundVMLogic), kundVM));
@@ -66,6 +71,7 @@ namespace BildStudionDV.Web
             services.Add(new ServiceDescriptor(typeof(IUserProfileVMLogic), userProfileVM));
             services.Add(new ServiceDescriptor(typeof(IDeltagareVMLogic), deltagarVM));
             services.Add(new ServiceDescriptor(typeof(INärvaroVMLogic), närvaroVM));
+            services.Add(new ServiceDescriptor(typeof(IDeltagarViewLogic), deltagarViewLogic));
 
             services.AddAuthentication("CookieAuthentication")
          .AddCookie("CookieAuthentication", config =>

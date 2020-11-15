@@ -1,6 +1,51 @@
-﻿
+﻿@model List<BildstudionDV.BI.ViewModels.ViewModelDeltagareAttendence>
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
 }
+
+<form action="~/Närvaro/AddDeltagare">
+    <button class="btn-outline-success btn nav-link" href="@Url.Action("AddDeltagare", "Närvaro")">Lägg Till Deltagare</button>
+</form>
+<br />
+<br />
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Deltagaren</th>
+            <th>Närvaro i %</th>
+            <th>Redigera</th>
+            <th>Ta Bort</th>
+        </tr>
+    </thead>
+    @foreach (var deltagare in Model)
+    {
+<tr>
+    <td>@deltagare.Deltagarn.DeltagarNamn</td>
+    <td>@deltagare.PercentageAttendence %</td>
+    <td>
+        <form action="EditDeltagare?@deltagare.Deltagarn.Id.ToString()">
+            <button class="btn btn-info">Redigera @deltagare.Deltagarn.DeltagarNamn</button>
+        </form>
+    </td>
+    <td>
+        <form action="RemoveDeltagare">
+            <button class="btn btn-danger">Ta Bort @deltagare.Deltagarn.DeltagarNamn</button>
+        </form>
+    </td>
+</tr>
+    }
+    <tfoot>
+        <tr>
+            <th>
+                Deltagarn
+            </th>
+            <th>
+                Närvaro i %
+            </th>
+            <th>Redigera</th>
+            <th>Ta Bort</th>
+        </tr>
+    </tfoot>
+</table>
