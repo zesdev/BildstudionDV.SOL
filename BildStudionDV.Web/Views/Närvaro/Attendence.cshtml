@@ -1,38 +1,42 @@
 ﻿@model List<BildstudionDV.BI.ViewModels.AttendenceViewModel>
 <h2>Välj ett datum i en vecka för att redigera närvaron för den veckan:</h2>
-<h3>@ViewBag.date </h3>
 <br />
-@using (Html.BeginForm()) {
-<input type="date" name="Date" id="Date"/>
-<input type="submit" value="Se närvaro för datum" class="btn btn-info" />
+<input type="button" class="btn btn-info" onclick='window.location.href = "../Närvaro/index"' value="Tillbaka till Index" />
+<br />
+@using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formDate" }))
+{
+    <input type="date" value="@ViewBag.date" name="Date" id="Date" onchange='document.formDate.submit()' class="btn-block" />
 }
 <br />
+
+
 @if (Model.Count != 0)
 {
-<table>
-    <thead>
-        <tr>
-            <th><b>Deltagare</b></th>
-            <th><b>Måndag</b></th>
-            <th><b>Tisdag</b></th>
-            <th><b>Onsdag</b></th>
-            <th><b>Torsdag</b></th>
-            <th><b>Fredag</b></th>
-        </tr>
-    </thead>
-    @foreach (var attendenceItem in Model)
-    {
-        @Html.Partial("_AttendenceDate", attendenceItem);
-    }
-    <tfoot>
-        <tr>
-            <th><b>Deltagare</b></th>
-            <th><b>Måndag</b></th>
-            <th><b>Tisdag</b></th>
-            <th><b>Onsdag</b></th>
-            <th><b>Torsdag</b></th>
-            <th><b>Fredag</b></th>
-        </tr>
-    </tfoot>
-</table>
+    <h3>Visar för @ViewBag.date </h3>
+    <table>
+        <thead>
+            <tr>
+                <th><b>Deltagare</b></th>
+                <th><b>Måndag</b></th>
+                <th><b>Tisdag</b></th>
+                <th><b>Onsdag</b></th>
+                <th><b>Torsdag</b></th>
+                <th><b>Fredag</b></th>
+            </tr>
+        </thead>
+        @foreach (var attendenceItem in Model)
+        {
+            @Html.Partial("_AttendenceDate", attendenceItem);
+        }
+        <tfoot>
+            <tr>
+                <th><b>Deltagare</b></th>
+                <th><b>Måndag</b></th>
+                <th><b>Tisdag</b></th>
+                <th><b>Onsdag</b></th>
+                <th><b>Torsdag</b></th>
+                <th><b>Fredag</b></th>
+            </tr>
+        </tfoot>
+    </table>
 }

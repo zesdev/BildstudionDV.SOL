@@ -90,20 +90,44 @@ namespace BildStudionDV.Web.Controllers
         public IActionResult Attendence(string date)
         {
             string rawdate = HttpContext.Request.Cookies["userSelectedDate"];
-            var dateConverted = Convert.ToDateTime(date);
-            if(date != "")
-            {
-                dateConverted = Convert.ToDateTime(date);
-            }
             var compareDate = DateTime.Now.AddYears(-100);
+            var dateSupplied = Convert.ToDateTime(date);
             List<AttendenceViewModel> model = new List<AttendenceViewModel>();
-            if(dateConverted > compareDate)
+            if (dateSupplied > compareDate)
             {
-                model = närvaroLogic.GetAttendenceForDate(dateConverted);
-                HttpContext.Response.Cookies.Append("userSelectedDate", model.FirstOrDefault().DateConcerning.ToString("yyyy, MM, dd"));
+                dateSupplied = GetDateAsLastMonday(dateSupplied);
+                ViewBag.date = dateSupplied.ToString("yyyy-MM-dd");
+                model = närvaroLogic.GetAttendenceForDate(dateSupplied);
+                HttpContext.Response.Cookies.Append("userSelectedDate", model.FirstOrDefault().DateConcerning.ToString("yyyy-MM-dd"));
+            }
+            else
+            {
+                var dateFromCookie = Convert.ToDateTime(rawdate);
+                dateFromCookie = GetDateAsLastMonday(dateFromCookie);
+                model = närvaroLogic.GetAttendenceForDate(dateFromCookie);
+                ViewBag.date = dateFromCookie.ToString("yyyy-MM-dd");
             }
             return View(model);
         }
+
+        private DateTime GetDateAsLastMonday(DateTime dateSupplied)
+        {
+            if (dateSupplied.DayOfWeek == DayOfWeek.Tuesday)
+                return dateSupplied.AddDays(- 1);
+            if (dateSupplied.DayOfWeek == DayOfWeek.Wednesday)
+                return dateSupplied.AddDays(-2);
+            if (dateSupplied.DayOfWeek == DayOfWeek.Thursday)
+                return dateSupplied.AddDays(-3);
+            if (dateSupplied.DayOfWeek == DayOfWeek.Friday)
+                return dateSupplied.AddDays(-4);
+            if (dateSupplied.DayOfWeek == DayOfWeek.Saturday)
+                return dateSupplied.AddDays(-5);
+            if (dateSupplied.DayOfWeek == DayOfWeek.Sunday)
+                return dateSupplied.AddDays(-6);
+            else
+                return dateSupplied;
+        }
+
         [HttpPost]
         [Authorize]
         public IActionResult UpdateNärvaro(AttendenceViewModel viewModel)
@@ -120,7 +144,7 @@ namespace BildStudionDV.Web.Controllers
             ogViewModel.Fredag = viewModel.Måndag;
 
             närvaroLogic.UpdateAttendence(ogViewModel);
-            return RedirectToAction("Attendence", "Närvaro");
+            return RedirectToAction("Attendence");
         }
     }
 }

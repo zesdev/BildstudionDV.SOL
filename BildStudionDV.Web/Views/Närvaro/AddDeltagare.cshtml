@@ -6,9 +6,8 @@
     <font color="red">@ViewBag.Message</font>
     <br />
 
-    @using (Html.BeginForm())
-    {
-        @Html.Label(Model.DeltagarNamn)<br />
+    @using (Html.BeginForm()){
+        <b>Deltagarens Namn:</b><br />
         @Html.TextBoxFor(x => x.DeltagarNamn)<br />
         @Html.LabelFor(x => x.Måndag)<br />
         @Html.DropDownListFor(x => x.Måndag, new List<SelectListItem>
@@ -59,6 +58,9 @@
         new SelectListItem { Text = "_", Value ="2" }
 
     })
+        <br />
+        <b>Är Deltagaren Aktivs</b><br />
+        @Html.CheckBoxFor(x => x.IsActive)
         <br />
         <button type="submit" class="btn btn-success">Lägg till deltagare</button>
 
