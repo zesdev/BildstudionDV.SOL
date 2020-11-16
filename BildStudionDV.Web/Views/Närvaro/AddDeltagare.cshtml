@@ -1,7 +1,7 @@
 ﻿@model BildstudionDV.BI.ViewModels.DeltagareViewModel
 
 <b>
-    <input type="button" class="btn btn-info" onclick='window.location.href = "../Närvaro/index"' value="Tillbaka till Index" /><br />
+    <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../Närvaro/index"' value="Tillbaka till Index" /><br />
 
     <font color="red">@ViewBag.Message</font>
     <br />
@@ -62,7 +62,7 @@
         <b>Är Deltagaren Aktivs</b><br />
         @Html.CheckBoxFor(x => x.IsActive)
         <br />
-        <button type="submit" class="btn btn-success">Lägg till deltagare</button>
+        <button type="submit" class="btn btn-block btn-success">Lägg till deltagare</button>
 
     }
 </b>

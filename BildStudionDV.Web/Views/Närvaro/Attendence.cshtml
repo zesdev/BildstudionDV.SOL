@@ -1,7 +1,7 @@
 ﻿@model List<BildstudionDV.BI.ViewModels.AttendenceViewModel>
 <h2>Välj ett datum i en vecka för att redigera närvaron för den veckan:</h2>
 <br />
-<input type="button" class="btn btn-info" onclick='window.location.href = "../Närvaro/index"' value="Tillbaka till Index" />
+<input type="button" class="btn btn-info btn-block" onclick='window.location.href = "../Närvaro/index"' value="Tillbaka till Index" />
 <br />
 @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formDate" }))
 {

@@ -38,7 +38,7 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult Index()
         {
-
+            ViewBag.date = DateTime.Now.ToString("yyyy-MM-dd");
             return View(deltagarViewLogic.GetAllDeltagareViewData());
         }
         [Authorize]
@@ -139,12 +139,13 @@ namespace BildStudionDV.Web.Controllers
 
             ogViewModel.Måndag = viewModel.Måndag;
             ogViewModel.Tisdag = viewModel.Tisdag;
-            ogViewModel.Onsdag = viewModel.Måndag;
-            ogViewModel.Torsdag = viewModel.Tisdag;
-            ogViewModel.Fredag = viewModel.Måndag;
+            ogViewModel.Onsdag = viewModel.Onsdag;
+            ogViewModel.Torsdag = viewModel.Torsdag;
+            ogViewModel.Fredag = viewModel.Fredag;
 
             närvaroLogic.UpdateAttendence(ogViewModel);
             return RedirectToAction("Attendence");
         }
+       
     }
 }

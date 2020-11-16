@@ -121,19 +121,19 @@ namespace BildstudionDV.BI.MainLogic
                 }
 
             }
-            expectedAttendence = expectedAttendence * 100;
+            expectedAttendence = expectedAttendence;
             actualAttendence = actualAttendence * 100;
             int actualAddedAttendence = 0;
             try
             {
-                actualAddedAttendence = actualAttendence / expectedAttendence;
+                actualAddedAttendence = (actualAttendence / expectedAttendence);
             }
             catch
             {
 
             }
 
-            return actualAttendence;
+            return actualAddedAttendence;
         }
     }
 }

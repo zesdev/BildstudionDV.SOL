@@ -4,6 +4,7 @@ using BildstudionDV.BI.ViewModels;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BildstudionDV.BI.ViewModelLogic
@@ -20,6 +21,7 @@ namespace BildstudionDV.BI.ViewModelLogic
             var model = new DelJobbModel
             {
                 Id = viewModel.Id,
+                AccessId = viewModel.AccessId,
                 StatusPåJobbet = viewModel.StatusPåJobbet.ToString(),
                 JobbId = viewModel.JobbId,
                 Namn = viewModel.Namn,
@@ -37,6 +39,7 @@ namespace BildstudionDV.BI.ViewModelLogic
                 {
                     StatusPåJobbet = HelperConvertLogic.GetDelJobbStatusFromString(model.StatusPåJobbet),
                     Id = model.Id,
+                    AccessId = model.AccessId,
                     JobbId = jobbId,
                     Namn = model.Namn,
                     VemGör = model.VemGör
@@ -47,10 +50,20 @@ namespace BildstudionDV.BI.ViewModelLogic
         }
         public void AddDelJobb(DelJobbViewModel viewModel)
         {
+            int index = 0;
+            try
+            {
+                var lastJobIndex = delJobbDb.GetAllDelJobbs().LastOrDefault().AccessId;
+                index = lastJobIndex + 1;
+            }
+            catch
+            {
+            }
             var model = new DelJobbModel
             {
                 StatusPåJobbet = viewModel.StatusPåJobbet.ToString(),
                 JobbId = viewModel.JobbId,
+                AccessId = index,
                 Namn = viewModel.Namn,
                 VemGör = viewModel.VemGör
             };

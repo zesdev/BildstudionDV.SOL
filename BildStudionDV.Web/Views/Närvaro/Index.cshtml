@@ -5,10 +5,10 @@
 @{
 }
 
-<input type="button" class="btn btn-block btn-dark text-white" onclick='window.location.href = "../Närvaro/Attendence"' value="Redigera Närvaro" />
+<input type="button" class="btn btn-block btn-dark text-white" onclick="window.location.href ='../Närvaro/Attendence?date=@ViewBag.date'" value="Redigera Närvaro" />
 <br /><br />
 <form action="~/Närvaro/AddDeltagare">
-    <button class="btn-outline-success btn nav-link" href="@Url.Action("AddDeltagare", "Närvaro")">Lägg Till Deltagare</button>
+    <button class="btn-outline-success btn-block btn nav-link" href="@Url.Action("AddDeltagare", "Närvaro")">Lägg Till Deltagare</button>
 </form>
 <br />
 <br />
@@ -18,7 +18,6 @@
             <th>Deltagaren</th>
             <th>Närvaro i %</th>
             <th>Redigera</th>
-            <th>Ta Bort</th>
         </tr>
     </thead>
     @foreach (var deltagare in Model)
@@ -29,9 +28,7 @@
             <td>
                 <input type="button" class="btn btn-info" onclick='window.location.href = "../Närvaro/editdeltagare?id=@deltagare.Deltagarn.IdAcesss"' value="Redigera @deltagare.Deltagarn.DeltagarNamn" />
             </td>
-            <td>
-                <input type="button" class="btn btn-danger" onclick='window.location.href = "../Närvaro/removedeltagare?id=@deltagare.Deltagarn.IdAcesss"' value="Ta Bort @deltagare.Deltagarn.DeltagarNamn" />
-            </td>
+
         </tr>
     }
     <tfoot>
@@ -43,7 +40,6 @@
                 Närvaro i %
             </th>
             <th>Redigera</th>
-            <th>Ta Bort</th>
         </tr>
     </tfoot>
 </table>

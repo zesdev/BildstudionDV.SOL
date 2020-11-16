@@ -11,6 +11,7 @@ namespace BildstudionDV.BI.Models.Jobb
     };
     public class DelJobbModel
     {
+        public int AccessId { get; set; }
         public ObjectId Id { get; set; }
         public ObjectId JobbId { get; set; }
         public string StatusPåJobbet { get; set; }

@@ -52,6 +52,10 @@ namespace BildstudionDV.BI.Database
         {
             return deljobbdb.Find<DelJobbModel>(x => x.JobbId == jobbId).ToList();
         }
+        public List<DelJobbModel> GetAllDelJobbs()
+        {
+            return deljobbdb.Find<DelJobbModel>(x => true).ToList();
+        }
         public DelJobbModel GetDelJobb(ObjectId Id)
         {
             return deljobbdb.Find(x => x.Id == Id).First();

@@ -26,6 +26,7 @@ namespace BildstudionDV.BI.ViewModelLogic
                 DatumRegistrerat = viewModel.DatumRegistrerat,
                 StatusPåJobbet = viewModel.StatusPåJobbet.ToString(),
                 Id = viewModel.Id,
+                AccessId = viewModel.AccessId,
                 KundId = viewModel.KundId,
                 Title = viewModel.Title,
                 TypAvJobb = viewModel.TypAvJobb.ToString(),
@@ -45,6 +46,7 @@ namespace BildstudionDV.BI.ViewModelLogic
                     DatumRegistrerat = model.DatumRegistrerat,
                     delJobbs = delJobbVMLogic.GetDelJobbsInJobb(model.Id),
                     Id = model.Id,
+                    AccessId = model.AccessId,
                     KundId = model.KundId,
                     Title = model.Title,
                     TypAvJobb = HelperConvertLogic.GetJobbTypFromString(model.TypAvJobb),
@@ -63,6 +65,7 @@ namespace BildstudionDV.BI.ViewModelLogic
                 DatumRegistrerat = model.DatumRegistrerat,
                 delJobbs = delJobbVMLogic.GetDelJobbsInJobb(model.Id),
                 Id = model.Id,
+                AccessId = model.AccessId,
                 KundId = model.KundId,
                 Title = model.Title,
                 TypAvJobb = HelperConvertLogic.GetJobbTypFromString(model.TypAvJobb),
@@ -81,11 +84,21 @@ namespace BildstudionDV.BI.ViewModelLogic
 
         public void AddJobb(JobbViewModel kundJobb)
         {
+            var index = 0;
+            try
+            {
+                var lastJobIndex = jobbDb.GetAllJobbs().LastOrDefault().AccessId;
+                index = lastJobIndex + 1;
+            }
+            catch
+            {
+            }
             var model = new JobbModel
             {
                 StatusPåJobbet = kundJobb.StatusPåJobbet.ToString(),
                 DatumRegistrerat = kundJobb.DatumRegistrerat,
                 KundId = kundJobb.KundId,
+                AccessId = index,
                 Title = kundJobb.Title,
                 TypAvJobb = kundJobb.TypAvJobb.ToString(),
                 TypAvPrioritet = kundJobb.TypAvPrioritet.ToString()

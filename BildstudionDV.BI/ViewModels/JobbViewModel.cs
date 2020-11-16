@@ -7,6 +7,7 @@ namespace BildstudionDV.BI.ViewModels
 {
     public class JobbViewModel
     {
+        public int AccessId { get; set; }
         public ObjectId Id { get; set; }
         public ObjectId KundId { get; set; }
         public string Title { get; set; }
@@ -15,5 +16,6 @@ namespace BildstudionDV.BI.ViewModels
         public StatusTyp StatusPåJobbet { get; set; }
         public DateTime DatumRegistrerat { get; set; }
         public List<DelJobbViewModel> delJobbs { get; set; }
+        public string KundNamn { get; set; }
     }
 }

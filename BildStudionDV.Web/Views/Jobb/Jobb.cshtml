@@ -1,0 +1,43 @@
+﻿@model List<BildstudionDV.BI.ViewModels.JobbViewModel>
+<input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../jobb/index"' value="Tillbaka till Index" />
+<br />
+<h1>Visar jobb för @ViewBag.KundNamn</h1>
+<form action="~/jobb/addjobb?KundNamn=@ViewBag.KundNamn">
+    <button class="btn-outline-success btn-block btn nav-link">Lägg Till Nytt Jobb</button>
+</form>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>JobbTyp</th>
+            <th>Titel</th>
+            <th>DelJobb Gjorda/Klara</th>
+            <th>Redigera jobb</th>
+            <th>DelJobb</th>
+        </tr>
+    </thead>
+    @foreach (var jobb in Model)
+    {
+<tr>
+    <td>@jobb.TypAvJobb</td>
+    <td>@jobb.Title</td>
+    <td>@jobb.delJobbs.Where(x => x.StatusPåJobbet == BildstudionDV.BI.Models.Jobb.DelJobbStatus.Klar).ToList().Count / @jobb.delJobbs.Count - @jobb.StatusPåJobbet.ToString()</td>
+    <td>
+        <input type="button" class="btn btn-info" onclick='window.location.href = "../jobb/EditJobb?AccessId=@jobb.AccessId"' value="Redigera" />
+    </td>
+    <td>
+        <input type="button" class="btn btn-info" onclick='window.location.href = "../jobb/deljobb?AccessId=@jobb.AccessId"' value="Se DelJobb" />
+        <input type="button" class="btn btn-success" onclick='window.location.href = "../jobb/adddeljobb?AccessId=@jobb.AccessId"' value="Lägg Till DelJobb" />
+    </td>
+
+</tr>
+    }
+    <tfoot>
+        <tr>
+            <th>JobbTyp</th>
+            <th>Titel</th>
+            <th>DelJobb Gjorda/Klara</th>
+            <th>Redigera jobb</th>
+            <th>DelJobb</th>
+        </tr>
+    </tfoot>
+</table>

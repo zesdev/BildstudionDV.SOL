@@ -19,6 +19,7 @@ namespace BildstudionDV.BI.Models.Jobb
     };
     public class JobbModel
     {
+        public int AccessId { get; set; }
         public ObjectId Id { get; set; }
         public ObjectId KundId { get; set; }
         public string Title { get; set; }

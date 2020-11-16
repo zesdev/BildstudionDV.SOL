@@ -5,6 +5,7 @@ namespace BildstudionDV.BI.ViewModels
 {
     public class DelJobbViewModel
     {
+        public int AccessId { get; set; }
         public ObjectId Id { get; set; }
         public ObjectId JobbId { get; set; }
         public DelJobbStatus StatusPåJobbet { get; set; }

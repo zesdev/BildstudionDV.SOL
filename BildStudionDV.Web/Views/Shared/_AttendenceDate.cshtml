@@ -3,7 +3,7 @@
 @using (Html.BeginForm("UpdateNärvaro", "Närvaro", FormMethod.Post, new { name = "formDeltagare" + Model.DeltagarNamn }))
 {
     <tr>
-        <td>
+        <td width="200px">
             @Html.HiddenFor(x => x.DeltagarNamn)
             @Html.Label(Model.DeltagarNamn)
         </td>
@@ -21,8 +21,7 @@
            new SelectListItem { Text = "FrånvarandeMat", Value = "7" },
            new SelectListItem { Text = "Övrigt", Value = "8" },
         },
-new { @onchange = "document.getElementById('buttonDeltagare" + Model.DeltagarNamn + "').submit()" })
- )
+new { @onchange = "document.getElementById('" + @Model.DeltagarNamn + "').click()" })
         </td>
         <td>
             @Html.DropDownListFor(x => x.Tisdag, new List<SelectListItem>
@@ -38,7 +37,7 @@ new { @onchange = "document.getElementById('buttonDeltagare" + Model.DeltagarNam
            new SelectListItem { Text = "FrånvarandeMat", Value = "7" },
            new SelectListItem { Text = "Övrigt", Value = "8" },
            },
-new { @onchange = "document.getElementById('buttonDeltagare" + Model.DeltagarNamn + "').submit()" })
+new { @onchange = "document.getElementById('" + @Model.DeltagarNamn + "').click()" })
         </td>
         <td>
             @Html.DropDownListFor(x => x.Onsdag, new List<SelectListItem>
@@ -54,7 +53,7 @@ new { @onchange = "document.getElementById('buttonDeltagare" + Model.DeltagarNam
            new SelectListItem { Text = "FrånvarandeMat", Value = "7" },
            new SelectListItem { Text = "Övrigt", Value = "8" },
            },
-new { @onchange = "document.getElementById('buttonDeltagare" + Model.DeltagarNamn + "').submit()" })
+new { @onchange = "document.getElementById('" + @Model.DeltagarNamn + "').click()" })
         </td>
         <td>
 
@@ -71,7 +70,7 @@ new { @onchange = "document.getElementById('buttonDeltagare" + Model.DeltagarNam
            new SelectListItem { Text = "FrånvarandeMat", Value = "7" },
            new SelectListItem { Text = "Övrigt", Value = "8" },
            },
-new { @onchange = "document.getElementById('buttonDeltagare" + Model.DeltagarNamn + "').submit()" })
+new { @onchange = "document.getElementById('" + @Model.DeltagarNamn + "').click()" })
         </td>
         <td>
             @Html.DropDownListFor(x => x.Fredag, new List<SelectListItem>
@@ -87,8 +86,8 @@ new { @onchange = "document.getElementById('buttonDeltagare" + Model.DeltagarNam
            new SelectListItem { Text = "FrånvarandeMat", Value = "7" },
            new SelectListItem { Text = "Övrigt", Value = "8" },
            },
-new { @onchange = "document.getElementById('buttonDeltagare" + Model.DeltagarNamn + "').submit()" })
+new { @onchange = "document.getElementById('" + @Model.DeltagarNamn + "').click()" })
+            <input type="submit" class="btn btn-success" hidden="hidden" id="@Model.DeltagarNamn">
         </td>
-        <td><input type="submit" id="buttonDeltagare"+"@{Model.DeltagarNamn}" value="UpdateraNärvaron" hidden="hidden" class="btn-success btn" /></td>
 </tr>
 }

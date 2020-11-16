@@ -9,6 +9,7 @@ namespace BildstudionDV.BI.ViewModels
     {
         public ObjectId Id { get; set; }
         public string KundNamn { get; set; }
+        public string OldName { get; set; }
         public List<JobbViewModel> listOfJobbs { get; set; }
     }
 }

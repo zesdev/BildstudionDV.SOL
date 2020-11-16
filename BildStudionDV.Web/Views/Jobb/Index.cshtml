@@ -1,0 +1,39 @@
+﻿@model List<BildstudionDV.BI.ViewModels.KundViewModel>
+<br />
+<br />
+<form action="~/jobb/addkund">
+    <button class="btn-outline-success btn-block btn nav-link">Lägg till ny kund</button>
+</form>
+<br />
+<br />
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>KundNamn</th>
+            <th>Redigera/Se Jobb</th>
+            <th>Jobb GjordaTotalt</th>
+        </tr>
+    </thead>
+    @foreach (var kund in Model)
+    {
+<tr>
+    <td>@kund.KundNamn</td>
+    <td>
+        <input type="button" class="btn btn-info" onclick='window.location.href = "../jobb/editkund?kundnamn=@kund.KundNamn"' value="Redigera Kunden" />
+        <input type="button" class="btn btn-dark" onclick='window.location.href = "../jobb/jobb?kundnamn=@kund.KundNamn"' value="Se Jobb" />
+
+    </td>
+    <td>@kund.listOfJobbs.Where(x => x.StatusPåJobbet == BildstudionDV.BI.Models.Jobb.StatusTyp.KlarOchAvhämtat).ToList().Count / @kund.listOfJobbs.Count</td>
+    <td>
+        
+    </td>
+</tr>
+    }
+    <tfoot>
+        <tr>
+            <th>KundNamn</th>
+            <th>Redigera</th>
+            <th>Jobb Gjorda/Totalt</th>
+        </tr>
+    </tfoot>
+</table>
