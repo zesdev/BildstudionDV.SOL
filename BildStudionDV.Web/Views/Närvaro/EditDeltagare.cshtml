@@ -59,6 +59,8 @@
         new SelectListItem { Text = "_", Value = "2" }
 
     })
+        <br />@Html.Label("Är aktiv: ")
+        @Html.CheckBoxFor(x => x.IsActive);
 
         @Html.HiddenFor(x => x.IdAcesss)
         <br />

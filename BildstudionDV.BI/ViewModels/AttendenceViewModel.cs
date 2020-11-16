@@ -11,6 +11,7 @@ namespace BildstudionDV.BI.ViewModels
     {
         public ObjectId Id { get; set; }
         public ObjectId DeltagarIdInQuestion { get; set; }
+        public string DeltagarNamn { get; set; }
         public DateTime DateConcerning { get; set; }
         public AttendenceOption Måndag { get; set; }
         public AttendenceOption Tisdag { get; set; }

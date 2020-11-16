@@ -20,11 +20,11 @@ namespace BildstudionDV.BI.ViewModelLogic
         }
         public void AddNärvaro(AttendenceViewModel viewModel)
         {
-            var deltagare = deltagareDb.GetAllDeltagarModels().First(x => x.Id == viewModel.Id);
+            var deltagare = deltagareDb.GetAllDeltagarModels().First(x => x.DeltagarNamn == viewModel.DeltagarNamn);
             var model = new AttendenceModel
             {
                 DateConcerning = viewModel.DateConcerning,
-                DeltagarIdInQuestion = viewModel.DeltagarIdInQuestion,
+                DeltagarIdInQuestion = deltagare.Id,
                 Måndag = viewModel.Måndag.ToString(),
                 Tisdag = viewModel.Tisdag.ToString(),
                 Onsdag = viewModel.Onsdag.ToString(),
@@ -48,6 +48,7 @@ namespace BildstudionDV.BI.ViewModelLogic
                 var viewModel = new AttendenceViewModel
                 {
                     DateConcerning = model.DateConcerning,
+                    DeltagarNamn = deltagareDb.GetDeltagare(model.DeltagarIdInQuestion).DeltagarNamn,
                     DeltagarIdInQuestion = model.DeltagarIdInQuestion,
                     Måndag = HelperConvertLogic.GetAttendenceOptionFromString(model.Måndag),
                     Tisdag = HelperConvertLogic.GetAttendenceOptionFromString(model.Tisdag),
@@ -76,6 +77,7 @@ namespace BildstudionDV.BI.ViewModelLogic
                 {
                     DateConcerning = model.DateConcerning,
                     DeltagarIdInQuestion = model.DeltagarIdInQuestion,
+                    DeltagarNamn = deltagareDb.GetDeltagare(model.DeltagarIdInQuestion).DeltagarNamn,
                     Måndag = HelperConvertLogic.GetAttendenceOptionFromString(model.Måndag),
                     Tisdag = HelperConvertLogic.GetAttendenceOptionFromString(model.Tisdag),
                     Onsdag = HelperConvertLogic.GetAttendenceOptionFromString(model.Onsdag),
@@ -110,7 +112,6 @@ namespace BildstudionDV.BI.ViewModelLogic
                 date = date.AddDays(-5);
             else if (date.DayOfWeek == DayOfWeek.Sunday)
                 date = date.AddDays(-6);
-
             var returningList = new List<AttendenceViewModel>();
             var deltagarnaActive = deltagareDb.GetAllDeltagarModels().Where(x => x.IsActive == true).ToList();
 
@@ -135,11 +136,12 @@ namespace BildstudionDV.BI.ViewModelLogic
                         Måndag = AttendenceOption.Frånvarande.ToString()
                     };
                     närvaroDb.AddAttendence(model);
-                    model = närvaroDb.GetAttendenceItemsFörDeltagare(deltagare.Id).FirstOrDefault(x => x.DateConcerning.DayOfYear == date.DayOfYear && x.DateConcerning.Year == date.Year);
+                    model = närvaroDb.GetAttendenceForDate(date.AddHours(-1)).FirstOrDefault(x => x.DeltagarIdInQuestion == deltagare.Id);
                     var viewModel = new AttendenceViewModel
                     {
                         DateConcerning = date,
                         DeltagarIdInQuestion = deltagare.Id,
+                        DeltagarNamn = deltagareDb.GetDeltagare(model.DeltagarIdInQuestion).DeltagarNamn,
                         ExpectedFredag = HelperConvertLogic.GetWorkDayFromString(deltagare.Fredag),
                         ExpectedTorsdag = HelperConvertLogic.GetWorkDayFromString(deltagare.Torsdag),
                         ExpectedOnsdag = HelperConvertLogic.GetWorkDayFromString(deltagare.Onsdag),
@@ -159,8 +161,10 @@ namespace BildstudionDV.BI.ViewModelLogic
                     var model = attendences.FirstOrDefault(x => x.DeltagarIdInQuestion == deltagare.Id);
                     var viewModel = new AttendenceViewModel
                     {
+                        Id = model.Id,
                         DateConcerning = date,
                         DeltagarIdInQuestion = deltagare.Id,
+                        DeltagarNamn = deltagareDb.GetDeltagare(model.DeltagarIdInQuestion).DeltagarNamn,
                         ExpectedFredag = HelperConvertLogic.GetWorkDayFromString(deltagare.Fredag),
                         ExpectedTorsdag = HelperConvertLogic.GetWorkDayFromString(deltagare.Torsdag),
                         ExpectedOnsdag = HelperConvertLogic.GetWorkDayFromString(deltagare.Onsdag),
@@ -178,14 +182,15 @@ namespace BildstudionDV.BI.ViewModelLogic
             return returningList;
         }
         public void UpdateAttendences(List<AttendenceViewModel> attendences)
-        {
+        { 
             var modelsAttendences = new List<AttendenceModel>();
             foreach (var attendence in attendences)
             {
+                var deltagare = deltagareDb.GetAllDeltagarModels().First(x => x.DeltagarNamn == attendence.DeltagarNamn);
                 var model = new AttendenceModel
                 {
                     DateConcerning = attendence.DateConcerning,
-                    DeltagarIdInQuestion = attendence.DeltagarIdInQuestion,
+                    DeltagarIdInQuestion = deltagare.Id,
                     Måndag = attendence.Måndag.ToString(),
                     Tisdag = attendence.Tisdag.ToString(),
                     Onsdag = attendence.Onsdag.ToString(),
@@ -204,6 +209,28 @@ namespace BildstudionDV.BI.ViewModelLogic
             {
                 närvaroDb.UpdateAttendence(model);
             }
+        }
+        public void UpdateAttendence(AttendenceViewModel attendence)
+        {
+            var deltagare = deltagareDb.GetAllDeltagarModels().First(x => x.DeltagarNamn == attendence.DeltagarNamn);
+            var model = new AttendenceModel
+            {
+                DateConcerning = attendence.DateConcerning,
+                DeltagarIdInQuestion = deltagare.Id,
+                Måndag = attendence.Måndag.ToString(),
+                Tisdag = attendence.Tisdag.ToString(),
+                Onsdag = attendence.Onsdag.ToString(),
+                Torsdag = attendence.Torsdag.ToString(),
+                Fredag = attendence.Fredag.ToString(),
+                ExpectedMåndag = attendence.ExpectedMåndag.ToString(),
+                ExpectedTisdag = attendence.ExpectedTisdag.ToString(),
+                ExpectedOnsdag = attendence.ExpectedOnsdag.ToString(),
+                ExpectedTorsdag = attendence.ExpectedTorsdag.ToString(),
+                ExpectedFredag = attendence.ExpectedFredag.ToString(),
+                Id = attendence.Id,
+            };
+
+            närvaroDb.UpdateAttendence(model);
         }
     }
 }

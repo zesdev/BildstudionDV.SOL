@@ -56,6 +56,7 @@ namespace BildStudionDV.Web.Controllers
                 return Redirect("../Närvaro/AddDeltagare?message=InkorrektInmatning");
             deltagarLogic.AddDeltagare(viewModel);
             return RedirectToAction("index");
+
         }
         [Authorize]
         public IActionResult EditDeltagare(int id, string message)
@@ -83,17 +84,43 @@ namespace BildStudionDV.Web.Controllers
             deltagarLogic.UpdateDeltagare(viewModel);
             return RedirectToAction("index");
         }
+        [HttpGet]
+        [HttpPost]
         [Authorize]
-        public IActionResult Attendence()
+        public IActionResult Attendence(string date)
         {
-            return View();
-        }
-        public IActionResult GetAttendenceForDate(string date)
-        {
+            string rawdate = HttpContext.Request.Cookies["userSelectedDate"];
             var dateConverted = Convert.ToDateTime(date);
-            var attendenceData = närvaroLogic.GetAttendenceForDate(dateConverted);
+            if(date != "")
+            {
+                dateConverted = Convert.ToDateTime(date);
+            }
+            var compareDate = DateTime.Now.AddYears(-100);
+            List<AttendenceViewModel> model = new List<AttendenceViewModel>();
+            if(dateConverted > compareDate)
+            {
+                model = närvaroLogic.GetAttendenceForDate(dateConverted);
+                HttpContext.Response.Cookies.Append("userSelectedDate", model.FirstOrDefault().DateConcerning.ToString("yyyy, MM, dd"));
+            }
+            return View(model);
+        }
+        [HttpPost]
+        [Authorize]
+        public IActionResult UpdateNärvaro(AttendenceViewModel viewModel)
+        {
+            string rawdate = HttpContext.Request.Cookies["userSelectedDate"];
+            DateTime date = Convert.ToDateTime(rawdate);
+            var deltagare = deltagarLogic.GetAllDeltagare().FirstOrDefault(x => x.DeltagarNamn == viewModel.DeltagarNamn);
+            var ogViewModel = närvaroLogic.GetAttendenceForDate(date).First(x => x.DeltagarNamn == viewModel.DeltagarNamn);
 
-            return Content();
+            ogViewModel.Måndag = viewModel.Måndag;
+            ogViewModel.Tisdag = viewModel.Tisdag;
+            ogViewModel.Onsdag = viewModel.Måndag;
+            ogViewModel.Torsdag = viewModel.Tisdag;
+            ogViewModel.Fredag = viewModel.Måndag;
+
+            närvaroLogic.UpdateAttendence(ogViewModel);
+            return RedirectToAction("Attendence", "Närvaro");
         }
     }
 }

@@ -1,0 +1,93 @@
+﻿@model BildstudionDV.BI.ViewModels.AttendenceViewModel
+
+@using (Html.BeginForm("UpdateNärvaro", "Närvaro"))
+{
+<tr>
+    <td>
+        @Html.HiddenFor(x => x.DeltagarNamn)
+        @Html.LabelFor(x => x.DeltagarNamn)
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.Måndag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value = "5" },
+        new SelectListItem { Text = "Heldag", Value = "1" },
+       new SelectListItem { Text = "Halvdag", Value = "2" },
+             new SelectListItem { Text = "Sjuk", Value = "3" },
+                   new SelectListItem { Text = "Ledig", Value = "4" },
+       new SelectListItem { Text = "Frånvarande", Value = "5" },
+               new SelectListItem { Text = "HeldagMat", Value = "6" },
+                      new SelectListItem { Text = "HalvdagMat", Value = "7" },
+       new SelectListItem { Text = "FrånvarandeMat", Value = "8" },
+       new SelectListItem { Text = "Övrigt", Value = "9" }
+
+    })
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.Tisdag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value = "5" },
+        new SelectListItem { Text = "Heldag", Value = "1" },
+       new SelectListItem { Text = "Halvdag", Value = "2" },
+             new SelectListItem { Text = "Sjuk", Value = "3" },
+                   new SelectListItem { Text = "Ledig", Value = "4" },
+       new SelectListItem { Text = "Frånvarande", Value = "5" },
+               new SelectListItem { Text = "HeldagMat", Value = "6" },
+                      new SelectListItem { Text = "HalvdagMat", Value = "7" },
+       new SelectListItem { Text = "FrånvarandeMat", Value = "8" },
+       new SelectListItem { Text = "Övrigt", Value = "9" }
+
+    })
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.Onsdag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value = "5" },
+        new SelectListItem { Text = "Heldag", Value = "1" },
+       new SelectListItem { Text = "Halvdag", Value = "2" },
+             new SelectListItem { Text = "Sjuk", Value = "3" },
+                   new SelectListItem { Text = "Ledig", Value = "4" },
+       new SelectListItem { Text = "Frånvarande", Value = "5" },
+               new SelectListItem { Text = "HeldagMat", Value = "6" },
+                      new SelectListItem { Text = "HalvdagMat", Value = "7" },
+       new SelectListItem { Text = "FrånvarandeMat", Value = "8" },
+       new SelectListItem { Text = "Övrigt", Value = "9" }
+
+    })
+    </td>
+    <td>
+
+        @Html.DropDownListFor(x => x.Torsdag, new List<SelectListItem>
+{
+    new SelectListItem { Text = "--Välj--", Value = "5" },
+    new SelectListItem { Text = "Heldag", Value = "1" },
+   new SelectListItem { Text = "Halvdag", Value = "2" },
+         new SelectListItem { Text = "Sjuk", Value = "3" },
+               new SelectListItem { Text = "Ledig", Value = "4" },
+   new SelectListItem { Text = "Frånvarande", Value = "5" },
+           new SelectListItem { Text = "HeldagMat", Value = "6" },
+                  new SelectListItem { Text = "HalvdagMat", Value = "7" },
+   new SelectListItem { Text = "FrånvarandeMat", Value = "8" },
+   new SelectListItem { Text = "Övrigt", Value = "9" }
+
+})
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.Fredag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value = "5" },
+        new SelectListItem { Text = "Heldag", Value = "1" },
+       new SelectListItem { Text = "Halvdag", Value = "2" },
+             new SelectListItem { Text = "Sjuk", Value = "3" },
+                   new SelectListItem { Text = "Ledig", Value = "4" },
+       new SelectListItem { Text = "Frånvarande", Value = "5" },
+               new SelectListItem { Text = "HeldagMat", Value = "6" },
+                      new SelectListItem { Text = "HalvdagMat", Value = "7" },
+       new SelectListItem { Text = "FrånvarandeMat", Value = "8" },
+       new SelectListItem { Text = "Övrigt", Value = "9" }
+
+    })
+    </td>
+    <td><input type="submit" value="UpdateraNärvaron" class="btn-info btn"/></td>
+</tr>
+}

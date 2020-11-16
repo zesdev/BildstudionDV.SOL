@@ -13,5 +13,6 @@ namespace BildstudionDV.BI.ViewModelLogic
         List<AttendenceViewModel> GetAttendenceFörDeltagare(ObjectId deltagarId);
         void RemoveAttendenceItem(ObjectId Id);
         void UpdateAttendences(List<AttendenceViewModel> attendences);
+        void UpdateAttendence(AttendenceViewModel attendence);
     }
 }

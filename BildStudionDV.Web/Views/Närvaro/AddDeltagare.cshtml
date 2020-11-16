@@ -8,7 +8,7 @@
 
     @using (Html.BeginForm())
     {
-        @Html.LabelFor(x => x.DeltagarNamn)<br />
+        @Html.Label(Model.DeltagarNamn)<br />
         @Html.TextBoxFor(x => x.DeltagarNamn)<br />
         @Html.LabelFor(x => x.Måndag)<br />
         @Html.DropDownListFor(x => x.Måndag, new List<SelectListItem>
