@@ -4,48 +4,50 @@
     <h1>Lägger Till jobb för @Model.KundNamn</h1>
     @using (Html.BeginForm())
     {
-        <b>Jobbets titel:</b>
-        <br />
-        @Html.TextBoxFor(x => x.Title)
-        <br />
-        <b>Typ av Jobb:</b>
-        <br />
-        @Html.DropDownListFor(x => x.TypAvJobb, new List<SelectListItem>
-    {
-    new SelectListItem { Text = "--Välj--", Value ="4" },
-    new SelectListItem { Text = "Bilder", Value ="0" },
-    new SelectListItem { Text = "Adminstrativt", Value ="1" },
-    new SelectListItem { Text = "Film", Value ="2" },
-    new SelectListItem { Text = "Packjobb", Value ="3" },
-    new SelectListItem { Text = "Övrigt", Value ="4" }
+    <b>Jobbets titel:</b>
+    <br />
+    @Html.TextBoxFor(x => x.Title)
+    <br />
+    <b>Typ av Jobb:</b>
+    <br />
+    @Html.DropDownListFor(x => x.TypAvJobb, new List<SelectListItem>
+{
+new SelectListItem { Text = "--Välj--", Value ="4" },
+new SelectListItem { Text = "Bilder", Value ="0" },
+new SelectListItem { Text = "Adminstrativt", Value ="1" },
+new SelectListItem { Text = "Film", Value ="2" },
+new SelectListItem { Text = "Packjobb", Value ="3" },
+new SelectListItem { Text = "Övrigt", Value ="4" }
 
-    })
-        <br />
-        <b>Prioritet På Jobbet</b>
-        <br />
-        @Html.DropDownListFor(x => x.TypAvPrioritet, new List<SelectListItem>
-    {
-    new SelectListItem { Text = "--Välj--", Value ="0" },
-    new SelectListItem { Text = "Låg", Value ="0" },
-    new SelectListItem { Text = "Medel", Value ="1" },
-    new SelectListItem { Text = "Hög", Value ="2" }
+})
+    <br />
+    <b>Prioritet På Jobbet</b>
+    <br />
+    @Html.DropDownListFor(x => x.TypAvPrioritet, new List<SelectListItem>
+{
+new SelectListItem { Text = "--Välj--", Value ="0" },
+new SelectListItem { Text = "Låg", Value ="0" },
+new SelectListItem { Text = "Medel", Value ="1" },
+new SelectListItem { Text = "Hög", Value ="2" }
 
-    })
-        <br />
-        <b>Status På Jobbet:</b><br />
-        @Html.DropDownListFor(x => x.StatusPåJobbet, new List<SelectListItem>
-    {
-    new SelectListItem { Text = "--Välj--", Value ="0" },
-    new SelectListItem { Text = "Påbörjat", Value ="0" },
-    new SelectListItem { Text = "SkaKollas", Value ="1" },
-    new SelectListItem { Text = "VäntarPåKund", Value ="2" },
-    new SelectListItem { Text = "KlarOchAvhämtat", Value ="3" }
+})
+    <br />
+    <b>Status På Jobbet:</b><br />
+    @Html.DropDownListFor(x => x.StatusPåJobbet, new List<SelectListItem>
+{
+new SelectListItem { Text = "--Välj--", Value ="0" },
+new SelectListItem { Text = "Påbörjat", Value ="0" },
+new SelectListItem { Text = "SkaKollas", Value ="1" },
+new SelectListItem { Text = "VäntarPåKund", Value ="2" },
+new SelectListItem { Text = "KlarOchAvhämtat", Value ="3" }
 
-    })
-        @Html.HiddenFor(x => x.KundNamn)
-        @Html.HiddenFor(x => x.AccessId)
-        <br />
-        <br />
-        <input type="submit" class="btn btn-success" value="Updatera Jobbet" />
+})
+    @Html.HiddenFor(x => x.KundNamn)
+    @Html.HiddenFor(x => x.AccessId)
+    <br />
+    <br />
+    <input type="submit" class="btn btn-success" value="Updatera Jobbet" />
+    <br /><br />
+    <input type="button" class="btn btn-danger" onclick='window.location.href = "../jobb/removeJobb?accessid=@ViewBag.AccessId"' value="Ta Bort Jobbet" />
     }
 </center>

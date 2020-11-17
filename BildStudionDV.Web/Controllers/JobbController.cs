@@ -116,10 +116,27 @@ namespace BildStudionDV.Web.Controllers
             var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
             var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
             var model = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == AccessId);
+            ViewBag.AccessId = AccessId;
             model.KundNamn = KundNamn;
             return View(model);
         }
         [Authorize]
+        [Authorize]
+        public IActionResult RemoveJobb(int AccessId)
+        {
+            try
+            {
+                var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
+                var kund = kundLogic.GetKunder().First(x => x.KundNamn == KundNamn);
+                var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == AccessId);
+                jobbLogic.RemoveJobb(jobb.Id);
+            }
+            catch
+            {
+
+            }
+            return RedirectToAction("jobb");
+        }
         [HttpPost]
         public IActionResult EditJobb(JobbViewModel model)
         {
