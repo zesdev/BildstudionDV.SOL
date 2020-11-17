@@ -5,9 +5,14 @@ VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BildStudionDV.Web", "BildStudionDV.Web\BildStudionDV.Web.csproj", "{B0AE16C1-47E0-4D7F-AE27-4625760F1BFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BildstudionDV.Test", "BildstudionDV.Test\BildstudionDV.Test.csproj", "{1F824037-E006-4CB6-9A27-889BCB4780DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BildstudionDV.Test", "BildstudionDV.Test\BildstudionDV.Test.csproj", "{1F824037-E006-4CB6-9A27-889BCB4780DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BildstudionDV.BI", "BildstudionDV.BI\BildstudionDV.BI.csproj", "{09F24315-A533-4B4D-9777-A66F126BB021}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BildstudionDV.BI", "BildstudionDV.BI\BildstudionDV.BI.csproj", "{09F24315-A533-4B4D-9777-A66F126BB021}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "todos", "todos", "{BAA81755-874A-46CE-894B-599292092C36}"
+	ProjectSection(SolutionItems) = preProject
+		todos.txt = todos.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
