@@ -42,7 +42,8 @@ namespace BildstudionDV.BI.ViewModelLogic
                     AccessId = model.AccessId,
                     JobbId = jobbId,
                     Namn = model.Namn,
-                    VemGör = model.VemGör
+                    VemGör = model.VemGör,
+                    Kommentar = model.Kommentar
                 };
                 returningList.Add(viewModel);
             }
@@ -65,7 +66,8 @@ namespace BildstudionDV.BI.ViewModelLogic
                 JobbId = viewModel.JobbId,
                 AccessId = index,
                 Namn = viewModel.Namn,
-                VemGör = viewModel.VemGör
+                VemGör = viewModel.VemGör,
+                Kommentar = viewModel.Kommentar
             };
             delJobbDb.AddDelJobb(model);
         }

@@ -12,7 +12,7 @@
             <b>Kundens Namn:</b><br />
             @Html.TextBoxFor(x => x.KundNamn)
             @Html.HiddenFor(x => x.OldName)
-            <br />
+            <br /><br />
             <button type="submit" class="btn btn-info">Updatera Kund</button><br />
             <input type="button" class="btn btn-danger" onclick='window.location.href = "../jobb/removekund?kundnamn=@Model.KundNamn"' value="Ta Bort Kund" />
             <b><font color="red">@ViewBag.ErrorMessage</font></b>

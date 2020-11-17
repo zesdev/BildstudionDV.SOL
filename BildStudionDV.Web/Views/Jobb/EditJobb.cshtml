@@ -1,6 +1,6 @@
 ﻿@model BildstudionDV.BI.ViewModels.JobbViewModel
 <center>
-    <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../jobb/index"' value="Tillbaka till Index" />
+    <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../jobb/jobb"' value="Tillbaka till Index" />
     <h1>Lägger Till jobb för @Model.KundNamn</h1>
     @using (Html.BeginForm())
     {
@@ -32,7 +32,7 @@
 
     })
         <br />
-        <b>Status På Jobbet:</b>
+        <b>Status På Jobbet:</b><br />
         @Html.DropDownListFor(x => x.StatusPåJobbet, new List<SelectListItem>
     {
     new SelectListItem { Text = "--Välj--", Value ="0" },
@@ -45,6 +45,7 @@
         @Html.HiddenFor(x => x.KundNamn)
         @Html.HiddenFor(x => x.AccessId)
         <br />
-        <input type="submit" class="btn btn-success" value="Lägg Till Jobb" />
+        <br />
+        <input type="submit" class="btn btn-success" value="Updatera Jobbet" />
     }
 </center>

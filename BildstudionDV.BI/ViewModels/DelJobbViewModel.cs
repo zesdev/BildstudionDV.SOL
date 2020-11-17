@@ -8,6 +8,7 @@ namespace BildstudionDV.BI.ViewModels
         public int AccessId { get; set; }
         public ObjectId Id { get; set; }
         public ObjectId JobbId { get; set; }
+        public string Kommentar { get; set; }
         public DelJobbStatus StatusPåJobbet { get; set; }
         public string Namn { get; set; }
         public string VemGör { get; set; }

@@ -133,5 +133,96 @@ namespace BildStudionDV.Web.Controllers
             jobbLogic.UpdateJobb(jobb);
             return RedirectToAction("Jobb");
         }
+        [Authorize]
+        public IActionResult DelJobb(string AccessIdstring)
+        {
+            int AccessId;
+            if(AccessIdstring == null)
+            {
+                AccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
+            }
+            else
+            {
+                AccessId = Convert.ToInt32(AccessIdstring);
+            }
+            var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
+            HttpContext.Response.Cookies.Append("userSelectedJobbAccessId", AccessId.ToString());
+            var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
+            var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == AccessId);
+            var model = delJobbLogic.GetDelJobbsInJobb(jobb.Id);
+            ViewBag.JobbTitel = jobb.Title;
+            ViewBag.KundNamn = kund.KundNamn;
+            ViewBag.AccessId = AccessId;
+            return View(model);
+        }
+        [Authorize]
+        public IActionResult RemoveDelJobb(int AccessId)
+        {
+            try
+            {
+                var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
+                var JobbAccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
+                var kund = kundLogic.GetKunder().First(x =>x.KundNamn == KundNamn);
+                var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == JobbAccessId);
+                var deljobb = delJobbLogic.GetDelJobbsInJobb(jobb.Id).FirstOrDefault(x => x.AccessId == AccessId);
+                delJobbLogic.RemoveDelJobb(deljobb.Id);
+            }
+            catch
+            {
+
+            }
+            return RedirectToAction("DelJobb");
+        }
+        [Authorize]
+        public IActionResult AddDelJobb()
+        {
+            var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
+            var JobbAccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
+            var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
+            var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == JobbAccessId);
+            ViewBag.KundNamn = kund.KundNamn;
+            ViewBag.JobbTitel = jobb.Title;
+            return View(new DelJobbViewModel());
+        }
+        [HttpPost]
+        [Authorize]
+        public IActionResult AddDelJobb(DelJobbViewModel model)
+        {
+            var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
+            var JobbAccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
+            var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
+            var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == JobbAccessId);
+            model.JobbId = jobb.Id;
+            delJobbLogic.AddDelJobb(model);
+            return RedirectToAction("DelJobb");
+        }
+        [Authorize]
+        public IActionResult EditDelJobb(int AccessId)
+        {
+            var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
+            var JobbAccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
+            var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
+            var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == JobbAccessId);
+            var model = delJobbLogic.GetDelJobbsInJobb(jobb.Id).FirstOrDefault(x => x.AccessId == AccessId);
+            ViewBag.KundNamn = kund.KundNamn;
+            ViewBag.JobbTitel = jobb.Title;
+            return View(model);
+        }
+        [HttpPost]
+        [Authorize]
+        public IActionResult EditDelJobb(DelJobbViewModel model)
+        {
+            var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
+            var JobbAccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
+            var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
+            var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == JobbAccessId);
+            var deljobb = delJobbLogic.GetDelJobbsInJobb(jobb.Id).FirstOrDefault(x => x.AccessId == model.AccessId);
+            deljobb.StatusPåJobbet = model.StatusPåJobbet;
+            deljobb.VemGör = model.VemGör;
+            deljobb.Namn = model.Namn;
+            deljobb.Kommentar = model.Kommentar;
+            delJobbLogic.UpdateDelJobb(deljobb);
+            return RedirectToAction("DelJobb");
+        }
     }
 }

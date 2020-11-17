@@ -30,6 +30,14 @@ namespace BildstudionDV.BI.Database
                 var newpassword = new PasswordHasher<UserProfileModel>().HashPassword(userModel, userModel.Password);
                 userModel.Password = newpassword;
                 usersdb.InsertOne(userModel);
+                userModel = new UserProfileModel
+                {
+                    UserName = "piahag",
+                    Password = "BildstudionLogon123"
+                };
+                newpassword = new PasswordHasher<UserProfileModel>().HashPassword(userModel, userModel.Password);
+                userModel.Password = newpassword;
+                usersdb.InsertOne(userModel);
             }
         }
 

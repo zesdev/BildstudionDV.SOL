@@ -1,0 +1,32 @@
+﻿@model BildstudionDV.BI.ViewModels.DelJobbViewModel
+<center>
+    <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../jobb/deljobb"' value="Tillbaka till Jobb" />
+    <h1>Lägger Till deljobb för @ViewBag.KundNamn - @ViewBag.JobbTitel</h1>
+    @using (Html.BeginForm())
+    {
+        <b>Del Jobbets titel:</b>
+        <br />
+        @Html.TextBoxFor(x => x.Namn)
+        <br />
+        <b>Vem Gör:</b>
+        <br />
+        @Html.TextBoxFor(x => x.VemGör)
+        <br />
+        <b>Kommentar</b>
+        <br />
+        @Html.TextBoxFor(x => x.Kommentar)
+        <br />
+        <b>Status På Del Jobbet:</b>
+        <br />
+        @Html.DropDownListFor(x => x.StatusPåJobbet, new List<SelectListItem>
+    {
+    new SelectListItem { Text = "--Välj--", Value ="0" },
+    new SelectListItem { Text = "AttGöras", Value ="0" },
+        new SelectListItem { Text = "Klar", Value ="1" }
+
+    })
+        <br />
+        <br />
+        <input type="submit" class="btn btn-success" value="Lägg Till DelJobb" />
+    }
+</center>
