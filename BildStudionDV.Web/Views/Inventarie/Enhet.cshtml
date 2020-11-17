@@ -9,7 +9,7 @@
 </form>
 <table class="table table-striped table-bordered">
     <thead>
-        <tr>
+        <tr style="background: black;color:white;">
             <th>Gruppens Namn</th>
             <th>Inventarie Antal</th>
             <th>Redigera Grupp</th>
@@ -22,15 +22,15 @@
             <td>@grupp.GruppNamn</td>
             <td>@grupp.InventarierInGrupp.Count registrerade Inventarier</td>
             <td>
-                <input type="button" class="btn btn-info" onclick='window.location.href = "../inventarie/editgrupp?gruppnamn=@grupp.GruppNamn"' value="Redigera Gruppen" />
+                <input type="button" class="btn btn-info" onclick='window.location.href = "../inventarie/editgrupp?namn=@grupp.GruppNamn"' value="Redigera Gruppen" />
             </td>
             <td>
-                <input type="button" class="btn btn-dark" onclick='window.location.href = "../inventarie/grupp?gruppnamn=@grupp.GruppNamn"' value="Se Inventarier" />
+                <input type="button" class="btn btn-dark" onclick='window.location.href = "../inventarie/grupp?namn=@grupp.GruppNamn"' value="Se Inventarier" />
             </td>
         </tr>
     }
     <tfoot>
-        <tr>
+        <tr style="background: black;color:white;">
             <th>Gruppens Namn</th>
             <th>Inventarie Antal</th>
             <th>Redigera Grupp</th>
