@@ -15,6 +15,7 @@ namespace BildstudionDV.BI.Database
     {
         BildStudionDVContext context;
         IMongoCollection<UserProfileModel> usersdb;
+
         public UserProfiles(BildStudionDVContext _context)
         {
             context = _context;
@@ -78,6 +79,13 @@ namespace BildstudionDV.BI.Database
                 return "Användaren existerar ej";
             }
         }
+
+        internal void UpdateUser(UserProfileModel userModel)
+        {
+            UpdateProperty("UserName", userModel.Id, userModel.UserName);
+            UpdateProperty("AssociatedGrupp", userModel.Id, userModel.AssociatedGrupp);
+        }
+
         public string Login(string username, string password)
         {
             try

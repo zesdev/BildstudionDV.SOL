@@ -15,8 +15,10 @@ namespace BildStudionDV.Web.Controllers
         IInventarieVMLogic inventarieLogic;
         IGruppVMLogic gruppLogic;
         IEnhetVMLogic enhetLogic;
-        public InventarieController(IInventarieVMLogic _inventarieLogic, IGruppVMLogic _gruppLogic, IEnhetVMLogic _enhetLogic)
+        IUserProfileVMLogic userLogic;
+        public InventarieController(IInventarieVMLogic _inventarieLogic, IGruppVMLogic _gruppLogic, IEnhetVMLogic _enhetLogic, IUserProfileVMLogic _userLogic)
         {
+            userLogic = _userLogic;
             inventarieLogic = _inventarieLogic;
             gruppLogic = _gruppLogic;
             enhetLogic = _enhetLogic;
@@ -24,19 +26,30 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult Index()
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+            {
+                var userModel = userLogic.GetUserViewModels().First(x => x.UserName == User.Identity.Name);
+                var grupp = gruppLogic.GetAllGrupper().FirstOrDefault(x => x.GruppNamn.ToLower() == userModel.AssociatedGrupp.ToLower());
+                var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Id == grupp.EnhetId);
+                return Redirect("../inventarie/grupp?gruppnamn="+userModel.AssociatedGrupp+"&enhetnamn="+enhet.Namn);
+            }
             var model = enhetLogic.GetAllEnheter();
             return View(model);
         }
         [Authorize]
         public IActionResult AddEnhet()
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             return View(new EnhetViewModel());
         }
         [HttpPost]
         [Authorize]
         public IActionResult AddEnhet(EnhetViewModel model)
         {
-            if(model.Namn != "")
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
+            if (model.Namn != "")
             {
                 enhetLogic.AddEnhet(model);
                 return RedirectToAction("index");
@@ -47,6 +60,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult EditEnhet(string namn)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             try
             {
                 var model = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn == namn);
@@ -63,6 +78,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult EditEnhet(EnhetViewModel model)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             if (model.Namn != "")
             {
                 var oldEnhetName = HttpContext.Request.Cookies["userEnhetSelectedForEditing"];
@@ -78,6 +95,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult Enhet(string namn)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             var oldEnhetName = namn;
             if(namn == null)
             {
@@ -90,12 +109,16 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult AddGrupp()
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             return View(new GruppViewModel());
         }
         [HttpPost]
         [Authorize]
         public IActionResult AddGrupp(GruppViewModel model)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             if (model.GruppNamn != "")
             {
                 var oldEnhetName = HttpContext.Request.Cookies["EnhetSelected"];
@@ -110,6 +133,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult EditGrupp(string namn)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             var oldEnhetName = HttpContext.Request.Cookies["EnhetSelected"];
             var enheter = enhetLogic.GetAllEnheter();
             var enhet = enheter.FirstOrDefault(x => x.Namn == oldEnhetName);
@@ -128,6 +153,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult EditGrupp(GruppViewModel model, string selectEnhet)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             if (model.GruppNamn != "")
             {
                 var oldEnhetName = HttpContext.Request.Cookies["EnhetSelected"];
@@ -145,25 +172,48 @@ namespace BildStudionDV.Web.Controllers
             ViewBag.error = "Enheten måste ha ett namn";
             return View(model);
         }
-        [Authorize]
-        public IActionResult Grupp(string gruppnamn)
-        {
-            var gruppName = gruppnamn;
-            if(gruppnamn == null)
-            {
-                gruppName = HttpContext.Request.Cookies["GruppSelected"];
-            }
-            var oldEnhetName = HttpContext.Request.Cookies["EnhetSelected"];
-            HttpContext.Response.Cookies.Append("GruppSelected", gruppName);
 
-            var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn == oldEnhetName);
-            var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn == gruppName);
-            var model = inventarieLogic.GetInventarierFörGrupp(grupp.Id);
-            return View(model);
+        [Authorize]
+        public IActionResult Grupp(string gruppnamn, string enhetnamn)
+        {
+            if (enhetnamn == null)
+            {
+                if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                    return RedirectToAction("index", "inventarie");
+                var gruppName = gruppnamn;
+                if (gruppnamn == null)
+                {
+                    gruppName = HttpContext.Request.Cookies["GruppSelected"];
+                }
+                var oldEnhetName = HttpContext.Request.Cookies["EnhetSelected"];
+                HttpContext.Response.Cookies.Append("GruppSelected", gruppName);
+
+                var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn == oldEnhetName);
+                var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn == gruppName);
+                var model = inventarieLogic.GetInventarierFörGrupp(grupp.Id);
+                return View(model);
+            }
+            else
+            {
+                var gruppName = gruppnamn;
+                if (gruppnamn == null)
+                {
+                    gruppName = HttpContext.Request.Cookies["GruppSelected"];
+                }
+                var oldEnhetName = enhetnamn;
+                HttpContext.Response.Cookies.Append("GruppSelected", gruppName);
+
+                var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn.ToLower() == oldEnhetName.ToLower());
+                var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn.ToLower() == gruppName.ToLower());
+                var model = inventarieLogic.GetInventarierFörGrupp(grupp.Id);
+                return View(model);
+            }
         }
         [Authorize]
         public IActionResult RemoveGrupp(string name)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             try
             {
                 var enhetNamn = HttpContext.Request.Cookies["EnhetSelected"];
@@ -189,8 +239,8 @@ namespace BildStudionDV.Web.Controllers
             var enhetName = HttpContext.Request.Cookies["EnhetSelected"];
             var gruppName = HttpContext.Request.Cookies["GruppSelected"];
 
-            var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn == enhetName);
-            var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn == gruppName);
+            var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn.ToLower() == enhetName.ToLower());
+            var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn.ToLower() == gruppName.ToLower());
             model.GruppId = grupp.Id;
             inventarieLogic.AddInventarie(model);
             return RedirectToAction("Grupp");
@@ -201,8 +251,8 @@ namespace BildStudionDV.Web.Controllers
             HttpContext.Response.Cookies.Append("inventarieIndex", id);
             var enhetName = HttpContext.Request.Cookies["EnhetSelected"];
             var gruppName = HttpContext.Request.Cookies["GruppSelected"];
-            var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn == enhetName);
-            var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn == gruppName);
+            var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn.ToLower() == enhetName.ToLower());
+            var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn.ToLower() == gruppName.ToLower());
             var model = inventarieLogic.GetInventarierFörGrupp(grupp.Id)[Convert.ToInt32(id)];
             model.IndexOfInventarieInList = Convert.ToInt32(id);
             return View(model);
@@ -214,8 +264,8 @@ namespace BildStudionDV.Web.Controllers
             var enhetName = HttpContext.Request.Cookies["EnhetSelected"];
             var gruppName = HttpContext.Request.Cookies["GruppSelected"];
             int inventarieIndex = Convert.ToInt32(HttpContext.Request.Cookies["inventarieIndex"]);
-            var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn == enhetName);
-            var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn == gruppName);
+            var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn.ToLower() == enhetName.ToLower());
+            var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn.ToLower() == gruppName.ToLower());
             var inventarie = inventarieLogic.GetInventarierFörGrupp(grupp.Id)[inventarieIndex];
             
             inventarie.Antal = model.Antal;
@@ -235,8 +285,8 @@ namespace BildStudionDV.Web.Controllers
             {
                 var enhetNamn = HttpContext.Request.Cookies["EnhetSelected"];
                 var gruppName = HttpContext.Request.Cookies["GruppSelected"];
-                var enhet = enhetLogic.GetAllEnheter().First(x => x.Namn == enhetNamn);
-                var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn == gruppName);
+                var enhet = enhetLogic.GetAllEnheter().First(x => x.Namn.ToLower() == enhetNamn.ToLower());
+                var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn.ToLower() == gruppName.ToLower());
                 var inventarie = inventarieLogic.GetInventarierFörGrupp(grupp.Id)[Convert.ToInt32(index)];
                 inventarieLogic.RemoveInventarie(inventarie.Id);
             }

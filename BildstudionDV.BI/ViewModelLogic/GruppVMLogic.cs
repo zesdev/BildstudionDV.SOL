@@ -25,6 +25,7 @@ namespace BildstudionDV.BI.ViewModelLogic
                 GruppNamn = viewModel.GruppNamn
             };
             gruppDb.AddGrupp(model);
+
         }
         public void UpdateGrupp(GruppViewModel viewModel)
         {
@@ -48,6 +49,24 @@ namespace BildstudionDV.BI.ViewModelLogic
         {
             var returningList = new List<GruppViewModel>();
             var rawModels = gruppDb.GetAllGruppsInEnhet(enhetId);
+            foreach (var model in rawModels)
+            {
+                var viewModel = new GruppViewModel
+                {
+                    EnhetId = model.EnhetId,
+                    GruppNamn = model.GruppNamn,
+                    Id = model.Id,
+                    InventarierInGrupp = inventarieVMLogic.GetInventarierFörGrupp(model.Id)
+                };
+                returningList.Add(viewModel);
+            }
+            return returningList;
+        }
+
+        public List<GruppViewModel> GetAllGrupper()
+        {
+            var returningList = new List<GruppViewModel>();
+            var rawModels = gruppDb.GetAllGrupper();
             foreach (var model in rawModels)
             {
                 var viewModel = new GruppViewModel

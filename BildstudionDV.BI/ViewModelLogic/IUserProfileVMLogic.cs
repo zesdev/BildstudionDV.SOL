@@ -10,5 +10,6 @@ namespace BildstudionDV.BI.ViewModelLogic
         List<UserProfileViewModel> GetUserViewModels();
         string Login(UserProfileViewModel viewModel);
         string RemoveAccount(string username);
+        void UpdateUser(UserProfileViewModel model);
     }
 }

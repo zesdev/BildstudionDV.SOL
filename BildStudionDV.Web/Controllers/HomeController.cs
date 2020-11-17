@@ -27,6 +27,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult Index()
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             return View();
         }
         [Authorize]

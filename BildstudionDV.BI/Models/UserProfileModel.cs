@@ -12,5 +12,6 @@ namespace BildstudionDV.BI.Models
         public string Password { get; set; }
         public string NewPassword { get; set; }
         public string OldPassword { get; set; }
+        public string AssociatedGrupp { get; set; }
     }
 }

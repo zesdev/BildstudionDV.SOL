@@ -1,0 +1,17 @@
+﻿@model BildstudionDV.BI.ViewModels.UserProfileViewModel
+<center>
+    <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../inventarie/index"' value="Tillbaka till Enheter" />
+    @using (Html.BeginForm())
+    {
+
+
+        <b>AnvändarNamn:</b><br />
+        @Html.TextBoxFor(x => x.UserName) <br />
+        <b>Tillhörandegrupp:</b><br />
+        @Html.TextBoxFor(x => x.AssociatedGrupp) <br />
+        <b>Lösenord:</b><br />
+        @Html.PasswordFor(x => x.Password) <br />
+        <font color="red">@ViewBag.error</font> <br />
+        <input type="submit" class="btn btn-success" value="Lägg till Användaren" />
+    }
+</center>

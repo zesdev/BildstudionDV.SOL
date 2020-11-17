@@ -25,7 +25,7 @@ namespace BildstudionDV.BI.ViewModelLogic
                 return "Lösenord saknas";
             if (usersDb.GetAllUsers().Any(x => x.UserName.ToLower() == viewModel.UserName.ToLower()))
                 return "Användarnamnet uptaget, försök med något annat";
-            var userModel = new UserProfileModel { UserName = viewModel.UserName, Password = viewModel.Password };
+            var userModel = new UserProfileModel { UserName = viewModel.UserName, Password = viewModel.Password, AssociatedGrupp=viewModel.AssociatedGrupp };
             usersDb.AddUser(userModel);
             return "Success";
         }
@@ -37,6 +37,7 @@ namespace BildstudionDV.BI.ViewModelLogic
             usersDb.RemoveUser(user.Id);
             return username + " är nu borttagen";
         }
+        
         public string Login(UserProfileViewModel viewModel)
         {
             return usersDb.Login(viewModel.UserName, viewModel.Password);
@@ -50,7 +51,8 @@ namespace BildstudionDV.BI.ViewModelLogic
                 var viewModel = new UserProfileViewModel
                 {
                     Id = model.Id,
-                    UserName = model.UserName
+                    UserName = model.UserName,
+                    AssociatedGrupp = model.AssociatedGrupp
                 };
                 returningList.Add(viewModel);
             }
@@ -67,6 +69,17 @@ namespace BildstudionDV.BI.ViewModelLogic
                 OldPassword = userModel.OldPassword
             };
             return usersDb.ChangePassword(model);
+        }
+
+        public void UpdateUser(UserProfileViewModel model)
+        {
+            var userModel = new UserProfileModel
+            {
+                Id = model.Id,
+                AssociatedGrupp = model.AssociatedGrupp,
+                UserName = model.UserName
+            };
+            usersDb.UpdateUser(userModel);
         }
     }
 }

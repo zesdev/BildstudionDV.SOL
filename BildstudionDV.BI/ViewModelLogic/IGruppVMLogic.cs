@@ -8,8 +8,10 @@ namespace BildstudionDV.BI.ViewModelLogic
     {
         void AddGrupp(GruppViewModel viewModel);
         List<GruppViewModel> GetGrupperInEnhet(ObjectId enhetId);
+        List<GruppViewModel> GetAllGrupper();
         void RemoveAllGrupperInEnhet(ObjectId enhetId);
         void RemoveGrupp(ObjectId gruppId);
         void UpdateGrupp(GruppViewModel viewModel);
+        
     }
 }

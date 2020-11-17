@@ -1,5 +1,8 @@
 ﻿@model List<BildstudionDV.BI.ViewModels.InventarieViewModel>
+@if (User.Identity.Name == "admin" || User.Identity.Name == "piahag")
+{
     <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../inventarie/enhet"' value="Tillbaka till Enheten" />
+}
 <form action="~/inventarie/addinventarie">
     <button class="btn-outline-success btn-block btn nav-link">Lägg Till Inventarie</button>
 </form>

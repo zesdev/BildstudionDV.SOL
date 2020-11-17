@@ -62,5 +62,11 @@ namespace BildstudionDV.BI.Database
             var update = Builders<GruppModel>.Update.Set(property, newpropertyContent);
             gruppdb.UpdateOne(filter, update);
         }
+
+        internal List<GruppModel> GetAllGrupper()
+        {
+            var list = gruppdb.Find<GruppModel>(x => true).ToList();
+            return list;
+        }
     }
 }
