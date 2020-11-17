@@ -1,0 +1,21 @@
+﻿@model BildstudionDV.BI.ViewModels.InventarieViewModel
+
+<center>
+    <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../inventarie/grupp"' value="Tillbaka till Gruppen" />
+    @using (Html.BeginForm())
+    {
+        <b>Namn på Inventarie:</b><br />
+        @Html.TextBoxFor(x => x.InventarieNamn) <br />
+        <b>Antal:</b><br />
+        @Html.TextBoxFor(x => x.Antal) <br />
+        <b>Fabrikat:</b><br />
+        @Html.TextBoxFor(x => x.Fabrikat) <br />
+
+        <b>Pris:</b><br />
+        @Html.TextBoxFor(x => x.Pris) <br />
+        <b>Kommentar:</b><br />
+        @Html.TextAreaFor(x => x.InventarieKommentar) <br />
+        <font color="red">@ViewBag.error</font> <br />
+        <input type="submit" class="btn btn-success" value="Lägg till Inventarien" />
+    }
+</center>

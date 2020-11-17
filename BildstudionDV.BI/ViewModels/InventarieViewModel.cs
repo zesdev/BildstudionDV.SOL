@@ -13,5 +13,6 @@ namespace BildstudionDV.BI.ViewModels
         public string Antal { get; set; }
         public string Fabrikat { get; set; }
         public string Pris { get; set; }
+        public int IndexOfInventarieInList { get; set; }
     }
 }

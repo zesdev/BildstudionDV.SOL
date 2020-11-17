@@ -68,7 +68,7 @@ namespace BildstudionDV.BI.MainLogic
                 else if (data.ExpectedMåndag == Models.WorkDay.Halvdag)
                 {
                     if (data.Måndag == Models.Attendence.AttendenceOption.Halvdag ||
-               data.Måndag == Models.Attendence.AttendenceOption.Halvdag)
+               data.Måndag == Models.Attendence.AttendenceOption.HalvdagMat)
                         actualAttendence++;
                 }
                 if (data.ExpectedTisdag == Models.WorkDay.Heldag)
@@ -80,7 +80,7 @@ namespace BildstudionDV.BI.MainLogic
                 else if (data.ExpectedTisdag == Models.WorkDay.Halvdag)
                 {
                     if (data.Tisdag == Models.Attendence.AttendenceOption.Halvdag ||
-               data.Tisdag == Models.Attendence.AttendenceOption.Halvdag)
+               data.Tisdag == Models.Attendence.AttendenceOption.HalvdagMat)
                         actualAttendence++;
                 }
                 if (data.ExpectedOnsdag == Models.WorkDay.Heldag)
@@ -92,7 +92,7 @@ namespace BildstudionDV.BI.MainLogic
                 else if (data.ExpectedOnsdag == Models.WorkDay.Halvdag)
                 {
                     if (data.Onsdag == Models.Attendence.AttendenceOption.Halvdag ||
-               data.Onsdag == Models.Attendence.AttendenceOption.Halvdag)
+               data.Onsdag == Models.Attendence.AttendenceOption.HalvdagMat)
                         actualAttendence++;
                 }
                 if (data.ExpectedTorsdag == Models.WorkDay.Heldag)
@@ -104,24 +104,23 @@ namespace BildstudionDV.BI.MainLogic
                 else if (data.ExpectedTorsdag == Models.WorkDay.Halvdag)
                 {
                     if (data.Torsdag == Models.Attendence.AttendenceOption.Halvdag ||
-               data.Torsdag == Models.Attendence.AttendenceOption.Halvdag)
+               data.Torsdag == Models.Attendence.AttendenceOption.HalvdagMat)
                         actualAttendence++;
                 }
                 if (data.ExpectedFredag == Models.WorkDay.Heldag)
                 {
                     if (data.Fredag == Models.Attendence.AttendenceOption.Heldag ||
-                   data.Fredag == Models.Attendence.AttendenceOption.HeldagMat)
+                   data.Fredag == Models.Attendence.AttendenceOption.HalvdagMat)
                         actualAttendence++;
                 }
-                else if (data.ExpectedTisdag == Models.WorkDay.Halvdag)
+                else if (data.ExpectedFredag == Models.WorkDay.Halvdag)
                 {
                     if (data.Fredag == Models.Attendence.AttendenceOption.Halvdag ||
-               data.Fredag == Models.Attendence.AttendenceOption.Halvdag)
+               data.Fredag == Models.Attendence.AttendenceOption.HalvdagMat)
                         actualAttendence++;
                 }
 
             }
-            expectedAttendence = expectedAttendence;
             actualAttendence = actualAttendence * 100;
             int actualAddedAttendence = 0;
             try

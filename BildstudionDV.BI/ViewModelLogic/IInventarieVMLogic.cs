@@ -10,5 +10,6 @@ namespace BildstudionDV.BI.ViewModelLogic
         List<InventarieViewModel> GetInventarierFörGrupp(ObjectId gruppId);
         void RemoveAllInventarieInGrupp(ObjectId gruppId);
         void RemoveInventarie(ObjectId Id);
+        void UpdateInventarie(InventarieViewModel inventarie);
     }
 }

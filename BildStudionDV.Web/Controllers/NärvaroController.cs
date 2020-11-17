@@ -85,7 +85,6 @@ namespace BildStudionDV.Web.Controllers
             return RedirectToAction("index");
         }
         [HttpGet]
-        [HttpPost]
         [Authorize]
         public IActionResult Attendence(string date)
         {
@@ -93,7 +92,7 @@ namespace BildStudionDV.Web.Controllers
             var compareDate = DateTime.Now.AddYears(-100);
             var dateSupplied = Convert.ToDateTime(date);
             List<AttendenceViewModel> model = new List<AttendenceViewModel>();
-            if (dateSupplied > compareDate)
+            if(dateSupplied > compareDate)
             {
                 dateSupplied = GetDateAsLastMonday(dateSupplied);
                 ViewBag.date = dateSupplied.ToString("yyyy-MM-dd");
@@ -146,6 +145,7 @@ namespace BildStudionDV.Web.Controllers
             närvaroLogic.UpdateAttendence(ogViewModel);
             return RedirectToAction("Attendence");
         }
-       
+        
+
     }
 }

@@ -71,7 +71,6 @@ namespace BildstudionDV.BI.Database
 
         internal List<AttendenceModel> GetAttendenceForDate(DateTime date)
         {
-            date = date.AddHours(-1);
             var list = närvarodb.Find<AttendenceModel>(x => true).ToList();
             var sortedList = list.Where(x => x.DateConcerning.DayOfYear == date.DayOfYear && x.DateConcerning.Year == date.Year).ToList();
             

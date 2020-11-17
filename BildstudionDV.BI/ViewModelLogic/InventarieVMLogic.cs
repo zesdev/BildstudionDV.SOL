@@ -58,5 +58,20 @@ namespace BildstudionDV.BI.ViewModelLogic
             }
             return returningList;
         }
+        void IInventarieVMLogic.UpdateInventarie(InventarieViewModel inventarie)
+        {
+            var model = new InventarieModel
+            {
+                Antal = inventarie.Antal,
+                DatumRegistrerat = inventarie.DatumRegistrerat,
+                Fabrikat = inventarie.Fabrikat,
+                GruppId = inventarie.GruppId,
+                Id = inventarie.Id,
+                InventarieKommentar = inventarie.InventarieKommentar,
+                InventarieNamn = inventarie.InventarieNamn,
+                Pris = inventarie.Pris
+            };
+            inventarieDb.UpdateInventarieItem(model);
+        }
     }
 }

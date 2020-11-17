@@ -1,0 +1,32 @@
+﻿@model BildstudionDV.BI.ViewModels.GruppViewModel
+<center>
+    <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../inventarie/enhet"' value="Tillbaka till Enheten" />
+    @using (Html.BeginForm())
+    {
+
+
+        <b>Gruppens Namn:</b><br />
+        @Html.TextBoxFor(x => x.GruppNamn) <br />
+        <b>Gruppens Valda Enhet</b><br />
+        <select name="selectEnhet">
+            @for (int i = 0; i < Model.ListOfEnheter.Count; i++)
+            {
+                @if (i == Model.SelectedEnhet)
+                {
+                    <option selected>@Model.ListOfEnheter[i]</option>
+                }
+                else
+                {
+                    <option>@Model.ListOfEnheter[i]</option>
+                }
+
+            }
+        </select><br />
+        <font color="red">@ViewBag.error</font> <br />
+        <input type="submit" class="btn btn-success" value="Updatera Gruppen" />
+        <br />
+        <br />
+        <br />
+        <input type="button" class="btn btn-info" onclick='window.location.href = "../inventarie/removegrupp?name=@Model.GruppNamn"' value="Ta bort Gruppen" />
+    }
+</center>

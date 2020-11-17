@@ -3,12 +3,11 @@
 <br />
 <input type="button" class="btn btn-info btn-block" onclick='window.location.href = "../Närvaro/index"' value="Tillbaka till Index" />
 <br />
-@using (Html.BeginForm(null, null, FormMethod.Post, new { name = "formDate" }))
+@using (Html.BeginForm("Attendence", "Närvaro", FormMethod.Get, new { name = "formDate" }))
 {
-    <input type="date" value="@ViewBag.date" name="Date" id="Date" onchange='document.formDate.submit()' class="btn-block" />
+    <input type="date" value="@ViewBag.date" name="date" id="date" onchange='document.formDate.submit()' class="btn-block" />
 }
 <br />
-
 
 @if (Model.Count != 0)
 {

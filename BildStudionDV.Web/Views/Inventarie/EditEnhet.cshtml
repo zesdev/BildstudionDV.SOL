@@ -1,0 +1,14 @@
+﻿@model BildstudionDV.BI.ViewModels.EnhetViewModel
+<center>
+    @using (Html.BeginForm())
+    {
+        <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../inventarie/index"' value="Tillbaka till Enheter" />
+        <h2>Redigerar Enhet</h2>
+        <b>Enhetens Namn:</b><br />
+        @Html.TextBoxFor(x => x.Namn) <br />
+        <b>Chefens Namn:</b><br />
+        @Html.TextBoxFor(x => x.ChefNamn) <br />
+        <br />
+        <input type="submit" class="btn btn-success" value="Updatera Enheten" />
+    }
+</center>

@@ -1,0 +1,15 @@
+﻿@model BildstudionDV.BI.ViewModels.EnhetViewModel
+<center>
+    <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../inventarie/index"' value="Tillbaka till Enheter" />
+    @using (Html.BeginForm())
+    {
+
+
+        <b>Enhetens Namn:</b><br />
+        @Html.TextBoxFor(x => x.Namn) <br />
+        <b>Chefens Namn:</b><br />
+        @Html.TextBoxFor(x => x.ChefNamn) <br />
+        <font color="red">@ViewBag.error</font> <br />
+        <input type="submit" class="btn btn-success" value="Lägg till Enheten" />
+    }
+</center>

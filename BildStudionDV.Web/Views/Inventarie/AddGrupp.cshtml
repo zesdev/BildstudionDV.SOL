@@ -1,0 +1,13 @@
+﻿@model BildstudionDV.BI.ViewModels.GruppViewModel
+<center>
+    <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../inventarie/enhet"' value="Tillbaka till Enheten" />
+    @using (Html.BeginForm())
+    {
+
+
+        <b>Gruppens Namn:</b><br />
+        @Html.TextBoxFor(x => x.GruppNamn) <br />
+        <font color="red">@ViewBag.error</font> <br />
+        <input type="submit" class="btn btn-success" value="Lägg till Gruppen" />
+    }
+</center>

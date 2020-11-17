@@ -136,7 +136,7 @@ namespace BildstudionDV.BI.ViewModelLogic
                         Måndag = AttendenceOption.Frånvarande.ToString()
                     };
                     närvaroDb.AddAttendence(model);
-                    model = närvaroDb.GetAttendenceForDate(date.AddHours(-1)).FirstOrDefault(x => x.DeltagarIdInQuestion == deltagare.Id);
+                    model = närvaroDb.GetAttendenceForDate(date).FirstOrDefault(x => x.DeltagarIdInQuestion == deltagare.Id);
                     var viewModel = new AttendenceViewModel
                     {
                         DateConcerning = date,
