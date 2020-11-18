@@ -23,18 +23,24 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult Index()
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             return View(kundLogic.GetKunder());
         }
         [Authorize]
         public IActionResult AddKund()
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             return View();
         }
         [HttpPost]
         [Authorize]
         public IActionResult AddKund(KundViewModel model)
         {
-            if(model.KundNamn == null)
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
+            if (model.KundNamn == null)
             {
                 ViewBag.ErrorMessage = "Kunden måste ha ett namn!";
                 return View();
@@ -45,6 +51,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult EditKund(string kundNamn)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             var model = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == kundNamn);
             model.OldName = model.KundNamn;
             return View(model);
@@ -53,6 +61,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult EditKund(KundViewModel model)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             if (model.KundNamn == null)
             {
                 ViewBag.ErrorMessage = "Kunden måste ha ett namn!";
@@ -66,7 +76,9 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult Jobb(string KundNamn)
         {
-            if(KundNamn == null)
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
+            if (KundNamn == null)
             {
                 KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
             }
@@ -81,6 +93,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult RemoveKund(string kundNamn)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             try
             {
                 var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == kundNamn);
@@ -96,6 +110,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult AddJobb()
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
             return View(new JobbViewModel { KundNamn = KundNamn });
         }
@@ -104,6 +120,8 @@ namespace BildStudionDV.Web.Controllers
         [HttpPost]
         public IActionResult AddJobb(JobbViewModel model)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == model.KundNamn);
             model.KundId = kund.Id;
             model.DatumRegistrerat = DateTime.Now;
@@ -113,6 +131,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult EditJobb(int AccessId)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
             var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
             var model = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == AccessId);
@@ -124,6 +144,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult RemoveJobb(int AccessId)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             try
             {
                 var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
@@ -140,6 +162,8 @@ namespace BildStudionDV.Web.Controllers
         [HttpPost]
         public IActionResult EditJobb(JobbViewModel model)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == model.KundNamn);
             var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == model.AccessId);
             jobb.KundId = kund.Id;
@@ -151,21 +175,23 @@ namespace BildStudionDV.Web.Controllers
             return RedirectToAction("Jobb");
         }
         [Authorize]
-        public IActionResult DelJobb(string AccessIdstring)
+        public IActionResult DelJobb(string AccessId)
         {
-            int AccessId;
-            if(AccessIdstring == null)
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
+            int AccessIdInt;
+            if(AccessId == null)
             {
-                AccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
+                AccessIdInt = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
             }
             else
             {
-                AccessId = Convert.ToInt32(AccessIdstring);
+                AccessIdInt = Convert.ToInt32(AccessId);
             }
             var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
-            HttpContext.Response.Cookies.Append("userSelectedJobbAccessId", AccessId.ToString());
+            HttpContext.Response.Cookies.Append("userSelectedJobbAccessId", AccessIdInt.ToString());
             var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
-            var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == AccessId);
+            var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == AccessIdInt);
             var model = delJobbLogic.GetDelJobbsInJobb(jobb.Id);
             ViewBag.JobbTitel = jobb.Title;
             ViewBag.KundNamn = kund.KundNamn;
@@ -175,6 +201,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult RemoveDelJobb(int AccessId)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             try
             {
                 var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
@@ -193,6 +221,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult AddDelJobb()
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
             var JobbAccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
             var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
@@ -205,6 +235,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult AddDelJobb(DelJobbViewModel model)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
             var JobbAccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
             var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
@@ -216,6 +248,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult EditDelJobb(int AccessId)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
             var JobbAccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
             var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
@@ -229,6 +263,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult EditDelJobb(DelJobbViewModel model)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
             var JobbAccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
             var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);

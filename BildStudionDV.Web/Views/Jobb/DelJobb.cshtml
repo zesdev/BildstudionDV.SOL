@@ -26,7 +26,7 @@
                     <input type="button" class="btn btn-info" onclick='window.location.href = "../jobb/editdeljobb?AccessId=@DelJobb.AccessId"' value="Redigera" />
                 </td>
                 <td>
-                    <input type="button" class="btn btn-danger" onclick='window.location.href = "../jobb/removedeljobb?AccessId=@DelJobb.AccessId"' value="Ta Bort" />
+                    <input type="button" class="btn btn-danger" onclick="Remove(@DelJobb.AccessId)" value="Ta Bort" />
                 </td>
             </tr>
         }
@@ -40,7 +40,7 @@
                     <input type="button" class="btn btn-info" onclick='window.location.href = "../jobb/editdeljobb?AccessId=@DelJobb.AccessId"' value="Redigera" />
                 </td>
                 <td>
-                    <input type="button" class="btn btn-danger" onclick='window.location.href = "../jobb/removedeljobb?AccessId=@DelJobb.AccessId"' value="Ta Bort" />
+                    <input type="button" class="btn btn-danger" onclick="Remove(@DelJobb.AccessId)" value="Ta Bort" />
                 </td>
             </tr>
         }
@@ -55,3 +55,11 @@
         </tfoot>
     </table>
 </b>
+<script>
+    function Remove(accessid) {
+        var r = confirm("Du ta nu bort denna deltagare, är du säker på att du vill göra det? All hens närvaro kommer då försvinna.");
+        if (r == true) {
+            window.location.href = "../jobb/RemoveDeljobb?accessid=" + accessid;
+        }
+    }
+</script>

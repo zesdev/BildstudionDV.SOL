@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson;
 using System.Collections.Generic;
-using System.Web.Mvc;
 
 namespace BildstudionDV.BI.ViewModels
 {

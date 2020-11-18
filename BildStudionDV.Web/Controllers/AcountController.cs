@@ -47,10 +47,19 @@ namespace BildStudionDV.Web.Controllers
         {
             if (User.Identity.Name == "admin" || User.Identity.Name == "piahag")
             {
-                if(model.UserName != "" && model.AssociatedGrupp != "" && model.Password != "")
+                if (model.Password == model.NewPassword)
                 {
-                    userLogic.CreateUserAccount(model);
-                    return RedirectToAction("index");
+                    if (model.UserName != "" && model.AssociatedGrupp != "" && model.Password != "")
+                    {
+
+                        userLogic.CreateUserAccount(model);
+                        return RedirectToAction("index");
+                    }
+                    else
+                    {
+                        ViewBag.error = "Lösenorden matchar inte, försök igen";
+                        return View(model);
+                    }
                 }
                 ViewBag.error = "Något fel i inmatningen, <br />Användarnamn/lösenord/grupp får ej vara tomt";
                 return View(model);

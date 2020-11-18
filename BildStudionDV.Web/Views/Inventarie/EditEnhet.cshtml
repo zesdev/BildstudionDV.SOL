@@ -10,5 +10,17 @@
         @Html.TextBoxFor(x => x.ChefNamn) <br />
         <br />
         <input type="submit" class="btn btn-success" value="Updatera Enheten" />
+        <br /> <br />
+        <input type="button" class="btn btn-danger" onclick="Remove()" value="Ta bort Enheten" />
+
     }
 </center>
+
+<script>
+        function Remove() {
+        var r = confirm("Du ta nu bort denna enhet, är du säker på att du vill göra det? Tryck ok för att ta bort.");
+            if (r == true) {
+                window.location.href = "../inventarie/removeenhet?name=@Model.Namn";
+        }
+    }
+</script>

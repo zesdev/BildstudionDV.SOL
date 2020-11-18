@@ -48,6 +48,15 @@ new SelectListItem { Text = "KlarOchAvhämtat", Value ="3" }
     <br />
     <input type="submit" class="btn btn-success" value="Updatera Jobbet" />
     <br /><br />
-    <input type="button" class="btn btn-danger" onclick='window.location.href = "../jobb/removeJobb?accessid=@ViewBag.AccessId"' value="Ta Bort Jobbet" />
+    <input type="button" class="btn btn-danger" onclick="Remove(@ViewBag.AccessId)" value="Ta Bort Jobbet" />
     }
 </center>
+
+<script>
+    function Remove(accessid) {
+        var r = confirm("Du ta nu bort detta jobb, är du säker på att du vill göra det? Tryck ok för att ta bort.");
+        if (r == true) {
+            window.location.href = "../jobb/removejobb?accessid=" + accessid;
+        }
+    }
+</script>

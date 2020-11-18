@@ -11,6 +11,9 @@
         @Html.TextBoxFor(x => x.AssociatedGrupp) <br />
         <b>Lösenord:</b><br />
         @Html.PasswordFor(x => x.Password) <br />
+        <b>Upprepa Lösenord:</b><br />
+        @Html.PasswordFor(x => x.NewPassword) <br />
+
         <font color="red">@ViewBag.error</font> <br />
         <input type="submit" class="btn btn-success" value="Lägg till Användaren" />
     }

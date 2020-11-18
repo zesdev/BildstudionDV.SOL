@@ -19,6 +19,15 @@
         <input type="submit" class="btn btn-success" value="Updatera Inventarien" />
         <br />
         <br />
-        <input type="button" class="btn btn-danger" onclick='window.location.href = "../inventarie/removeinventarie?index=@Model.IndexOfInventarieInList"' value="Ta bort Inventarien" />
+        <input type="button" class="btn btn-danger" onclick="Remove()" value="Ta bort Inventarien" />
     }
 </center>
+
+<script>
+    function Remove() {
+        var r = confirm("Du ta nu bort denna inventarie, är du säker på att du vill göra det? Tryck ok för att ta bort.");
+        if (r == true) {
+            window.location.href = "../inventarie/removeinventarie?index=@Model.IndexOfInventarieInList";
+        }
+    }
+</script>

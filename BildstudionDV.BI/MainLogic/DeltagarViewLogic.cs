@@ -32,17 +32,17 @@ namespace BildstudionDV.BI.MainLogic
         {
             var deltagarn = deltagarLogic.GetDeltagare(UserId);
             var attendenceData = närvaroLogic.GetAttendenceFörDeltagare(UserId);
-            int percentAttendence = GetAttendence(deltagarn, attendenceData);
             var model = new ViewModelDeltagareAttendence
             {
                 Deltagarn = deltagarn,
-                AttendenceData = attendenceData,
-                PercentageAttendence = percentAttendence
+                AttendenceData = attendenceData
             };
+            model = GetAttendence(model, attendenceData, deltagarn);
+          
             return model;
         }
 
-        private int GetAttendence(DeltagareViewModel deltagarn, List<AttendenceViewModel> attendenceData)
+        private ViewModelDeltagareAttendence GetAttendence(ViewModelDeltagareAttendence model, List<AttendenceViewModel> attendenceData, DeltagareViewModel deltagarn)
         {
             int expectedAttendence = 0;
             int actualAttendence = 0;
@@ -121,6 +121,8 @@ namespace BildstudionDV.BI.MainLogic
                 }
 
             }
+            model.AttendendedDays = actualAttendence;
+            model.ExpectedDays = expectedAttendence;
             actualAttendence = actualAttendence * 100;
             int actualAddedAttendence = 0;
             try
@@ -131,8 +133,8 @@ namespace BildstudionDV.BI.MainLogic
             {
 
             }
-
-            return actualAddedAttendence;
+            model.PercentageAttendence = actualAddedAttendence;
+            return model;
         }
     }
 }

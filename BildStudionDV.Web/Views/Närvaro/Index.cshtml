@@ -1,9 +1,5 @@
 ﻿@model List<BildstudionDV.BI.ViewModels.ViewModelDeltagareAttendence>
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+
 
 <input type="button" class="btn btn-block btn-dark text-white" onclick="window.location.href ='../Närvaro/Attendence?date=@ViewBag.date'" value="Redigera Närvaro" />
 <br /><br />
@@ -20,17 +16,35 @@
             <th>Redigera</th>
         </tr>
     </thead>
-    @foreach (var deltagare in Model)
+    @foreach (var deltagare in Model.Where(x => x.PercentageAttendence < 50))
     {
-        <tr>
+
+        <tr style="background-color: darkred; color:white;">
             <td>@deltagare.Deltagarn.DeltagarNamn</td>
-            <td>@deltagare.PercentageAttendence %</td>
+            <td>@deltagare.PercentageAttendence % - @deltagare.AttendendedDays / @deltagare.ExpectedDays dagar närvarnde</td>
+
             <td>
                 <input type="button" class="btn btn-info" onclick='window.location.href = "../Närvaro/editdeltagare?id=@deltagare.Deltagarn.IdAcesss"' value="Redigera @deltagare.Deltagarn.DeltagarNamn" />
             </td>
 
         </tr>
+
     }
+
+    @foreach (var deltagare in Model.Where(x => x.PercentageAttendence > 50))
+    {
+        <tr style="background-color: darkgreen; color:white;">
+            <td>@deltagare.Deltagarn.DeltagarNamn</td>
+            <td>@deltagare.PercentageAttendence % - @deltagare.AttendendedDays / @deltagare.ExpectedDays dagar närvarnde</td>
+
+            <td>
+                <input type="button" class="btn btn-info" onclick='window.location.href = "../Närvaro/editdeltagare?id=@deltagare.Deltagarn.IdAcesss"' value="Redigera @deltagare.Deltagarn.DeltagarNamn" />
+            </td>
+
+        </tr>
+
+    }
+
     <tfoot>
         <tr style="background: black;color:white;">
             <th>

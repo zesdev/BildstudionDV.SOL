@@ -174,14 +174,14 @@ namespace BildStudionDV.Web.Controllers
         }
 
         [Authorize]
-        public IActionResult Grupp(string gruppnamn, string enhetnamn)
+        public IActionResult Grupp(string namn, string enhetnamn)
         {
             if (enhetnamn == null)
             {
                 if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
                     return RedirectToAction("index", "inventarie");
-                var gruppName = gruppnamn;
-                if (gruppnamn == null)
+                var gruppName = namn;
+                if (namn == null)
                 {
                     gruppName = HttpContext.Request.Cookies["GruppSelected"];
                 }
@@ -195,8 +195,8 @@ namespace BildStudionDV.Web.Controllers
             }
             else
             {
-                var gruppName = gruppnamn;
-                if (gruppnamn == null)
+                var gruppName = namn;
+                if (namn == null)
                 {
                     gruppName = HttpContext.Request.Cookies["GruppSelected"];
                 }
@@ -225,6 +225,22 @@ namespace BildStudionDV.Web.Controllers
             {
             }
             return RedirectToAction("Enhet");
+        }
+        [Authorize]
+        public IActionResult RemoveEnhet(string name)
+        {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
+            try
+            {
+                var enhet = enhetLogic.GetAllEnheter().First(x => x.Namn.ToLower() == name.ToLower());
+                
+                enhetLogic.RemoveEnhet(enhet.Id);
+            }
+            catch
+            {
+            }
+            return RedirectToAction("index");
         }
         [Authorize]
         public IActionResult AddInventarie()

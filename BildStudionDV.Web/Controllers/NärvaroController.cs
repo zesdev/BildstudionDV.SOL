@@ -97,7 +97,14 @@ namespace BildStudionDV.Web.Controllers
                 dateSupplied = GetDateAsLastMonday(dateSupplied);
                 ViewBag.date = dateSupplied.ToString("yyyy-MM-dd");
                 model = närvaroLogic.GetAttendenceForDate(dateSupplied);
-                HttpContext.Response.Cookies.Append("userSelectedDate", model.FirstOrDefault().DateConcerning.ToString("yyyy-MM-dd"));
+                try
+                {
+                    HttpContext.Response.Cookies.Append("userSelectedDate", model.FirstOrDefault().DateConcerning.ToString("yyyy-MM-dd"));
+                }
+                catch
+                {
+                    HttpContext.Response.Cookies.Append("userSelectedDate", dateSupplied.ToString("yyyy-MM-dd"));
+                }
             }
             else
             {
