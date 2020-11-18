@@ -1,2 +1,1 @@
-lägg till ta bort knapp på redigera deltagare
-ändra färg på knappar till röd på ta bort överallt
+fixa form för att välja antal månader

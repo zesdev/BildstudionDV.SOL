@@ -2,23 +2,34 @@
 <br />
 <br />
 
-    <button class="btn-info btn-block btn nav-link" onclick='window.location.href = "../närvaro/index"'>Tillbaka till Närvaro index</button>
+<button class="btn-info btn-block btn nav-link" onclick='window.location.href = "../närvaro/index"'>Tillbaka till Närvaro index</button>
 <br />
-<h1>@ViewBag.DeltagarNamn</h1>
+<h1>Diagram för @ViewBag.DeltagarNamn</h1>
 <br />
+<b>Välj hur många månader du vill se bakåt</b>
 @using (Html.BeginForm("diagram", "Närvaro", FormMethod.Get, new { name = "formDate" }))
 {
-    <hidden itemid="accessid" name="accessid"></hidden>
-    <select name="month" id="month">
+    <hidden  itemid="accessid" name="accessid"></hidden>
+    <select class="btn-block" name="month" onchange="document.formDate.submit()" id="month">
         <option selected value="@ViewBag.SelectValue">@ViewBag.SelectValue</option>
-        <option value="12">12</option>
-        <option value="24">24</option>
-        <option value="36">36</option>
+        @if (ViewBag.SelectValue != 12)
+        {
+            <option value="12">12</option>
+        }
+        @if (ViewBag.SelectValue != 24)
+        {
+            <option value="24">24</option>
+        }
+        @if (ViewBag.SelectValue != 36)
+        {
+            <option value="36">36</option>
+        }
+
     </select>
 }
 <table class="table table-striped table-bordered">
     <thead>
-        <tr style="background: black;color:white;">
+        <tr style="background-color: darkgray;color:black;">
             <th>Datum</th>
             <th>Närvaro i % / dagar</th>
             <th>Sjuk/Ledig/Frånvarande</th>
@@ -26,8 +37,9 @@
     </thead>
     @foreach (var month in Model)
     {
-
-        <tr style="background-color: ; color:white;">
+        if (month.ExpectedDays != 0)
+        {
+        <tr style="background-color: black; color:white;">
             <td><h2>@month.MånadNamn</h2></td>
             <td>
                 @month.PercentageAttendence % närvaro <br />
@@ -39,14 +51,14 @@
             </td>
 
         </tr>
-
+        }
     }
 
-    <tfoot>
-        <tr style="background: black;color:white;">
-            <th>Datum</th>
-            <th>Närvaro i % / dagar</th>
-            <th>Sjuk/Ledig/Frånvarande</th>
-        </tr>
-    </tfoot>
+<tfoot>
+    <tr style="background-color: darkgray;color:black;">
+        <th>Datum</th>
+        <th>Närvaro i % / dagar</th>
+        <th>Sjuk/Ledig/Frånvarande</th>
+    </tr>
+</tfoot>
 </table>

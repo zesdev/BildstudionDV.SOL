@@ -43,7 +43,23 @@ namespace BildStudionDV.Web.Controllers
             if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
                 return RedirectToAction("index", "inventarie");
             ViewBag.date = DateTime.Now.ToString("yyyy-MM-dd");
-            return View(deltagarViewLogic.GetAllDeltagareViewData());
+            var model = deltagarViewLogic.GetAllDeltagareViewData();
+            for (int i = 0; i < model.Count; i++)
+            {
+                if (i == model.Count - 1)
+                {
+                    ViewBag.DeltagarNames += "'" + model[i].Deltagarn.DeltagarNamn + "'";
+                    ViewBag.DeltagarValue += model[i].PercentageAttendence.ToString();
+                    ViewBag.Color += "'rgba(255, 99, 132, 0.2)'";
+                }
+                else
+                {
+                    ViewBag.DeltagarNames += "'" + model[i].Deltagarn.DeltagarNamn + "',";
+                    ViewBag.DeltagarValue += model[i].PercentageAttendence.ToString() + ",";
+                    ViewBag.Color += "'rgba(255, 99, 132, 0.2)',";
+                }
+            }
+            return View(model);
         }
         [Authorize]
         public IActionResult AddDeltagare(string message)
