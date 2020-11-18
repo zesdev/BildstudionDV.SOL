@@ -17,7 +17,7 @@
         </thead>
         @foreach (var jobb in Model.Where(x => x.StatusPåJobbet != BildstudionDV.BI.Models.Jobb.StatusTyp.KlarOchAvhämtat))
         {
-            <tr>
+            <tr style="color:white;">
                 <td>@jobb.TypAvJobb</td>
                 <td>@jobb.Title</td>
                 <td>@jobb.delJobbs.Where(x => x.StatusPåJobbet == BildstudionDV.BI.Models.Jobb.DelJobbStatus.Klar).ToList().Count / @jobb.delJobbs.Count - @jobb.StatusPåJobbet.ToString()</td>

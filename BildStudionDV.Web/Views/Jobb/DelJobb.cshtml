@@ -18,17 +18,17 @@
         </thead>
         @foreach (var DelJobb in Model.Where(x => x.StatusPåJobbet != BildstudionDV.BI.Models.Jobb.DelJobbStatus.Klar).ToList())
         {
-            <tr>
-                <td>@DelJobb.StatusPåJobbet.ToString()</td>
-                <td>@DelJobb.Namn</td>
-                <td>@DelJobb.VemGör</td>
-                <td>
-                    <input type="button" class="btn btn-info" onclick='window.location.href = "../jobb/editdeljobb?AccessId=@DelJobb.AccessId"' value="Redigera" />
-                </td>
-                <td>
-                    <input type="button" class="btn btn-danger" onclick="Remove(@DelJobb.AccessId)" value="Ta Bort" />
-                </td>
-            </tr>
+    <tr style="color:white;">
+        <td>@DelJobb.StatusPåJobbet.ToString()</td>
+        <td>@DelJobb.Namn</td>
+        <td>@DelJobb.VemGör</td>
+        <td>
+            <input type="button" class="btn btn-info" onclick='window.location.href = "../jobb/editdeljobb?AccessId=@DelJobb.AccessId"' value="Redigera" />
+        </td>
+        <td>
+            <input type="button" class="btn btn-danger" onclick="Remove(@DelJobb.AccessId)" value="Ta Bort" />
+        </td>
+    </tr>
         }
         @foreach (var DelJobb in Model.Where(x => x.StatusPåJobbet == BildstudionDV.BI.Models.Jobb.DelJobbStatus.Klar).ToList())
         {

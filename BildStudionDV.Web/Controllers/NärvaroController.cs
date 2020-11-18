@@ -25,6 +25,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult RemoveDeltagare(int id)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             try
             {
                 var deltagaren = deltagarLogic.GetAllDeltagare().First(x => x.IdAcesss == id);
@@ -38,20 +40,26 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult Index()
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             ViewBag.date = DateTime.Now.ToString("yyyy-MM-dd");
             return View(deltagarViewLogic.GetAllDeltagareViewData());
         }
         [Authorize]
         public IActionResult AddDeltagare(string message)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             ViewBag.Message = message;
             ViewBag.Workday = Enum.GetValues(typeof(WorkDay)).Cast<WorkDay>().ToList();
-            return View();
+            return View(new DeltagareViewModel { IsActive = true });
         }
         [HttpPost]
         [Authorize]
         public IActionResult AddDeltagare(DeltagareViewModel viewModel)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             if (viewModel.DeltagarNamn == null)
                 return Redirect("../Närvaro/AddDeltagare?message=InkorrektInmatning");
             deltagarLogic.AddDeltagare(viewModel);
@@ -61,6 +69,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult EditDeltagare(int id, string message)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             try
             {
                 var model = deltagarLogic.GetAllDeltagare().First(x => x.IdAcesss == id);
@@ -77,6 +87,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult EditDeltagare(DeltagareViewModel viewModel)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             var ogDeltagare = deltagarLogic.GetAllDeltagare().First(x => x.IdAcesss == viewModel.IdAcesss);
             viewModel.Id = ogDeltagare.Id;
             if (viewModel.DeltagarNamn == null)
@@ -88,6 +100,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult Attendence(string date)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             string rawdate = HttpContext.Request.Cookies["userSelectedDate"];
             var compareDate = DateTime.Now.AddYears(-100);
             var dateSupplied = Convert.ToDateTime(date);
@@ -138,6 +152,8 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult UpdateNärvaro(AttendenceViewModel viewModel)
         {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
             string rawdate = HttpContext.Request.Cookies["userSelectedDate"];
             DateTime date = Convert.ToDateTime(rawdate);
             var deltagare = deltagarLogic.GetAllDeltagare().FirstOrDefault(x => x.DeltagarNamn == viewModel.DeltagarNamn);
@@ -152,7 +168,14 @@ namespace BildStudionDV.Web.Controllers
             närvaroLogic.UpdateAttendence(ogViewModel);
             return RedirectToAction("Attendence");
         }
-        
+        [Authorize]
+        public IActionResult Diagram(int accessid)
+        {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
+            // get model return view
+            return View();
+        }
 
     }
 }

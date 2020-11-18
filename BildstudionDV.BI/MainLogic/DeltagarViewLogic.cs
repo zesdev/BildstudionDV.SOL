@@ -46,6 +46,11 @@ namespace BildstudionDV.BI.MainLogic
         {
             int expectedAttendence = 0;
             int actualAttendence = 0;
+            int halvdaysAttended = 0;
+            int heldaysAttended = 0;
+            int sjukDays = 0;
+            int ledigDays = 0;
+            int frånvarandeDagar = 0;
             foreach (var data in attendenceData)
             {
                 if (data.ExpectedMåndag != Models.WorkDay._)
@@ -63,66 +68,219 @@ namespace BildstudionDV.BI.MainLogic
                 {
                     if (data.Måndag == Models.Attendence.AttendenceOption.Heldag ||
                    data.Måndag == Models.Attendence.AttendenceOption.HeldagMat)
+                    {
                         actualAttendence++;
+                        heldaysAttended++;
+                    }
+                    else if (data.Måndag == Models.Attendence.AttendenceOption.Halvdag ||
+                        data.Måndag == Models.Attendence.AttendenceOption.HalvdagMat)
+                    {
+                        halvdaysAttended++;
+                    }
+                    else
+                    {
+                        if (data.Måndag == Models.Attendence.AttendenceOption.Sjuk)
+                            sjukDays++;
+                        else if (data.Måndag == Models.Attendence.AttendenceOption.Ledig)
+                            ledigDays++;
+                        else
+                            frånvarandeDagar++;
+                    }
                 }
                 else if (data.ExpectedMåndag == Models.WorkDay.Halvdag)
                 {
                     if (data.Måndag == Models.Attendence.AttendenceOption.Halvdag ||
                data.Måndag == Models.Attendence.AttendenceOption.HalvdagMat)
+                    {
                         actualAttendence++;
+                        halvdaysAttended++;
+                    }
+                    else
+                    {
+
+                        if (data.Måndag == Models.Attendence.AttendenceOption.Sjuk)
+                            sjukDays++;
+                        else if (data.Måndag == Models.Attendence.AttendenceOption.Ledig)
+                            ledigDays++;
+                        else
+                            frånvarandeDagar++;
+                    }
                 }
                 if (data.ExpectedTisdag == Models.WorkDay.Heldag)
                 {
                     if (data.Tisdag == Models.Attendence.AttendenceOption.Heldag ||
                    data.Tisdag == Models.Attendence.AttendenceOption.HeldagMat)
+                    {
                         actualAttendence++;
+                        heldaysAttended++;
+                    }
+                    else if (data.Tisdag == Models.Attendence.AttendenceOption.Halvdag ||
+                        data.Tisdag == Models.Attendence.AttendenceOption.HalvdagMat)
+                    {
+                        halvdaysAttended++;
+                    }
+                    else
+                    {
+                        if (data.Tisdag == Models.Attendence.AttendenceOption.Sjuk)
+                            sjukDays++;
+                        else if (data.Tisdag == Models.Attendence.AttendenceOption.Ledig)
+                            ledigDays++;
+                        else
+                            frånvarandeDagar++;
+                    }
                 }
                 else if (data.ExpectedTisdag == Models.WorkDay.Halvdag)
                 {
                     if (data.Tisdag == Models.Attendence.AttendenceOption.Halvdag ||
                data.Tisdag == Models.Attendence.AttendenceOption.HalvdagMat)
+                    {
                         actualAttendence++;
+                        halvdaysAttended++;
+                    }
+                    else
+                    {
+
+                        if (data.Tisdag == Models.Attendence.AttendenceOption.Sjuk)
+                            sjukDays++;
+                        else if (data.Tisdag == Models.Attendence.AttendenceOption.Ledig)
+                            ledigDays++;
+                        else
+                            frånvarandeDagar++;
+                    }
                 }
                 if (data.ExpectedOnsdag == Models.WorkDay.Heldag)
                 {
                     if (data.Onsdag == Models.Attendence.AttendenceOption.Heldag ||
                    data.Onsdag == Models.Attendence.AttendenceOption.HeldagMat)
+                    {
                         actualAttendence++;
+                        heldaysAttended++;
+                    }
+                    else if (data.Onsdag == Models.Attendence.AttendenceOption.Halvdag ||
+                        data.Onsdag == Models.Attendence.AttendenceOption.HalvdagMat)
+                    {
+                        halvdaysAttended++;
+                    }
+                    else
+                    {
+                        if (data.Onsdag == Models.Attendence.AttendenceOption.Sjuk)
+                            sjukDays++;
+                        else if (data.Onsdag == Models.Attendence.AttendenceOption.Ledig)
+                            ledigDays++;
+                        else
+                            frånvarandeDagar++;
+                    }
                 }
                 else if (data.ExpectedOnsdag == Models.WorkDay.Halvdag)
                 {
                     if (data.Onsdag == Models.Attendence.AttendenceOption.Halvdag ||
                data.Onsdag == Models.Attendence.AttendenceOption.HalvdagMat)
+                    {
                         actualAttendence++;
+                        halvdaysAttended++;
+                    }
+                    else
+                    {
+
+                        if (data.Onsdag == Models.Attendence.AttendenceOption.Sjuk)
+                            sjukDays++;
+                        else if (data.Onsdag == Models.Attendence.AttendenceOption.Ledig)
+                            ledigDays++;
+                        else
+                            frånvarandeDagar++;
+                    }
                 }
                 if (data.ExpectedTorsdag == Models.WorkDay.Heldag)
                 {
                     if (data.Torsdag == Models.Attendence.AttendenceOption.Heldag ||
                    data.Torsdag == Models.Attendence.AttendenceOption.HeldagMat)
+                    {
                         actualAttendence++;
+                        heldaysAttended++;
+                    }
+                    else if (data.Torsdag == Models.Attendence.AttendenceOption.Halvdag ||
+                        data.Torsdag == Models.Attendence.AttendenceOption.HalvdagMat)
+                    {
+                        halvdaysAttended++;
+                    }
+                    else
+                    {
+                        if (data.Torsdag == Models.Attendence.AttendenceOption.Sjuk)
+                            sjukDays++;
+                        else if (data.Torsdag == Models.Attendence.AttendenceOption.Ledig)
+                            ledigDays++;
+                        else
+                            frånvarandeDagar++;
+                    }
                 }
                 else if (data.ExpectedTorsdag == Models.WorkDay.Halvdag)
                 {
                     if (data.Torsdag == Models.Attendence.AttendenceOption.Halvdag ||
                data.Torsdag == Models.Attendence.AttendenceOption.HalvdagMat)
+                    {
                         actualAttendence++;
+                        halvdaysAttended++;
+                    }
+                    else
+                    {
+
+                        if (data.Torsdag == Models.Attendence.AttendenceOption.Sjuk)
+                            sjukDays++;
+                        else if (data.Torsdag == Models.Attendence.AttendenceOption.Ledig)
+                            ledigDays++;
+                        else
+                            frånvarandeDagar++;
+                    }
                 }
-                if (data.ExpectedFredag == Models.WorkDay.Heldag)
+                            if (data.ExpectedFredag == Models.WorkDay.Heldag)
                 {
                     if (data.Fredag == Models.Attendence.AttendenceOption.Heldag ||
-                   data.Fredag == Models.Attendence.AttendenceOption.HalvdagMat)
+                   data.Fredag == Models.Attendence.AttendenceOption.HeldagMat)
+                    {
                         actualAttendence++;
+                        heldaysAttended++;
+                    }
+                    else if (data.Fredag == Models.Attendence.AttendenceOption.Halvdag ||
+                        data.Fredag == Models.Attendence.AttendenceOption.HalvdagMat)
+                    {
+                        halvdaysAttended++;
+                    }
+                    else
+                    {
+                        if (data.Fredag == Models.Attendence.AttendenceOption.Sjuk)
+                            sjukDays++;
+                        else if (data.Fredag == Models.Attendence.AttendenceOption.Ledig)
+                            ledigDays++;
+                        else
+                            frånvarandeDagar++;
+                    }
                 }
                 else if (data.ExpectedFredag == Models.WorkDay.Halvdag)
                 {
                     if (data.Fredag == Models.Attendence.AttendenceOption.Halvdag ||
                data.Fredag == Models.Attendence.AttendenceOption.HalvdagMat)
+                    {
                         actualAttendence++;
+                        halvdaysAttended++;
+                    }
+                    else
+                    {
+
+                        if (data.Fredag == Models.Attendence.AttendenceOption.Sjuk)
+                            sjukDays++;
+                        else if (data.Fredag == Models.Attendence.AttendenceOption.Ledig)
+                            ledigDays++;
+                        else
+                            frånvarandeDagar++;
+                    }
                 }
 
             }
             model.AttendendedDays = actualAttendence;
             model.ExpectedDays = expectedAttendence;
+            model.SjukDays = sjukDays;
+            model.LedigDays = ledigDays;
+            model.Frånvarande = frånvarandeDagar;
             actualAttendence = actualAttendence * 100;
             int actualAddedAttendence = 0;
             try

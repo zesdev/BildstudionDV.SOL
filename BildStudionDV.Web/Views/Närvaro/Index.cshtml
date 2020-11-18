@@ -12,36 +12,49 @@
     <thead>
         <tr style="background: black;color:white;">
             <th>Deltagaren</th>
-            <th>Närvaro i %</th>
-            <th>Redigera</th>
+            <th>Närvaro i % / dagar</th>
+            <th>Diagram</th>
+            <th>Redigera Deltagare</th>
         </tr>
     </thead>
     @foreach (var deltagare in Model.Where(x => x.PercentageAttendence < 50))
     {
 
-        <tr style="background-color: darkred; color:white;">
-            <td>@deltagare.Deltagarn.DeltagarNamn</td>
-            <td>@deltagare.PercentageAttendence % - @deltagare.AttendendedDays / @deltagare.ExpectedDays dagar närvarnde</td>
+<tr style="background-color: darkred; color:white;">
+    <td><h2>@deltagare.Deltagarn.DeltagarNamn</h2></td>
+    <td>
+        @deltagare.PercentageAttendence % - @deltagare.AttendendedDays / @deltagare.ExpectedDays dagar närvarande<br />
+        Sjuk: @deltagare.SjukDays.ToString() / Ledig: @deltagare.LedigDays.ToString() / Frånvarande: @deltagare.Frånvarande.ToString() dagar
+    </td>
+    <td>
+        <input type="button" class="btn btn-light" onclick='window.location.href = "../Närvaro/diagram?id=@deltagare.Deltagarn.IdAcesss"' value="Se Diagram/Rapport" />
+    </td>
+    <td>
+        <input type="button" class="btn btn-info" onclick='window.location.href = "../Närvaro/editdeltagare?id=@deltagare.Deltagarn.IdAcesss"' value="Redigera @deltagare.Deltagarn.DeltagarNamn" />
+    </td>
 
-            <td>
-                <input type="button" class="btn btn-info" onclick='window.location.href = "../Närvaro/editdeltagare?id=@deltagare.Deltagarn.IdAcesss"' value="Redigera @deltagare.Deltagarn.DeltagarNamn" />
-            </td>
-
-        </tr>
+</tr>
 
     }
 
     @foreach (var deltagare in Model.Where(x => x.PercentageAttendence > 50))
     {
-        <tr style="background-color: darkgreen; color:white;">
-            <td>@deltagare.Deltagarn.DeltagarNamn</td>
-            <td>@deltagare.PercentageAttendence % - @deltagare.AttendendedDays / @deltagare.ExpectedDays dagar närvarnde</td>
+<tr style="background-color: darkgreen; color:white;">
+    <td><h2>@deltagare.Deltagarn.DeltagarNamn</h2></td>
+    <td>
+        <b>
+            @deltagare.PercentageAttendence % - @deltagare.AttendendedDays / @deltagare.ExpectedDays dagar närvarande<br />
+            Sjuk: @deltagare.SjukDays.ToString() / Ledig: @deltagare.LedigDays.ToString() / Frånvarande: @deltagare.Frånvarande.ToString() dagar
+        </b>
+    </td>
+    <td>
+        <input type="button" class="btn btn-light" onclick='window.location.href = "../Närvaro/diagram?id=@deltagare.Deltagarn.IdAcesss"' value="Se Diagram/Rapport" />
+    </td>
+    <td>
+        <input type="button" class="btn btn-info" onclick='window.location.href = "../Närvaro/editdeltagare?id=@deltagare.Deltagarn.IdAcesss"' value="Redigera @deltagare.Deltagarn.DeltagarNamn" />
+    </td>
 
-            <td>
-                <input type="button" class="btn btn-info" onclick='window.location.href = "../Närvaro/editdeltagare?id=@deltagare.Deltagarn.IdAcesss"' value="Redigera @deltagare.Deltagarn.DeltagarNamn" />
-            </td>
-
-        </tr>
+</tr>
 
     }
 
@@ -51,8 +64,9 @@
                 Deltagarn
             </th>
             <th>
-                Närvaro i %
+                Närvaro i % / dagar
             </th>
+            <th>Diagram</th>
             <th>Redigera</th>
         </tr>
     </tfoot>

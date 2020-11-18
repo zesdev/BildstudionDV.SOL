@@ -15,18 +15,18 @@
         </thead>
         @foreach (var enhet in Model)
         {
-            <tr>
-                <td>@enhet.Namn</td>
-                <td>@enhet.ChefNamn</td>
-                <td>
-                    <input type="button" class="btn btn-info" onclick='window.location.href = "../inventarie/editenhet?namn=@enhet.Namn"' value="Redigera Enheten" />
-                </td>
-                <td>
-                    <input type="button" class="btn btn-dark" onclick='window.location.href = "../inventarie/enhet?namn=@enhet.Namn"' value="Se Grupper" />
-                </td>
-                <td>@enhet.grupperInEnhet.Count grupper i enheten</td>
-  
-            </tr>
+    <tr style="color:white;">
+        <td>@enhet.Namn</td>
+        <td>@enhet.ChefNamn</td>
+        <td>
+            <input type="button" class="btn btn-info" onclick='window.location.href = "../inventarie/editenhet?namn=@enhet.Namn"' value="Redigera Enheten" />
+        </td>
+        <td>
+            <input type="button" class="btn btn-dark" onclick='window.location.href = "../inventarie/enhet?namn=@enhet.Namn"' value="Se Grupper" />
+        </td>
+        <td>@enhet.grupperInEnhet.Count grupper i enheten</td>
+
+    </tr>
         }
         <tfoot>
             <tr style="background: black;color:white;">

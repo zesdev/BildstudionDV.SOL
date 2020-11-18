@@ -7,8 +7,12 @@
 
         <b>AnvändarNamn:</b><br />
         @Html.TextBoxFor(x => x.UserName) <br />
-        <b>Tillhörandegrupp:</b><br />
-        @Html.TextBoxFor(x => x.AssociatedGrupp) <br />
+        <select id="grupp" name="grupp">
+            @for (int i = 0; i < ViewBag.gruppNamnList.Count; i++)
+            {
+                <option value="@ViewBag.gruppNamnList[i]">@ViewBag.gruppNamnList[i]</option>
+            }
+        </select> <br />
         <b>Lösenord:</b><br />
         @Html.PasswordFor(x => x.Password) <br />
         <b>Upprepa Lösenord:</b><br />

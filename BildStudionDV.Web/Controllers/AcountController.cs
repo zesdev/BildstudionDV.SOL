@@ -19,8 +19,10 @@ namespace BildStudionDV.Web.Controllers
     public class AcountController : Controller
     {
         IUserProfileVMLogic userLogic;
-        public AcountController(IUserProfileVMLogic _userLogic)
+        IGruppVMLogic gruppLogic;
+        public AcountController(IUserProfileVMLogic _userLogic, IGruppVMLogic _gruppLogic)
         {
+            gruppLogic = _gruppLogic;
             userLogic = _userLogic;
         }
         [Authorize]
@@ -37,21 +39,27 @@ namespace BildStudionDV.Web.Controllers
         {
             if (User.Identity.Name == "admin" || User.Identity.Name == "piahag")
             {
+                var gruppNamnList = new List<string>();
+                foreach (var gruppNamn in gruppLogic.GetAllGrupper())
+                {
+                    gruppNamnList.Add(gruppNamn.GruppNamn);
+                }
+                ViewBag.gruppNamnList = gruppNamnList;
                 return View(new UserProfileViewModel());
             }
             return RedirectToAction("index", "inventarie");
         }
         [HttpPost]
         [Authorize]
-        public IActionResult AddUser(UserProfileViewModel model)
+        public IActionResult AddUser(UserProfileViewModel model, string grupp)
         {
             if (User.Identity.Name == "admin" || User.Identity.Name == "piahag")
             {
                 if (model.Password == model.NewPassword)
                 {
-                    if (model.UserName != "" && model.AssociatedGrupp != "" && model.Password != "")
+                    if (model.UserName != "" && model.Password != "")
                     {
-
+                        model.AssociatedGrupp = grupp;
                         userLogic.CreateUserAccount(model);
                         return RedirectToAction("index");
                     }
@@ -60,6 +68,11 @@ namespace BildStudionDV.Web.Controllers
                         ViewBag.error = "Lösenorden matchar inte, försök igen";
                         return View(model);
                     }
+                }
+                var gruppNamnList = new List<string>();
+                foreach (var gruppNamn in gruppLogic.GetAllGrupper())
+                {
+                    gruppNamnList.Add(gruppNamn.GruppNamn);
                 }
                 ViewBag.error = "Något fel i inmatningen, <br />Användarnamn/lösenord/grupp får ej vara tomt";
                 return View(model);
@@ -82,6 +95,12 @@ namespace BildStudionDV.Web.Controllers
         {
             if (User.Identity.Name == "admin" || User.Identity.Name == "piahag")
             {
+                var gruppNamnList = new List<string>();
+                foreach (var gruppNamn in gruppLogic.GetAllGrupper())
+                {
+                    gruppNamnList.Add(gruppNamn.GruppNamn);
+                }
+                ViewBag.gruppNamnList = gruppNamnList;
                 var user = userLogic.GetUserViewModels().FirstOrDefault(x => x.UserName == namn);
                 HttpContext.Response.Cookies.Append("userSelected", user.UserName);
                 return View(user);
@@ -90,19 +109,25 @@ namespace BildStudionDV.Web.Controllers
         }
         [Authorize]
         [HttpPost]
-        public IActionResult EditUser(UserProfileViewModel model)
+        public IActionResult EditUser(UserProfileViewModel model, string grupp)
         {
             if (User.Identity.Name == "admin" || User.Identity.Name == "piahag")
             {
-                if (model.AssociatedGrupp != null && model.UserName != null)
+                if (model.UserName != null)
                 {
                     var oldUserName = HttpContext.Request.Cookies["userSelected"];
                     var user = userLogic.GetUserViewModels().FirstOrDefault(x => x.UserName == oldUserName);
                     user.UserName = model.UserName;
-                    user.AssociatedGrupp = model.AssociatedGrupp;
+                    user.AssociatedGrupp = grupp;
                     userLogic.UpdateUser(user);
                     return RedirectToAction("index");
                 }
+                var gruppNamnList = new List<string>();
+                foreach (var gruppNamn in gruppLogic.GetAllGrupper())
+                {
+                    gruppNamnList.Add(gruppNamn.GruppNamn);
+                }
+                ViewBag.gruppNamnList = gruppNamnList;
                 ViewBag.error = "Något gick fel, användarnamn kan inte vara tomt, likaså med grupptillhörande.";
                 return View(model);
             }

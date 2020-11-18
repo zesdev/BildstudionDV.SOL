@@ -2,92 +2,92 @@
 
 @using (Html.BeginForm("UpdateNärvaro", "Närvaro", FormMethod.Post, new { name = "formDeltagare" + Model.DeltagarNamn }))
 {
-    <tr>
-        <td width="200px">
-            @Html.HiddenFor(x => x.DeltagarNamn)
-            @Html.Label(Model.DeltagarNamn)
-        </td>
-        <td>
-            @Html.DropDownListFor(x => x.Måndag, new List<SelectListItem>
-        {
-            new SelectListItem { Text = "--Välj--", Value = "4" },
-            new SelectListItem { Text = "Heldag", Value = "0" },
-           new SelectListItem { Text = "Halvdag", Value = "1" },
-                 new SelectListItem { Text = "Sjuk", Value = "2" },
-                       new SelectListItem { Text = "Ledig", Value = "3" },
-           new SelectListItem { Text = "Frånvarande", Value = "4" },
-                   new SelectListItem { Text = "HeldagMat", Value = "5" },
-                          new SelectListItem { Text = "HalvdagMat", Value = "6" },
-           new SelectListItem { Text = "FrånvarandeMat", Value = "7" },
-           new SelectListItem { Text = "Övrigt", Value = "8" },
-        },
-new { @onchange = "document.getElementById('" + @Model.DeltagarNamn + "').click()" })
-        </td>
-        <td>
-            @Html.DropDownListFor(x => x.Tisdag, new List<SelectListItem>
-        {
-            new SelectListItem { Text = "--Välj--", Value = "4" },
-            new SelectListItem { Text = "Heldag", Value = "0" },
-           new SelectListItem { Text = "Halvdag", Value = "1" },
-                 new SelectListItem { Text = "Sjuk", Value = "2" },
-                       new SelectListItem { Text = "Ledig", Value = "3" },
-           new SelectListItem { Text = "Frånvarande", Value = "4" },
-                   new SelectListItem { Text = "HeldagMat", Value = "5" },
-                          new SelectListItem { Text = "HalvdagMat", Value = "6" },
-           new SelectListItem { Text = "FrånvarandeMat", Value = "7" },
-           new SelectListItem { Text = "Övrigt", Value = "8" },
-           },
-new { @onchange = "document.getElementById('" + @Model.DeltagarNamn + "').click()" })
-        </td>
-        <td>
-            @Html.DropDownListFor(x => x.Onsdag, new List<SelectListItem>
-        {
-            new SelectListItem { Text = "--Välj--", Value = "4" },
-            new SelectListItem { Text = "Heldag", Value = "0" },
-           new SelectListItem { Text = "Halvdag", Value = "1" },
-                 new SelectListItem { Text = "Sjuk", Value = "2" },
-                       new SelectListItem { Text = "Ledig", Value = "3" },
-           new SelectListItem { Text = "Frånvarande", Value = "4" },
-                   new SelectListItem { Text = "HeldagMat", Value = "5" },
-                          new SelectListItem { Text = "HalvdagMat", Value = "6" },
-           new SelectListItem { Text = "FrånvarandeMat", Value = "7" },
-           new SelectListItem { Text = "Övrigt", Value = "8" },
-           },
-new { @onchange = "document.getElementById('" + @Model.DeltagarNamn + "').click()" })
-        </td>
-        <td>
-
-            @Html.DropDownListFor(x => x.Torsdag, new List<SelectListItem>
+<tr style="color:white;">
+    <td width="200px">
+        @Html.HiddenFor(x => x.DeltagarNamn)
+        @Html.Label(Model.DeltagarNamn)
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.Måndag, new List<SelectListItem>
     {
-            new SelectListItem { Text = "--Välj--", Value = "4" },
-            new SelectListItem { Text = "Heldag", Value = "0" },
-           new SelectListItem { Text = "Halvdag", Value = "1" },
-                 new SelectListItem { Text = "Sjuk", Value = "2" },
-                       new SelectListItem { Text = "Ledig", Value = "3" },
-           new SelectListItem { Text = "Frånvarande", Value = "4" },
-                   new SelectListItem { Text = "HeldagMat", Value = "5" },
-                          new SelectListItem { Text = "HalvdagMat", Value = "6" },
-           new SelectListItem { Text = "FrånvarandeMat", Value = "7" },
-           new SelectListItem { Text = "Övrigt", Value = "8" },
-           },
+        new SelectListItem { Text = "--Välj--", Value = "4" },
+        new SelectListItem { Text = "Heldag", Value = "0" },
+       new SelectListItem { Text = "Halvdag", Value = "1" },
+             new SelectListItem { Text = "Sjuk", Value = "2" },
+                   new SelectListItem { Text = "Ledig", Value = "3" },
+       new SelectListItem { Text = "Frånvarande", Value = "4" },
+               new SelectListItem { Text = "HeldagMat", Value = "5" },
+                      new SelectListItem { Text = "HalvdagMat", Value = "6" },
+       new SelectListItem { Text = "FrånvarandeMat", Value = "7" },
+       new SelectListItem { Text = "Övrigt", Value = "8" },
+    },
 new { @onchange = "document.getElementById('" + @Model.DeltagarNamn + "').click()" })
-        </td>
-        <td>
-            @Html.DropDownListFor(x => x.Fredag, new List<SelectListItem>
-        {
-                  new SelectListItem { Text = "--Välj--", Value = "4" },
-            new SelectListItem { Text = "Heldag", Value = "0" },
-           new SelectListItem { Text = "Halvdag", Value = "1" },
-                 new SelectListItem { Text = "Sjuk", Value = "2" },
-                       new SelectListItem { Text = "Ledig", Value = "3" },
-           new SelectListItem { Text = "Frånvarande", Value = "4" },
-                   new SelectListItem { Text = "HeldagMat", Value = "5" },
-                          new SelectListItem { Text = "HalvdagMat", Value = "6" },
-           new SelectListItem { Text = "FrånvarandeMat", Value = "7" },
-           new SelectListItem { Text = "Övrigt", Value = "8" },
-           },
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.Tisdag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value = "4" },
+        new SelectListItem { Text = "Heldag", Value = "0" },
+       new SelectListItem { Text = "Halvdag", Value = "1" },
+             new SelectListItem { Text = "Sjuk", Value = "2" },
+                   new SelectListItem { Text = "Ledig", Value = "3" },
+       new SelectListItem { Text = "Frånvarande", Value = "4" },
+               new SelectListItem { Text = "HeldagMat", Value = "5" },
+                      new SelectListItem { Text = "HalvdagMat", Value = "6" },
+       new SelectListItem { Text = "FrånvarandeMat", Value = "7" },
+       new SelectListItem { Text = "Övrigt", Value = "8" },
+       },
 new { @onchange = "document.getElementById('" + @Model.DeltagarNamn + "').click()" })
-            <input type="submit" class="btn btn-success" hidden="hidden" id="@Model.DeltagarNamn">
-        </td>
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.Onsdag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value = "4" },
+        new SelectListItem { Text = "Heldag", Value = "0" },
+       new SelectListItem { Text = "Halvdag", Value = "1" },
+             new SelectListItem { Text = "Sjuk", Value = "2" },
+                   new SelectListItem { Text = "Ledig", Value = "3" },
+       new SelectListItem { Text = "Frånvarande", Value = "4" },
+               new SelectListItem { Text = "HeldagMat", Value = "5" },
+                      new SelectListItem { Text = "HalvdagMat", Value = "6" },
+       new SelectListItem { Text = "FrånvarandeMat", Value = "7" },
+       new SelectListItem { Text = "Övrigt", Value = "8" },
+       },
+new { @onchange = "document.getElementById('" + @Model.DeltagarNamn + "').click()" })
+    </td>
+    <td>
+
+        @Html.DropDownListFor(x => x.Torsdag, new List<SelectListItem>
+{
+        new SelectListItem { Text = "--Välj--", Value = "4" },
+        new SelectListItem { Text = "Heldag", Value = "0" },
+       new SelectListItem { Text = "Halvdag", Value = "1" },
+             new SelectListItem { Text = "Sjuk", Value = "2" },
+                   new SelectListItem { Text = "Ledig", Value = "3" },
+       new SelectListItem { Text = "Frånvarande", Value = "4" },
+               new SelectListItem { Text = "HeldagMat", Value = "5" },
+                      new SelectListItem { Text = "HalvdagMat", Value = "6" },
+       new SelectListItem { Text = "FrånvarandeMat", Value = "7" },
+       new SelectListItem { Text = "Övrigt", Value = "8" },
+       },
+new { @onchange = "document.getElementById('" + @Model.DeltagarNamn + "').click()" })
+    </td>
+    <td>
+        @Html.DropDownListFor(x => x.Fredag, new List<SelectListItem>
+    {
+              new SelectListItem { Text = "--Välj--", Value = "4" },
+        new SelectListItem { Text = "Heldag", Value = "0" },
+       new SelectListItem { Text = "Halvdag", Value = "1" },
+             new SelectListItem { Text = "Sjuk", Value = "2" },
+                   new SelectListItem { Text = "Ledig", Value = "3" },
+       new SelectListItem { Text = "Frånvarande", Value = "4" },
+               new SelectListItem { Text = "HeldagMat", Value = "5" },
+                      new SelectListItem { Text = "HalvdagMat", Value = "6" },
+       new SelectListItem { Text = "FrånvarandeMat", Value = "7" },
+       new SelectListItem { Text = "Övrigt", Value = "8" },
+       },
+new { @onchange = "document.getElementById('" + @Model.DeltagarNamn + "').click()" })
+        <input type="submit" class="btn btn-success" hidden="hidden" id="@Model.DeltagarNamn">
+    </td>
 </tr>
 }

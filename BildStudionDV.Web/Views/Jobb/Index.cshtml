@@ -16,7 +16,7 @@
     </thead>
     @foreach (var kund in Model)
     {
-<tr>
+<tr style="color:white;">
     <td>@kund.KundNamn</td>
     <td>
         <input type="button" class="btn btn-info" onclick='window.location.href = "../jobb/editkund?kundnamn=@kund.KundNamn"' value="Redigera Kunden" />
@@ -25,7 +25,6 @@
     </td>
     <td>@kund.listOfJobbs.Where(x => x.StatusPåJobbet == BildstudionDV.BI.Models.Jobb.StatusTyp.KlarOchAvhämtat).ToList().Count / @kund.listOfJobbs.Count</td>
     <td>
-        
     </td>
 </tr>
     }
