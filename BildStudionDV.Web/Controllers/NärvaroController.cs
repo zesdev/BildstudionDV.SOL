@@ -169,12 +169,19 @@ namespace BildStudionDV.Web.Controllers
             return RedirectToAction("Attendence");
         }
         [Authorize]
-        public IActionResult Diagram(int accessid)
+        public IActionResult Diagram(int accessid, int month)
         {
             if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
                 return RedirectToAction("index", "inventarie");
-            // get model return view
-            return View();
+            if(month == 0)
+            {
+                month = 12;
+            }
+            ViewBag.SelectValue = month;
+            var deltagare = deltagarLogic.GetAllDeltagare().FirstOrDefault(x => x.IdAcesss == accessid);
+            ViewBag.DeltagarNamn = deltagare.DeltagarNamn;
+            var model = deltagarViewLogic.GetMonthAttendenceForDeltagare(deltagare.Id, month);
+            return View(model);
         }
 
     }

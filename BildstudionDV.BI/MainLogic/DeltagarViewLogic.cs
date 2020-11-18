@@ -3,6 +3,7 @@ using BildstudionDV.BI.ViewModels;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BildstudionDV.BI.MainLogic
@@ -28,6 +29,7 @@ namespace BildstudionDV.BI.MainLogic
             }
             return returningList;
         }
+        
         public ViewModelDeltagareAttendence GetDeltagareViewData(ObjectId UserId)
         {
             var deltagarn = deltagarLogic.GetDeltagare(UserId);
@@ -39,6 +41,37 @@ namespace BildstudionDV.BI.MainLogic
             };
             model = GetAttendence(model, attendenceData, deltagarn);
           
+            return model;
+        }
+
+        public List<ViewModelMonthAttendence> GetMonthAttendenceForDeltagare(ObjectId UserId, int monthsToLookBack)
+        {
+            var returningList = new List<ViewModelMonthAttendence>();
+            var deltagare = deltagarLogic.GetDeltagare(UserId);
+            for (int i = 0; i < monthsToLookBack; i++)
+            {
+                returningList.Add(GetAttendenceForDeltagareForMonth(monthsToLookBack, DateTime.Now.AddMonths(-i), deltagare));
+            }
+            return returningList;
+        }
+
+        public ViewModelMonthAttendence GetAttendenceForDeltagareForMonth(int monthsToLookBack, DateTime dateTime, DeltagareViewModel deltagarn)
+        {
+            var model = new ViewModelMonthAttendence
+            {
+                deltagaren = deltagarn,
+                MånadNamn = dateTime.ToString("yyyy-MM")
+            };
+
+            var attendenceData = närvaroLogic.GetAttendenceFörDeltagare(deltagarn.Id).Where(x => x.DateConcerning.Month == dateTime.Month && x.DateConcerning.Year == dateTime.Year).ToList();
+            var attendenceModel = GetAttendence(new ViewModelDeltagareAttendence(), attendenceData, deltagarn);
+            model.AttendendedDays = attendenceModel.AttendendedDays;
+            model.ExpectedDays = attendenceModel.ExpectedDays;
+            model.Frånvarande = attendenceModel.Frånvarande;
+            model.Halvdagar = attendenceModel.Halvdagar;
+            model.Heldagar = attendenceModel.Heldagar;
+            model.PercentageAttendence = attendenceModel.PercentageAttendence;
+            model.SjukDays = attendenceModel.SjukDays;
             return model;
         }
 
@@ -293,6 +326,16 @@ namespace BildstudionDV.BI.MainLogic
             }
             model.PercentageAttendence = actualAddedAttendence;
             return model;
+        }
+
+        public List<ViewModelMonthAttendence> GetMonthAttendenceForDeltagare(ObjectId UserId)
+        {
+            throw new NotImplementedException();
+        }
+
+        ViewModelMonthAttendence IDeltagarViewLogic.GetAttendenceForDeltagareForMonth(int monthsToLookBack, DateTime dateTime, DeltagareViewModel deltagarn)
+        {
+            throw new NotImplementedException();
         }
     }
 }
