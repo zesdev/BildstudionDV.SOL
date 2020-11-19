@@ -15,6 +15,7 @@ namespace BildstudionDV.BI.Models
         public ObjectId Id { get; set; }
         public int IdAccess { get; set; }
         public string DeltagarNamn { get; set; }
+        public string MatId { get; set; }
         public string Måndag { get; set; }
         public string Tisdag { get; set; }
         public string Onsdag { get; set; }

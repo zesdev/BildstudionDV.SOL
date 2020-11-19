@@ -61,6 +61,7 @@ namespace BildStudionDV.Web
             var närvaroVM = new NärvaroVMLogic(närvaroDb, deltagareDb);
 
             DeltagarViewLogic deltagarViewLogic = new DeltagarViewLogic(deltagarVM, närvaroVM);
+            MatlistaLogic matListaLogic = new MatlistaLogic(context, närvaroVM, deltagarVM);
 
             services.Add(new ServiceDescriptor(typeof(IDelJobbVMLogic), deljobbVm));
             services.Add(new ServiceDescriptor(typeof(IJobbVMLogic), jobbVM));
@@ -72,6 +73,7 @@ namespace BildStudionDV.Web
             services.Add(new ServiceDescriptor(typeof(IDeltagareVMLogic), deltagarVM));
             services.Add(new ServiceDescriptor(typeof(INärvaroVMLogic), närvaroVM));
             services.Add(new ServiceDescriptor(typeof(IDeltagarViewLogic), deltagarViewLogic));
+            services.Add(new ServiceDescriptor(typeof(IMatlistaLogic), matListaLogic));
 
             services.AddAuthentication("CookieAuthentication")
          .AddCookie("CookieAuthentication", config =>

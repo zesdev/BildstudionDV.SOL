@@ -7,62 +7,64 @@
     <br />
 
     @using (Html.BeginForm()){
-        <b>Deltagarens Namn:</b><br />
-        @Html.TextBoxFor(x => x.DeltagarNamn)<br />
-        @Html.LabelFor(x => x.Måndag)<br />
-        @Html.DropDownListFor(x => x.Måndag, new List<SelectListItem>
-    {
-        new SelectListItem { Text = "--Välj--", Value ="2" },
-        new SelectListItem { Text = "Heldag", Value ="0" },
-        new SelectListItem { Text = "Halvdag", Value ="1" },
-        new SelectListItem { Text = "_", Value ="2" }
+    <b>Deltagarens Namn:</b><br />
+    @Html.TextBoxFor(x => x.DeltagarNamn)<br />
+    <b>MatId:</b><br />
+    @Html.TextBoxFor(x => x.MatId)<br />
+    @Html.LabelFor(x => x.Måndag)<br />
+    @Html.DropDownListFor(x => x.Måndag, new List<SelectListItem>
+{
+    new SelectListItem { Text = "--Välj--", Value ="2" },
+    new SelectListItem { Text = "Heldag", Value ="0" },
+    new SelectListItem { Text = "Halvdag", Value ="1" },
+    new SelectListItem { Text = "_", Value ="2" }
 
-    })
-        <br />
-        @Html.LabelFor(x => x.Tisdag) <br />
-        @Html.DropDownListFor(x => x.Tisdag, new List<SelectListItem>
-    {
-        new SelectListItem { Text = "--Välj--", Value ="2" },
-        new SelectListItem { Text = "Heldag", Value ="0" },
-        new SelectListItem { Text = "Halvdag", Value ="1" },
-        new SelectListItem { Text = "_", Value ="2" }
+})
+    <br />
+    @Html.LabelFor(x => x.Tisdag)  <br />
+    @Html.DropDownListFor(x => x.Tisdag, new List<SelectListItem>
+{
+    new SelectListItem { Text = "--Välj--", Value ="2" },
+    new SelectListItem { Text = "Heldag", Value ="0" },
+    new SelectListItem { Text = "Halvdag", Value ="1" },
+    new SelectListItem { Text = "_", Value ="2" }
 
-    })
-        <br />
-        @Html.LabelFor(x => x.Onsdag) <br />
-        @Html.DropDownListFor(x => x.Onsdag, new List<SelectListItem>
-    {
-        new SelectListItem { Text = "--Välj--", Value ="2" },
-        new SelectListItem { Text = "Heldag", Value ="0" },
-        new SelectListItem { Text = "Halvdag", Value ="1" },
-        new SelectListItem { Text = "_", Value ="2" }
+})
+    <br />
+    @Html.LabelFor(x => x.Onsdag)  <br />
+    @Html.DropDownListFor(x => x.Onsdag, new List<SelectListItem>
+{
+    new SelectListItem { Text = "--Välj--", Value ="2" },
+    new SelectListItem { Text = "Heldag", Value ="0" },
+    new SelectListItem { Text = "Halvdag", Value ="1" },
+    new SelectListItem { Text = "_", Value ="2" }
 
-    })
-        <br />
-        @Html.LabelFor(x => x.Torsdag) <br />
-        @Html.DropDownListFor(x => x.Torsdag, new List<SelectListItem>
-    {
-        new SelectListItem { Text = "--Välj--", Value ="2" },
-        new SelectListItem { Text = "Heldag", Value ="0" },
-        new SelectListItem { Text = "Halvdag", Value ="1" },
-        new SelectListItem { Text = "_", Value ="2" }
+})
+    <br />
+    @Html.LabelFor(x => x.Torsdag)  <br />
+    @Html.DropDownListFor(x => x.Torsdag, new List<SelectListItem>
+{
+    new SelectListItem { Text = "--Välj--", Value ="2" },
+    new SelectListItem { Text = "Heldag", Value ="0" },
+    new SelectListItem { Text = "Halvdag", Value ="1" },
+    new SelectListItem { Text = "_", Value ="2" }
 
-    })
-        <br />
-        @Html.LabelFor(x => x.Fredag) <br />
-        @Html.DropDownListFor(x => x.Fredag, new List<SelectListItem>
-    {
-        new SelectListItem { Text = "--Välj--", Value ="2" },
-        new SelectListItem { Text = "Heldag", Value ="0" },
-        new SelectListItem { Text = "Halvdag", Value ="1" },
-        new SelectListItem { Text = "_", Value ="2" }
+})
+    <br />
+    @Html.LabelFor(x => x.Fredag)  <br />
+    @Html.DropDownListFor(x => x.Fredag, new List<SelectListItem>
+{
+    new SelectListItem { Text = "--Välj--", Value ="2" },
+    new SelectListItem { Text = "Heldag", Value ="0" },
+    new SelectListItem { Text = "Halvdag", Value ="1" },
+    new SelectListItem { Text = "_", Value ="2" }
 
-    })
-        <br />
-        <b>Är Deltagaren Aktiv</b><br />
-        @Html.CheckBoxFor(x => x.IsActive)
-        <br />
-        <button type="submit" class="btn btn-block btn-success">Lägg till deltagare</button>
+})
+    <br />
+    <b>Är Deltagaren Aktiv</b><br />
+    @Html.CheckBoxFor(x => x.IsActive)
+    <br />
+    <button type="submit" class="btn btn-block btn-success">Lägg till deltagare</button>
 
     }
 </b>

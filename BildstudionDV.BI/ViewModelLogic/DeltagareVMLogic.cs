@@ -31,6 +31,7 @@ namespace BildstudionDV.BI.ViewModelLogic
             {
                 IdAccess = index,
                 DeltagarNamn = viewModel.DeltagarNamn,
+                MatId = viewModel.MatId,
                 Måndag = viewModel.Måndag.ToString(),
                 Tisdag = viewModel.Tisdag.ToString(),
                 Onsdag = viewModel.Onsdag.ToString(),
@@ -54,6 +55,7 @@ namespace BildstudionDV.BI.ViewModelLogic
                 {
                     IdAcesss = model.IdAccess,
                     DeltagarNamn = model.DeltagarNamn,
+                    MatId = model.MatId,
                     Fredag = HelperConvertLogic.GetWorkDayFromString(model.Fredag),
                     Torsdag = HelperConvertLogic.GetWorkDayFromString(model.Torsdag),
                     Onsdag = HelperConvertLogic.GetWorkDayFromString(model.Onsdag),
@@ -73,6 +75,7 @@ namespace BildstudionDV.BI.ViewModelLogic
             {
                 IdAcesss = model.IdAccess,
                 DeltagarNamn = model.DeltagarNamn,
+                MatId = model.MatId,
                 Fredag = HelperConvertLogic.GetWorkDayFromString(model.Fredag),
                 Torsdag = HelperConvertLogic.GetWorkDayFromString(model.Fredag),
                 Onsdag = HelperConvertLogic.GetWorkDayFromString(model.Fredag),
@@ -89,6 +92,7 @@ namespace BildstudionDV.BI.ViewModelLogic
             {
                 IdAccess = viewModel.IdAcesss,
                 DeltagarNamn = viewModel.DeltagarNamn,
+                MatId = viewModel.MatId,
                 Fredag = viewModel.Fredag.ToString(),
                 Torsdag = viewModel.Torsdag.ToString(),
                 Onsdag = viewModel.Onsdag.ToString(),
