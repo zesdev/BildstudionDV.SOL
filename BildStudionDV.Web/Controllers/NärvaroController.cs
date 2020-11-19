@@ -18,11 +18,13 @@ namespace BildStudionDV.Web.Controllers
         INärvaroVMLogic närvaroLogic;
         IDeltagareVMLogic deltagarLogic;
         IDeltagarViewLogic deltagarViewLogic;
-        public NärvaroController(INärvaroVMLogic _närvaroLogic, IDeltagareVMLogic _deltagarLogic, IDeltagarViewLogic _deltagarViewLogic)
+        IMatlistaLogic matlistaLogic;
+        public NärvaroController(INärvaroVMLogic _närvaroLogic, IDeltagareVMLogic _deltagarLogic, IDeltagarViewLogic _deltagarViewLogic, IMatlistaLogic _matlistaLogic)
         {
             närvaroLogic = _närvaroLogic;
             deltagarLogic = _deltagarLogic;
             deltagarViewLogic = _deltagarViewLogic;
+            matlistaLogic = _matlistaLogic;
         }
         [Authorize]
         public IActionResult RemoveDeltagare(int id)
@@ -137,6 +139,8 @@ namespace BildStudionDV.Web.Controllers
                 {
                     HttpContext.Response.Cookies.Append("userSelectedDate", dateSupplied.ToString("yyyy-MM-dd"));
                 }
+                ViewBag.Month = dateSupplied.Month;
+                ViewBag.Year = dateSupplied.Year;
             }
             else
             {
@@ -144,7 +148,10 @@ namespace BildStudionDV.Web.Controllers
                 dateFromCookie = GetDateAsLastMonday(dateFromCookie);
                 model = närvaroLogic.GetAttendenceForDate(dateFromCookie);
                 ViewBag.date = dateFromCookie.ToString("yyyy-MM-dd");
+                ViewBag.Month = dateFromCookie.Month;
+                ViewBag.Year = dateFromCookie.Year;
             }
+    
             return View(model);
         }
 
@@ -325,8 +332,8 @@ namespace BildStudionDV.Web.Controllers
         }
         public IActionResult MatLista(int month, int year)
         {
-            //fortsätt här
-            return View();
+            var model = matlistaLogic.GetAttendenceForMonth(month, year);
+            return View(model);
         }
     }
 }

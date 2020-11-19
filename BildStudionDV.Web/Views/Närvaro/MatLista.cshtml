@@ -19,9 +19,9 @@
     @foreach (var deltagare in Model)
     {
 
-        <tr>
+        <tr style="color:white;">
             <td>
-                <h3>@deltagare.DeltagarNamn - @deltagare.DateConcerning.ToString("yyyy-MM")</h3> 
+                <h3>@deltagare.DeltagarNamn - @deltagare.DateConcerning.ToString("yyyy-MM")</h3>
             </td>
             <td>
                 @deltagare.MatId
@@ -41,42 +41,15 @@
     }
 
 
-    <tfoot>
-        <tr style="background-color: darkgray;color:black;">
-            <th>
-                Deltagarn
-            </th>
-            <th>
-                Närvaro i % / dagar
-            </th>
-            <th>Diagram</th>
-            <th>Redigera</th>
-        </tr>
-    </tfoot>
+<tfoot>
+    <tr style="background-color: darkgray;color:black;">
+        <th>
+            Deltagarn - Datum
+        </th>
+        <th>MatId</th>
+        <th>Pris Per Matlåda</th>
+        <th>Antal Beställda</th>
+        <th>Total Kostnad</th>
+    </tr>
+</tfoot>
 </table>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
-<script>
-    var ctx = document.getElementById('myChart');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: [@Html.Raw(ViewBag.DeltagarNames)],
-            datasets: [{
-                label: 'Procent Närvaro',
-                data: [@Html.Raw(ViewBag.DeltagarValue)],
-                backgroundColor: [@Html.Raw(ViewBag.Color)],
-                borderColor: [@Html.Raw(ViewBag.Color)],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
-</script>

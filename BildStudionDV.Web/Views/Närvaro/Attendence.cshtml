@@ -7,6 +7,7 @@
 {
     <input type="date" value="@ViewBag.date" name="date" id="date" onchange='document.formDate.submit()' class="btn-block" />
 }
+<input type="button" class="btn btn-light btn-block" onclick='window.location.href = "../Närvaro/matlista?month=@ViewBag.Month&year=@ViewBag.Year"' value="Se Matlista för Vald Månad" />
 <br />
 <center>
     @if (Model.Count != 0)
