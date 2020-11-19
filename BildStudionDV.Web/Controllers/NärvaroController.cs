@@ -122,7 +122,7 @@ namespace BildStudionDV.Web.Controllers
         {
             if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
                 return RedirectToAction("index", "inventarie");
-            string rawdate = HttpContext.Request.Cookies["userSelectedDate"];
+            
             var compareDate = DateTime.Now.AddYears(-100);
             var dateSupplied = Convert.ToDateTime(date);
             List<AttendenceViewModel> model = new List<AttendenceViewModel>();
@@ -131,19 +131,13 @@ namespace BildStudionDV.Web.Controllers
                 dateSupplied = GetDateAsLastMonday(dateSupplied);
                 ViewBag.date = dateSupplied.ToString("yyyy-MM-dd");
                 model = närvaroLogic.GetAttendenceForDate(dateSupplied);
-                try
-                {
-                    HttpContext.Response.Cookies.Append("userSelectedDate", model.FirstOrDefault().DateConcerning.ToString("yyyy-MM-dd"));
-                }
-                catch
-                {
-                    HttpContext.Response.Cookies.Append("userSelectedDate", dateSupplied.ToString("yyyy-MM-dd"));
-                }
+                HttpContext.Response.Cookies.Append("userSelectedDate", dateSupplied.ToString("yyyy-MM-dd"));
                 ViewBag.Month = dateSupplied.Month;
                 ViewBag.Year = dateSupplied.Year;
             }
             else
             {
+                string rawdate = HttpContext.Request.Cookies["userSelectedDate"];
                 var dateFromCookie = Convert.ToDateTime(rawdate);
                 dateFromCookie = GetDateAsLastMonday(dateFromCookie);
                 model = närvaroLogic.GetAttendenceForDate(dateFromCookie);
@@ -330,10 +324,111 @@ namespace BildStudionDV.Web.Controllers
                 }
             }
         }
+        [Authorize]
         public IActionResult MatLista(int month, int year)
         {
+            if (User.Identity.Name != "piahag" && User.Identity.Name != "admin")
+                return RedirectToAction("index", "inventarie");
+            ViewBag.Month = month;
+            ViewBag.Year = year;
             var model = matlistaLogic.GetAttendenceForMonth(month, year);
             return View(model);
+        }
+        [Authorize]
+        public IActionResult ExportMatlista(int month, int year)
+        {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
+            if (month == 0)
+                month = 12;
+            var model = matlistaLogic.GetAttendenceForMonth(month, year);
+            bool alternatingrow = true;
+            using (var workbook = new XLWorkbook())
+            {
+
+
+                var ws = workbook.Worksheets.Add("matlista");
+                var col1 = ws.Column("A");
+                col1.Width = 10;
+                var col2 = ws.Column("B");
+                col2.Width = 12;
+                var col3 = ws.Column("C");
+                col3.Width = 20;
+                var col4 = ws.Column("D");
+                col4.Width = 15;
+                var col5 = ws.Column("E");
+                col5.Width = 14;
+                var col6 = ws.Column("F");
+                col6.Width = 14;
+                workbook.SaveAs("matlista.xlsx");
+
+                var worksheet = workbook.Worksheet(1);
+                var currentRow = 1;
+                worksheet.Cell(currentRow, 1).Value = "Deltagare";
+                worksheet.Cell(currentRow, 2).Value = "Datum";
+                worksheet.Cell(currentRow, 3).Value = "MatId";
+                worksheet.Cell(currentRow, 4).Value = "Antal";
+                worksheet.Cell(currentRow, 5).Value = "Pris(kr)";
+                worksheet.Cell(currentRow, 6).Value = "TotalKostnad";
+                worksheet.Cell(currentRow, 1).Style.Fill.BackgroundColor = XLColor.Black;
+                worksheet.Cell(currentRow, 1).Style.Font.FontColor = XLColor.White;
+                worksheet.Cell(currentRow, 2).Style.Fill.BackgroundColor = XLColor.Black;
+                worksheet.Cell(currentRow, 2).Style.Font.FontColor = XLColor.White;
+                worksheet.Cell(currentRow, 3).Style.Fill.BackgroundColor = XLColor.Black;
+                worksheet.Cell(currentRow, 3).Style.Font.FontColor = XLColor.White;
+                worksheet.Cell(currentRow, 4).Style.Fill.BackgroundColor = XLColor.Black;
+                worksheet.Cell(currentRow, 4).Style.Font.FontColor = XLColor.White;
+                worksheet.Cell(currentRow, 5).Style.Fill.BackgroundColor = XLColor.Black;
+                worksheet.Cell(currentRow, 5).Style.Font.FontColor = XLColor.White;
+                worksheet.Cell(currentRow, 6).Style.Fill.BackgroundColor = XLColor.Black;
+                worksheet.Cell(currentRow, 6).Style.Font.FontColor = XLColor.White;
+                foreach (var matlistItem in model)
+                {
+                    if (matlistItem.Antal != 0)
+                    {
+                        if (alternatingrow)
+                        {
+                            currentRow++;
+                            worksheet.Cell(currentRow, 1).Value = matlistItem.DeltagarNamn;
+                            worksheet.Cell(currentRow, 2).Value = matlistItem.DateConcerning.ToString("yyyy-MM");
+                            worksheet.Cell(currentRow, 3).Value = matlistItem.MatId.ToString();
+                            worksheet.Cell(currentRow, 4).Value = matlistItem.Antal.ToString();
+                            worksheet.Cell(currentRow, 5).Value = matlistItem.PrisPerMatlåda.ToString();
+                            worksheet.Cell(currentRow, 6).Value = matlistItem.TotalKostnad.ToString();
+                            worksheet.Cell(currentRow, 1).Style.Fill.BackgroundColor = XLColor.LightGray;
+                            worksheet.Cell(currentRow, 2).Style.Fill.BackgroundColor = XLColor.LightGray;
+                            worksheet.Cell(currentRow, 3).Style.Fill.BackgroundColor = XLColor.LightGray;
+                            worksheet.Cell(currentRow, 4).Style.Fill.BackgroundColor = XLColor.LightGray;
+                            worksheet.Cell(currentRow, 5).Style.Fill.BackgroundColor = XLColor.LightGray;
+                            worksheet.Cell(currentRow, 6).Style.Fill.BackgroundColor = XLColor.LightGray;
+                            alternatingrow = false;
+                        }
+                        else
+                        {
+                            currentRow++;
+                            worksheet.Cell(currentRow, 1).Value = matlistItem.DeltagarNamn;
+                            worksheet.Cell(currentRow, 2).Value = matlistItem.DateConcerning.ToString("yyyy-MM");
+                            worksheet.Cell(currentRow, 3).Value = matlistItem.MatId.ToString();
+                            worksheet.Cell(currentRow, 4).Value = matlistItem.Antal.ToString();
+                            worksheet.Cell(currentRow, 5).Value = matlistItem.PrisPerMatlåda.ToString();
+                            worksheet.Cell(currentRow, 6).Value = matlistItem.TotalKostnad.ToString();
+                            alternatingrow = true;
+                        }
+                    }
+
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+
+                    return File(
+                        content,
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        "Matlista_" + model.FirstOrDefault().DateConcerning.ToString("yyyy-MM")+ ".xlsx");
+                }
+            }
         }
     }
 }
