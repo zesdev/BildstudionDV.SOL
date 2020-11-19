@@ -4,12 +4,14 @@
 
 <button class="btn-info btn-block btn nav-link" onclick='window.location.href = "../närvaro/index"'>Tillbaka till Närvaro index</button>
 <br />
+<br />
+<button class="btn-light btn-block btn nav-link" onclick='window.location.href = "../närvaro/ExportNärvaro?accessid="+@Html.Raw(ViewBag.accessid)+"&month="+@ViewBag.SelectValue'>Exportera Till Excel Fil</button><br />
 <h1>Diagram för @ViewBag.DeltagarNamn</h1>
 <br />
 <b>Välj hur många månader du vill se bakåt</b>
 @using (Html.BeginForm("diagram", "Närvaro", FormMethod.Get, new { name = "formDate" }))
 {
-    <hidden  itemid="accessid" name="accessid"></hidden>
+    <input type="hidden" id="accessid" name="accessid" value="@ViewBag.accessid">
     <select class="btn-block" name="month" onchange="document.formDate.submit()" id="month">
         <option selected value="@ViewBag.SelectValue">@ViewBag.SelectValue</option>
         @if (ViewBag.SelectValue != 12)

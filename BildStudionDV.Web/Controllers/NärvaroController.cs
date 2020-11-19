@@ -2,10 +2,12 @@
 using BildstudionDV.BI.Models;
 using BildstudionDV.BI.ViewModelLogic;
 using BildstudionDV.BI.ViewModels;
+using ClosedXML.Excel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -194,11 +196,132 @@ namespace BildStudionDV.Web.Controllers
                 month = 12;
             }
             ViewBag.SelectValue = month;
+            ViewBag.accessid = accessid;
             var deltagare = deltagarLogic.GetAllDeltagare().FirstOrDefault(x => x.IdAcesss == accessid);
             ViewBag.DeltagarNamn = deltagare.DeltagarNamn;
             var model = deltagarViewLogic.GetMonthAttendenceForDeltagare(deltagare.Id, month);
             return View(model);
         }
+        [Authorize]
+        public IActionResult ExportNärvaro(int accessid, int month)
+        {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
+            if (month == 0)
+                month = 12;
+            var deltagare = deltagarLogic.GetAllDeltagare().FirstOrDefault(x => x.IdAcesss == accessid);
+            var model = deltagarViewLogic.GetMonthAttendenceForDeltagare(deltagare.Id, month);
+            bool alternatingrow = true;
+            using (var workbook = new XLWorkbook())
+            {
+        
 
+                var ws = workbook.Worksheets.Add("Månader");
+                var col1 = ws.Column("A");
+                col1.Width = 10;
+                var col2 = ws.Column("B");
+                col2.Width = 9;
+                var col3 = ws.Column("C");
+                col3.Width = 10;
+                var col4 = ws.Column("D");
+                col4.Width = 8;
+                var col5 = ws.Column("E");
+                col5.Width = 9;
+                var col6 = ws.Column("F");
+                col6.Width = 9;
+                var col7 = ws.Column("G");
+                col7.Width = 4;
+                var col8 = ws.Column("H");
+                col8.Width = 4;
+                var col9 = ws.Column("I");
+                col9.Width = 11;
+                workbook.SaveAs("månader.xlsx");
+                
+                var worksheet = workbook.Worksheet(1);
+                var currentRow = 1;
+                worksheet.Cell(currentRow, 1).Value = "Datum";
+                worksheet.Cell(currentRow, 2).Value = "Deltagare";
+                worksheet.Cell(currentRow, 3).Value = "Närvaro";
+                worksheet.Cell(currentRow, 4).Value = "%";
+                worksheet.Cell(currentRow, 5).Value = "HelDagar";
+                worksheet.Cell(currentRow, 6).Value = "HalvDagar";
+                worksheet.Cell(currentRow, 7).Value = "Sjuk";
+                worksheet.Cell(currentRow, 8).Value = "Ledig";
+                worksheet.Cell(currentRow, 9).Value = "Frånvarande";
+                worksheet.Cell(currentRow, 1).Style.Fill.BackgroundColor = XLColor.Black;
+                worksheet.Cell(currentRow, 1).Style.Font.FontColor = XLColor.White;
+                worksheet.Cell(currentRow, 2).Style.Fill.BackgroundColor = XLColor.Black;
+                worksheet.Cell(currentRow, 2).Style.Font.FontColor = XLColor.White;
+                worksheet.Cell(currentRow, 3).Style.Fill.BackgroundColor = XLColor.Black;
+                worksheet.Cell(currentRow, 3).Style.Font.FontColor = XLColor.White;
+                worksheet.Cell(currentRow, 4).Style.Fill.BackgroundColor = XLColor.Black;
+                worksheet.Cell(currentRow, 4).Style.Font.FontColor = XLColor.White;
+                worksheet.Cell(currentRow, 5).Style.Fill.BackgroundColor = XLColor.Black;
+                worksheet.Cell(currentRow, 5).Style.Font.FontColor = XLColor.White;
+                worksheet.Cell(currentRow, 6).Style.Fill.BackgroundColor = XLColor.Black;
+                worksheet.Cell(currentRow, 6).Style.Font.FontColor = XLColor.White;
+                worksheet.Cell(currentRow, 7).Style.Fill.BackgroundColor = XLColor.Black;
+                worksheet.Cell(currentRow, 7).Style.Font.FontColor = XLColor.White;
+                worksheet.Cell(currentRow, 8).Style.Fill.BackgroundColor = XLColor.Black;
+                worksheet.Cell(currentRow, 8).Style.Font.FontColor = XLColor.White;
+                worksheet.Cell(currentRow, 9).Style.Fill.BackgroundColor = XLColor.Black;
+                worksheet.Cell(currentRow, 9).Style.Font.FontColor = XLColor.White;
+                foreach (var monthModel in model)
+                {
+                    if (monthModel.ExpectedDays != 0)
+                    {
+                        if (alternatingrow)
+                        {
+                            currentRow++;
+                            worksheet.Cell(currentRow, 1).Value = monthModel.MånadNamn;
+                            worksheet.Cell(currentRow, 2).Value = monthModel.deltagaren.DeltagarNamn;
+                            worksheet.Cell(currentRow, 3).Value = monthModel.AttendendedDays + "/" + monthModel.ExpectedDays + "dagar";
+                            worksheet.Cell(currentRow, 4).Value = monthModel.PercentageAttendence + "%";
+                            worksheet.Cell(currentRow, 5).Value = monthModel.Heldagar + "";
+                            worksheet.Cell(currentRow, 6).Value = monthModel.Halvdagar + "";
+                            worksheet.Cell(currentRow, 7).Value = monthModel.SjukDays + "";
+                            worksheet.Cell(currentRow, 8).Value = monthModel.LedigDays + "";
+                            worksheet.Cell(currentRow, 9).Value = monthModel.Frånvarande + "";
+                            worksheet.Cell(currentRow, 1).Style.Fill.BackgroundColor = XLColor.LightGray;
+                            worksheet.Cell(currentRow, 2).Style.Fill.BackgroundColor = XLColor.LightGray;
+                            worksheet.Cell(currentRow, 3).Style.Fill.BackgroundColor = XLColor.LightGray;
+                            worksheet.Cell(currentRow, 4).Style.Fill.BackgroundColor = XLColor.LightGray;
+                            worksheet.Cell(currentRow, 5).Style.Fill.BackgroundColor = XLColor.LightGray;
+                            worksheet.Cell(currentRow, 6).Style.Fill.BackgroundColor = XLColor.LightGray;
+                            worksheet.Cell(currentRow, 7).Style.Fill.BackgroundColor = XLColor.LightGray;
+                            worksheet.Cell(currentRow, 8).Style.Fill.BackgroundColor = XLColor.LightGray;
+                            worksheet.Cell(currentRow, 9).Style.Fill.BackgroundColor = XLColor.LightGray;
+                            alternatingrow = false;
+                        }
+                        else
+                        {
+                            currentRow++;
+                            worksheet.Cell(currentRow, 1).Value = monthModel.MånadNamn;
+                            worksheet.Cell(currentRow, 2).Value = monthModel.deltagaren.DeltagarNamn;
+                            worksheet.Cell(currentRow, 3).Value = monthModel.AttendendedDays + "/" + monthModel.ExpectedDays + "dagar";
+                            worksheet.Cell(currentRow, 4).Value = monthModel.PercentageAttendence + "%";
+                            worksheet.Cell(currentRow, 5).Value = monthModel.Heldagar + "";
+                            worksheet.Cell(currentRow, 6).Value = monthModel.Halvdagar + "";
+                            worksheet.Cell(currentRow, 7).Value = monthModel.SjukDays + "";
+                            worksheet.Cell(currentRow, 8).Value = monthModel.LedigDays + "";
+                            worksheet.Cell(currentRow, 9).Value = monthModel.Frånvarande + "";
+                            alternatingrow = true;
+                        }
+                    }
+
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+
+                    return File(
+                        content,
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        "attendence_"+deltagare.DeltagarNamn+"_"+model.FirstOrDefault().MånadNamn+"_till_"+model.LastOrDefault().MånadNamn+".xlsx");
+                }
+            }
+        }
     }
 }

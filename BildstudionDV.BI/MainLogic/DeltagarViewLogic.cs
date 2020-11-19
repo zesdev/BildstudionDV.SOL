@@ -314,6 +314,8 @@ namespace BildstudionDV.BI.MainLogic
             model.SjukDays = sjukDays;
             model.LedigDays = ledigDays;
             model.Frånvarande = frånvarandeDagar;
+            model.Heldagar = heldaysAttended;
+            model.Halvdagar = halvdaysAttended;
             actualAttendence = actualAttendence * 100;
             int actualAddedAttendence = 0;
             try

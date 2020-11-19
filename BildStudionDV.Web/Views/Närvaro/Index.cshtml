@@ -29,7 +29,7 @@
                 Sjuk: @deltagare.SjukDays.ToString() / Ledig: @deltagare.LedigDays.ToString() / Frånvarande: @deltagare.Frånvarande.ToString() dagar
             </td>
             <td>
-                <input type="button" class="btn btn-light" onclick='window.location.href = "../Närvaro/diagram?id=@deltagare.Deltagarn.IdAcesss"' value="Se Diagram/Rapport" />
+                <input type="button" class="btn btn-light" onclick='window.location.href = "../Närvaro/diagram?accessid=@deltagare.Deltagarn.IdAcesss"' value="Se Diagram/Rapport" />
             </td>
             <td>
                 <input type="button" class="btn btn-info" onclick='window.location.href = "../Närvaro/editdeltagare?id=@deltagare.Deltagarn.IdAcesss"' value="Redigera @deltagare.Deltagarn.DeltagarNamn" />
