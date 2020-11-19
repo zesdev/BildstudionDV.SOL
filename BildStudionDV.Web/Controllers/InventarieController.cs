@@ -1,10 +1,12 @@
 ﻿using BildstudionDV.BI.ViewModelLogic;
 using BildstudionDV.BI.ViewModels;
+using ClosedXML.Excel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -191,6 +193,8 @@ namespace BildStudionDV.Web.Controllers
                 var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn == oldEnhetName);
                 var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn == gruppName);
                 var model = inventarieLogic.GetInventarierFörGrupp(grupp.Id);
+                ViewBag.GruppNamn = grupp.GruppNamn;
+                ViewBag.EnhetNamn = enhet.Namn;
                 return View(model);
             }
             else
@@ -252,14 +256,19 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult AddInventarie(InventarieViewModel model)
         {
-            var enhetName = HttpContext.Request.Cookies["EnhetSelected"];
-            var gruppName = HttpContext.Request.Cookies["GruppSelected"];
-
-            var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn.ToLower() == enhetName.ToLower());
-            var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn.ToLower() == gruppName.ToLower());
-            model.GruppId = grupp.Id;
-            inventarieLogic.AddInventarie(model);
-            return RedirectToAction("Grupp");
+            if (ModelState.IsValid)
+            {
+                var enhetName = HttpContext.Request.Cookies["EnhetSelected"];
+                var gruppName = HttpContext.Request.Cookies["GruppSelected"];
+              
+                var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn.ToLower() == enhetName.ToLower());
+                var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn.ToLower() == gruppName.ToLower());
+                model.GruppId = grupp.Id;
+                inventarieLogic.AddInventarie(model);
+                return RedirectToAction("Grupp");
+            }
+            ViewBag.ErrorMessage = "Nåt fält fattas, se över fälten allt ska vara ifyllt";
+            return View(model);
         }
         [Authorize]
         public IActionResult EditInventarie(string id)
@@ -277,22 +286,27 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult EditInventarie(InventarieViewModel model)
         {
-            var enhetName = HttpContext.Request.Cookies["EnhetSelected"];
-            var gruppName = HttpContext.Request.Cookies["GruppSelected"];
-            int inventarieIndex = Convert.ToInt32(HttpContext.Request.Cookies["inventarieIndex"]);
-            var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn.ToLower() == enhetName.ToLower());
-            var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn.ToLower() == gruppName.ToLower());
-            var inventarie = inventarieLogic.GetInventarierFörGrupp(grupp.Id)[inventarieIndex];
-            
-            inventarie.Antal = model.Antal;
-            inventarie.Fabrikat = model.Fabrikat;
-            inventarie.InventarieKommentar = model.InventarieKommentar;
-            inventarie.InventarieNamn = model.InventarieNamn;
-            inventarie.Pris = model.Pris;
+            if (ModelState.IsValid)
+            {
+                var enhetName = HttpContext.Request.Cookies["EnhetSelected"];
+                var gruppName = HttpContext.Request.Cookies["GruppSelected"];
+                int inventarieIndex = Convert.ToInt32(HttpContext.Request.Cookies["inventarieIndex"]);
+                var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn.ToLower() == enhetName.ToLower());
+                var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn.ToLower() == gruppName.ToLower());
+                var inventarie = inventarieLogic.GetInventarierFörGrupp(grupp.Id)[inventarieIndex];
 
-            inventarieLogic.UpdateInventarie(inventarie);
+                inventarie.Antal = model.Antal;
+                inventarie.Fabrikat = model.Fabrikat;
+                inventarie.Kommentar = model.Kommentar;
+                inventarie.Namn = model.Namn;
+                inventarie.Pris = model.Pris;
 
-            return RedirectToAction("Grupp");
+                inventarieLogic.UpdateInventarie(inventarie);
+
+                return RedirectToAction("Grupp");
+            }
+            ViewBag.ErrorMessage = "Nåt fält fattas, se över fälten allt ska vara ifyllt";
+            return View(model);
         }
         [Authorize]
         public IActionResult RemoveInventarie(string index)
@@ -310,6 +324,103 @@ namespace BildStudionDV.Web.Controllers
             {
             }
             return RedirectToAction("Grupp");
+        }
+        public IActionResult ExportInventarie(string gruppnamn, string enhetnamn)
+        {
+            try
+            {
+                var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn == enhetnamn);
+                var grupp = enhet.grupperInEnhet.FirstOrDefault(x => x.GruppNamn == gruppnamn);
+                var model = inventarieLogic.GetInventarierFörGrupp(grupp.Id);
+                bool alternatingrow = true;
+                using (var workbook = new XLWorkbook())
+                {
+
+
+                    var ws = workbook.Worksheets.Add("inventarie");
+                    var col1 = ws.Column("A");
+                    col1.Width = 10;
+                    var col2 = ws.Column("B");
+                    col2.Width = 18;
+                    var col3 = ws.Column("C");
+                    col3.Width = 5;
+                    var col4 = ws.Column("D");
+                    col4.Width = 15;
+                    var col5 = ws.Column("E");
+                    col5.Width = 14;
+                    var col6 = ws.Column("F");
+                    col6.Width = 50;
+                    workbook.SaveAs("inventarie.xlsx");
+
+                    var worksheet = workbook.Worksheet(1);
+                    var currentRow = 1;
+                    worksheet.Cell(currentRow, 1).Value = "Datum";
+                    worksheet.Cell(currentRow, 2).Value = "InventarieTitel";
+                    worksheet.Cell(currentRow, 3).Value = "Antal";
+                    worksheet.Cell(currentRow, 4).Value = "Fabrikat";
+                    worksheet.Cell(currentRow, 5).Value = "Pris";
+                    worksheet.Cell(currentRow, 6).Value = "Kommentar";
+                    worksheet.Cell(currentRow, 1).Style.Fill.BackgroundColor = XLColor.Black;
+                    worksheet.Cell(currentRow, 1).Style.Font.FontColor = XLColor.White;
+                    worksheet.Cell(currentRow, 2).Style.Fill.BackgroundColor = XLColor.Black;
+                    worksheet.Cell(currentRow, 2).Style.Font.FontColor = XLColor.White;
+                    worksheet.Cell(currentRow, 3).Style.Fill.BackgroundColor = XLColor.Black;
+                    worksheet.Cell(currentRow, 3).Style.Font.FontColor = XLColor.White;
+                    worksheet.Cell(currentRow, 4).Style.Fill.BackgroundColor = XLColor.Black;
+                    worksheet.Cell(currentRow, 4).Style.Font.FontColor = XLColor.White;
+                    worksheet.Cell(currentRow, 5).Style.Fill.BackgroundColor = XLColor.Black;
+                    worksheet.Cell(currentRow, 5).Style.Font.FontColor = XLColor.White;
+                    worksheet.Cell(currentRow, 6).Style.Fill.BackgroundColor = XLColor.Black;
+                    worksheet.Cell(currentRow, 6).Style.Font.FontColor = XLColor.White;
+                    foreach (var inventarie in model)
+                    {
+                            if (alternatingrow)
+                            {
+                                currentRow++;
+                                worksheet.Cell(currentRow, 1).Value = inventarie.DatumRegistrerat.ToString("yyyy-MM-dd");
+                                worksheet.Cell(currentRow, 2).Value = inventarie.Namn;
+                                worksheet.Cell(currentRow, 3).Value = inventarie.Antal;
+                                worksheet.Cell(currentRow, 4).Value = inventarie.Fabrikat;
+                                worksheet.Cell(currentRow, 5).Value = inventarie.Pris;
+                                worksheet.Cell(currentRow, 6).Value = inventarie.Kommentar;
+                                worksheet.Cell(currentRow, 1).Style.Fill.BackgroundColor = XLColor.LightGray;
+                                worksheet.Cell(currentRow, 2).Style.Fill.BackgroundColor = XLColor.LightGray;
+                                worksheet.Cell(currentRow, 3).Style.Fill.BackgroundColor = XLColor.LightGray;
+                                worksheet.Cell(currentRow, 4).Style.Fill.BackgroundColor = XLColor.LightGray;
+                                worksheet.Cell(currentRow, 5).Style.Fill.BackgroundColor = XLColor.LightGray;
+                                worksheet.Cell(currentRow, 6).Style.Fill.BackgroundColor = XLColor.LightGray;
+                                alternatingrow = false;
+                            }
+                            else
+                            {
+                                currentRow++;
+                            worksheet.Cell(currentRow, 1).Value = inventarie.DatumRegistrerat.ToString("yyyy-MM-dd");
+                            worksheet.Cell(currentRow, 2).Value = inventarie.Namn;
+                            worksheet.Cell(currentRow, 3).Value = inventarie.Antal;
+                            worksheet.Cell(currentRow, 4).Value = inventarie.Fabrikat;
+                            worksheet.Cell(currentRow, 5).Value = inventarie.Pris;
+                            worksheet.Cell(currentRow, 6).Value = inventarie.Kommentar;
+                            alternatingrow = true;
+                            }
+                    }
+
+                    using (var stream = new MemoryStream())
+                    {
+                        workbook.SaveAs(stream);
+                        var content = stream.ToArray();
+
+                        return File(
+                            content,
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            "inventarier_" + grupp.GruppNamn + DateTime.Now.ToString("yyyy-MM-dd") + ".xlsx");
+                    }
+
+                }
+            }
+            catch
+            {
+                return RedirectToAction("index");
+            }
         }
     }
 }

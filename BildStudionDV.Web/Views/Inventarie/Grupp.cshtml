@@ -3,6 +3,9 @@
 {
     <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../inventarie/enhet"' value="Tillbaka till Enheten" />
 }
+<br />
+<button class="btn-light btn-block btn nav-link" onclick='window.location.href = "../inventarie/ExportInventarie?gruppnamn=@Html.Raw(ViewBag.GruppNamn)&enhetnamn=@Html.Raw(ViewBag.EnhetNamn)"'>Exportera Till Excel Fil</button>
+
 <form action="~/inventarie/addinventarie">
     <button class="btn-outline-success btn-block btn nav-link">Lägg Till Inventarie</button>
 </form>
@@ -20,17 +23,17 @@
     </thead>
     @for (int i = 0; i < Model.Count; i++)
     {
-<tr style="color:white;">
-    <td>@Model[i].InventarieNamn</td>
-    <td>@Model[i].Antal</td>
-    <td>@Model[i].Fabrikat</td>
-    <td>
-        <input type="button" class="btn btn-info" onclick='window.location.href = "../inventarie/editinventarie?id=@i"' value="Redigera Inventarien" />
-    </td>
-    <td>@Model[i].DatumRegistrerat.ToString("yyyy-MM-dd")</td>
-    <td>@Model[i].Pris</td>
-    <td>@Model[i].InventarieKommentar</td>
-</tr>
+        <tr style="color:white;">
+            <td>@Model[i].Namn</td>
+            <td>@Model[i].Antal</td>
+            <td>@Model[i].Fabrikat</td>
+            <td>
+                <input type="button" class="btn btn-info" onclick='window.location.href = "../inventarie/editinventarie?id=@i"' value="Redigera Inventarien" />
+            </td>
+            <td>@Model[i].DatumRegistrerat.ToString("yyyy-MM-dd")</td>
+            <td>@Model[i].Pris</td>
+            <td>@Model[i].Kommentar</td>
+        </tr>
     }
     <tfoot>
         <tr style="background-color: darkgray;color:black;">

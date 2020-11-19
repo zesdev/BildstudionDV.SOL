@@ -23,8 +23,8 @@ namespace BildstudionDV.BI.ViewModelLogic
                 DatumRegistrerat = DateTime.Now,
                 Fabrikat = viewModel.Fabrikat,
                 GruppId = viewModel.GruppId,
-                InventarieKommentar = viewModel.InventarieKommentar,
-                InventarieNamn = viewModel.InventarieNamn,
+                InventarieKommentar = viewModel.Kommentar,
+                InventarieNamn = viewModel.Namn,
                 Pris = viewModel.Pris
             };
             inventarieDb.AddInventarie(model);
@@ -50,8 +50,8 @@ namespace BildstudionDV.BI.ViewModelLogic
                     Fabrikat = model.Fabrikat,
                     GruppId = model.GruppId,
                     Id = model.Id,
-                    InventarieKommentar = model.InventarieKommentar,
-                    InventarieNamn = model.InventarieKommentar,
+                    Kommentar = model.InventarieKommentar,
+                    Namn= model.InventarieNamn,
                     Pris = model.Pris
                 };
                 returningList.Add(viewModel);
@@ -67,8 +67,8 @@ namespace BildstudionDV.BI.ViewModelLogic
                 Fabrikat = inventarie.Fabrikat,
                 GruppId = inventarie.GruppId,
                 Id = inventarie.Id,
-                InventarieKommentar = inventarie.InventarieKommentar,
-                InventarieNamn = inventarie.InventarieNamn,
+                InventarieKommentar = inventarie.Kommentar,
+                InventarieNamn = inventarie.Namn,
                 Pris = inventarie.Pris
             };
             inventarieDb.UpdateInventarieItem(model);
