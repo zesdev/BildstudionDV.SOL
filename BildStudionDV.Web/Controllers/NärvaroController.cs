@@ -327,11 +327,29 @@ namespace BildStudionDV.Web.Controllers
         [Authorize]
         public IActionResult MatLista(int month, int year)
         {
+            var monthModel = 0;
+            var yearModel = 0;
             if (User.Identity.Name != "piahag" && User.Identity.Name != "admin")
                 return RedirectToAction("index", "inventarie");
-            ViewBag.Month = month;
-            ViewBag.Year = year;
-            var model = matlistaLogic.GetAttendenceForMonth(month, year);
+            if(month == 0 || year == 0)
+            {
+                monthModel = Convert.ToInt32(HttpContext.Request.Cookies["monthSelected"]);
+                yearModel = Convert.ToInt32(HttpContext.Request.Cookies["yearSelected"]);
+            }
+            else
+            {
+                monthModel = month;
+                yearModel = year;
+            }
+            ViewBag.Month = monthModel;
+            ViewBag.Year = yearModel;
+            HttpContext.Response.Cookies.Append("monthSelected", monthModel.ToString());
+            HttpContext.Response.Cookies.Append("yearSelected", yearModel.ToString());
+
+
+
+            ViewBag.Pris = matlistaLogic.GetPris();
+            var model = matlistaLogic.GetAttendenceForMonth(monthModel, yearModel);
             return View(model);
         }
         [Authorize]
@@ -429,6 +447,17 @@ namespace BildStudionDV.Web.Controllers
                         "Matlista_" + model.FirstOrDefault().DateConcerning.ToString("yyyy-MM")+ ".xlsx");
                 }
             }
+        }
+        public IActionResult SetMatlådePris(int pris, int month, int year)
+        {
+            if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
+                return RedirectToAction("index", "inventarie");
+            if(pris != 0)
+            {
+                matlistaLogic.UpdatePris(pris);
+            }
+
+            return RedirectToAction("matlista");
         }
     }
 }

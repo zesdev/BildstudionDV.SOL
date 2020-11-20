@@ -50,50 +50,56 @@ namespace BildstudionDV.BI.MainLogic
 
                 int beställningarAntal = 0;
                 var deltagarAttendence = attendenceData.Where(x => x.DeltagarIdInQuestion == deltagare.Id).OrderBy(x => x.DateConcerning).ToList();
+                if(deltagarAttendence.Count != 0)
+                { 
                 var firstWeekDate = deltagarAttendence.FirstOrDefault().DateConcerning;
                 var check3DaysBeforeIfSameMonth = firstWeekDate.AddDays(-2).Month;
-                if (check3DaysBeforeIfSameMonth == firstWeekDate.AddDays(1).Month)
-                {
-                    // kolla sista datumet på sista veckan månaden innan
-                    var daysToCountFromFridayBackwars = 0;
-                    if (firstWeekDate.AddDays(-5).Month == firstWeekDate.Month)
-                        daysToCountFromFridayBackwars = 3;
-                    else if (firstWeekDate.AddDays(-4).Month == firstWeekDate.Month)
-                        daysToCountFromFridayBackwars = 2;
-                    else if (firstWeekDate.AddDays(-3).Month == firstWeekDate.Month)
-                        daysToCountFromFridayBackwars = 1;
-                    var oldmonth = month - 1;
-                    var oldyear = year;
-                    if (month == 1)
+                    if (check3DaysBeforeIfSameMonth == firstWeekDate.AddDays(1).Month)
                     {
-                        oldmonth = 12;
-                        oldyear = year - 1;
-                    }
-                    var attendenceForDatWeek = närvaroLogic.GetAllAttendence().Where(x => x.DateConcerning.Month == oldmonth && x.DateConcerning.Year == oldyear && x.DeltagarIdInQuestion == deltagare.Id).OrderByDescending(x => x.DateConcerning).ToList().FirstOrDefault();
-                    if (attendenceForDatWeek.Fredag == Models.Attendence.AttendenceOption.HeldagMat ||
-                        attendenceForDatWeek.Fredag == Models.Attendence.AttendenceOption.HalvdagMat ||
-                        attendenceForDatWeek.Fredag == Models.Attendence.AttendenceOption.FrånvarandeMat)
-                        beställningarAntal++;
-                    if (daysToCountFromFridayBackwars >= 1)
-                    {
-                        if (attendenceForDatWeek.Torsdag == Models.Attendence.AttendenceOption.HeldagMat ||
-          attendenceForDatWeek.Torsdag == Models.Attendence.AttendenceOption.HalvdagMat ||
-          attendenceForDatWeek.Torsdag == Models.Attendence.AttendenceOption.FrånvarandeMat)
-                            beställningarAntal++;
-                    }
-                    if (daysToCountFromFridayBackwars >= 2)
-                    {
-                        if (attendenceForDatWeek.Onsdag == Models.Attendence.AttendenceOption.HeldagMat ||
-          attendenceForDatWeek.Onsdag == Models.Attendence.AttendenceOption.HalvdagMat ||
-          attendenceForDatWeek.Onsdag == Models.Attendence.AttendenceOption.FrånvarandeMat)
-                            beställningarAntal++;
-                    }
-                    if (daysToCountFromFridayBackwars == 3)
-                    {
-                        if (attendenceForDatWeek.Tisdag == Models.Attendence.AttendenceOption.HeldagMat ||
-          attendenceForDatWeek.Tisdag == Models.Attendence.AttendenceOption.HalvdagMat ||
-          attendenceForDatWeek.Tisdag == Models.Attendence.AttendenceOption.FrånvarandeMat)
-                            beställningarAntal++;
+                        // kolla sista datumet på sista veckan månaden innan
+                        var daysToCountFromFridayBackwars = 0;
+                        if (firstWeekDate.AddDays(-5).Month == firstWeekDate.Month)
+                            daysToCountFromFridayBackwars = 3;
+                        else if (firstWeekDate.AddDays(-4).Month == firstWeekDate.Month)
+                            daysToCountFromFridayBackwars = 2;
+                        else if (firstWeekDate.AddDays(-3).Month == firstWeekDate.Month)
+                            daysToCountFromFridayBackwars = 1;
+                        var oldmonth = month - 1;
+                        var oldyear = year;
+                        if (month == 1)
+                        {
+                            oldmonth = 12;
+                            oldyear = year - 1;
+                        }
+                        var attendenceForDatWeek = närvaroLogic.GetAllAttendence().Where(x => x.DateConcerning.Month == oldmonth && x.DateConcerning.Year == oldyear && x.DeltagarIdInQuestion == deltagare.Id).OrderByDescending(x => x.DateConcerning).ToList().FirstOrDefault();
+                        if (attendenceForDatWeek != null)
+                        {
+                            if (attendenceForDatWeek.Fredag == Models.Attendence.AttendenceOption.HeldagMat ||
+                                attendenceForDatWeek.Fredag == Models.Attendence.AttendenceOption.HalvdagMat ||
+                                attendenceForDatWeek.Fredag == Models.Attendence.AttendenceOption.FrånvarandeMat)
+                                beställningarAntal++;
+                            if (daysToCountFromFridayBackwars >= 1)
+                            {
+                                if (attendenceForDatWeek.Torsdag == Models.Attendence.AttendenceOption.HeldagMat ||
+                  attendenceForDatWeek.Torsdag == Models.Attendence.AttendenceOption.HalvdagMat ||
+                  attendenceForDatWeek.Torsdag == Models.Attendence.AttendenceOption.FrånvarandeMat)
+                                    beställningarAntal++;
+                            }
+                            if (daysToCountFromFridayBackwars >= 2)
+                            {
+                                if (attendenceForDatWeek.Onsdag == Models.Attendence.AttendenceOption.HeldagMat ||
+                  attendenceForDatWeek.Onsdag == Models.Attendence.AttendenceOption.HalvdagMat ||
+                  attendenceForDatWeek.Onsdag == Models.Attendence.AttendenceOption.FrånvarandeMat)
+                                    beställningarAntal++;
+                            }
+                            if (daysToCountFromFridayBackwars == 3)
+                            {
+                                if (attendenceForDatWeek.Tisdag == Models.Attendence.AttendenceOption.HeldagMat ||
+                  attendenceForDatWeek.Tisdag == Models.Attendence.AttendenceOption.HalvdagMat ||
+                  attendenceForDatWeek.Tisdag == Models.Attendence.AttendenceOption.FrånvarandeMat)
+                                    beställningarAntal++;
+                            }
+                        }
                     }
                 }
                 for (int i = 0; i < deltagarAttendence.Count; i++)
@@ -182,6 +188,11 @@ namespace BildstudionDV.BI.MainLogic
                 returningList.Add(model);
             }
             return returningList;
+        }
+
+        public int GetPris()
+        {
+            return PrisDb.Find<MatLådePris>(x => true).FirstOrDefault().Pris;
         }
     }
 }

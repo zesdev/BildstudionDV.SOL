@@ -33,7 +33,7 @@ namespace BildStudionDV.Web.Controllers
                 var userModel = userLogic.GetUserViewModels().First(x => x.UserName == User.Identity.Name);
                 var grupp = gruppLogic.GetAllGrupper().FirstOrDefault(x => x.GruppNamn.ToLower() == userModel.AssociatedGrupp.ToLower());
                 var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Id == grupp.EnhetId);
-                return Redirect("../inventarie/grupp?gruppnamn="+userModel.AssociatedGrupp+"&enhetnamn="+enhet.Namn);
+                return Redirect("../inventarie/grupp?namn="+userModel.AssociatedGrupp+"&enhetnamn="+enhet.Namn);
             }
             var model = enhetLogic.GetAllEnheter();
             return View(model);
@@ -205,11 +205,19 @@ namespace BildStudionDV.Web.Controllers
                     gruppName = HttpContext.Request.Cookies["GruppSelected"];
                 }
                 var oldEnhetName = enhetnamn;
+                if(enhetnamn == null)
+                {
+                    oldEnhetName = HttpContext.Request.Cookies["EnhetSelected"];
+                }
                 HttpContext.Response.Cookies.Append("GruppSelected", gruppName);
+                HttpContext.Response.Cookies.Append("EnhetSelected", oldEnhetName);
+
 
                 var enhet = enhetLogic.GetAllEnheter().FirstOrDefault(x => x.Namn.ToLower() == oldEnhetName.ToLower());
                 var grupp = gruppLogic.GetGrupperInEnhet(enhet.Id).FirstOrDefault(x => x.GruppNamn.ToLower() == gruppName.ToLower());
                 var model = inventarieLogic.GetInventarierFörGrupp(grupp.Id);
+                ViewBag.GruppNamn = grupp.GruppNamn;
+                ViewBag.EnhetNamn = enhet.Namn;
                 return View(model);
             }
         }

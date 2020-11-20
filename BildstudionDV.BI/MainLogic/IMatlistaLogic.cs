@@ -7,5 +7,6 @@ namespace BildstudionDV.BI.MainLogic
     {
         List<MatListaMonthViewModel> GetAttendenceForMonth(int month, int year);
         void UpdatePris(int newPris);
+        int GetPris();
     }
 }
