@@ -181,6 +181,90 @@ namespace BildstudionDV.BI.ViewModelLogic
             }
             return returningList;
         }
+
+        public List<AttendenceViewModel> GetAttendenceForDate(DateTime date, DeltagareViewModel deltagarModel)
+        {
+            if (date.DayOfWeek == DayOfWeek.Tuesday)
+                date = date.AddDays(-1);
+            else if (date.DayOfWeek == DayOfWeek.Wednesday)
+                date = date.AddDays(-2);
+            else if (date.DayOfWeek == DayOfWeek.Thursday)
+                date = date.AddDays(-3);
+            else if (date.DayOfWeek == DayOfWeek.Friday)
+                date = date.AddDays(-4);
+            else if (date.DayOfWeek == DayOfWeek.Saturday)
+                date = date.AddDays(-5);
+            else if (date.DayOfWeek == DayOfWeek.Sunday)
+                date = date.AddDays(-6);
+            var returningList = new List<AttendenceViewModel>();
+            var deltagarnaActive = deltagareDb.GetAllDeltagarModels().Where(x => x.DeltagarNamn == deltagarModel.DeltagarNamn).ToList();
+
+            foreach (var deltagare in deltagarnaActive)
+            {
+                var attendences = närvaroDb.GetAttendenceForDate(date).Where(x => x.DeltagarIdInQuestion == deltagare.Id).ToList();
+                if (attendences.Count == 0)
+                {
+                    var model = new AttendenceModel
+                    {
+                        DateConcerning = date,
+                        DeltagarIdInQuestion = deltagare.Id,
+                        ExpectedFredag = deltagare.Fredag,
+                        ExpectedTorsdag = deltagare.Torsdag,
+                        ExpectedOnsdag = deltagare.Onsdag,
+                        ExpectedTisdag = deltagare.Tisdag,
+                        ExpectedMåndag = deltagare.Måndag,
+                        Fredag = AttendenceOption.Frånvarande.ToString(),
+                        Torsdag = AttendenceOption.Frånvarande.ToString(),
+                        Onsdag = AttendenceOption.Frånvarande.ToString(),
+                        Tisdag = AttendenceOption.Frånvarande.ToString(),
+                        Måndag = AttendenceOption.Frånvarande.ToString()
+                    };
+                    närvaroDb.AddAttendence(model);
+                    model = närvaroDb.GetAttendenceForDate(date).LastOrDefault(x => x.DeltagarIdInQuestion == deltagare.Id);
+                    var viewModel = new AttendenceViewModel
+                    {
+                        DateConcerning = date,
+                        DeltagarIdInQuestion = deltagare.Id,
+                        DeltagarNamn = deltagareDb.GetDeltagare(model.DeltagarIdInQuestion).DeltagarNamn,
+                        ExpectedFredag = HelperConvertLogic.GetWorkDayFromString(deltagare.Fredag),
+                        ExpectedTorsdag = HelperConvertLogic.GetWorkDayFromString(deltagare.Torsdag),
+                        ExpectedOnsdag = HelperConvertLogic.GetWorkDayFromString(deltagare.Onsdag),
+                        ExpectedTisdag = HelperConvertLogic.GetWorkDayFromString(deltagare.Tisdag),
+                        ExpectedMåndag = HelperConvertLogic.GetWorkDayFromString(deltagare.Måndag),
+                        Fredag = AttendenceOption.Frånvarande,
+                        Torsdag = AttendenceOption.Frånvarande,
+                        Onsdag = AttendenceOption.Frånvarande,
+                        Tisdag = AttendenceOption.Frånvarande,
+                        Måndag = AttendenceOption.Frånvarande,
+                        Id = model.Id
+                    };
+                    returningList.Add(viewModel);
+                }
+                else
+                {
+                    var model = attendences.FirstOrDefault(x => x.DeltagarIdInQuestion == deltagare.Id);
+                    var viewModel = new AttendenceViewModel
+                    {
+                        Id = model.Id,
+                        DateConcerning = date,
+                        DeltagarIdInQuestion = deltagare.Id,
+                        DeltagarNamn = deltagareDb.GetDeltagare(model.DeltagarIdInQuestion).DeltagarNamn,
+                        ExpectedFredag = HelperConvertLogic.GetWorkDayFromString(deltagare.Fredag),
+                        ExpectedTorsdag = HelperConvertLogic.GetWorkDayFromString(deltagare.Torsdag),
+                        ExpectedOnsdag = HelperConvertLogic.GetWorkDayFromString(deltagare.Onsdag),
+                        ExpectedTisdag = HelperConvertLogic.GetWorkDayFromString(deltagare.Tisdag),
+                        ExpectedMåndag = HelperConvertLogic.GetWorkDayFromString(deltagare.Måndag),
+                        Fredag = HelperConvertLogic.GetAttendenceOptionFromString(model.Fredag),
+                        Torsdag = HelperConvertLogic.GetAttendenceOptionFromString(model.Torsdag),
+                        Onsdag = HelperConvertLogic.GetAttendenceOptionFromString(model.Onsdag),
+                        Tisdag = HelperConvertLogic.GetAttendenceOptionFromString(model.Tisdag),
+                        Måndag = HelperConvertLogic.GetAttendenceOptionFromString(model.Måndag)
+                    };
+                    returningList.Add(viewModel);
+                }
+            }
+            return returningList;
+        }
         public void UpdateAttendences(List<AttendenceViewModel> attendences)
         { 
             var modelsAttendences = new List<AttendenceModel>();

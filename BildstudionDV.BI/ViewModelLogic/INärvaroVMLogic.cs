@@ -10,6 +10,7 @@ namespace BildstudionDV.BI.ViewModelLogic
         void AddNärvaro(AttendenceViewModel viewModel);
         List<AttendenceViewModel> GetAllAttendence();
         List<AttendenceViewModel> GetAttendenceForDate(DateTime date);
+        List<AttendenceViewModel> GetAttendenceForDate(DateTime date, DeltagareViewModel deltagarModel);
         List<AttendenceViewModel> GetAttendenceFörDeltagare(ObjectId deltagarId);
         void RemoveAttendenceItem(ObjectId Id);
         void UpdateAttendences(List<AttendenceViewModel> attendences);

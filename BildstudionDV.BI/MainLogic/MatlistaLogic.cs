@@ -53,16 +53,16 @@ namespace BildstudionDV.BI.MainLogic
                 if(deltagarAttendence.Count != 0)
                 { 
                 var firstWeekDate = deltagarAttendence.FirstOrDefault().DateConcerning;
-                var check3DaysBeforeIfSameMonth = firstWeekDate.AddDays(-2).Month;
-                    if (check3DaysBeforeIfSameMonth == firstWeekDate.AddDays(1).Month)
+                var check3DaysBeforeIfSameMonth = firstWeekDate.AddDays(-3).Month;
+                    if (check3DaysBeforeIfSameMonth == firstWeekDate.Month)
                     {
                         // kolla sista datumet på sista veckan månaden innan
                         var daysToCountFromFridayBackwars = 0;
-                        if (firstWeekDate.AddDays(-5).Month == firstWeekDate.Month)
+                        if (firstWeekDate.AddDays(-6).Month == firstWeekDate.Month)
                             daysToCountFromFridayBackwars = 3;
-                        else if (firstWeekDate.AddDays(-4).Month == firstWeekDate.Month)
+                        else if (firstWeekDate.AddDays(-5).Month == firstWeekDate.Month)
                             daysToCountFromFridayBackwars = 2;
-                        else if (firstWeekDate.AddDays(-3).Month == firstWeekDate.Month)
+                        else if (firstWeekDate.AddDays(-4).Month == firstWeekDate.Month)
                             daysToCountFromFridayBackwars = 1;
                         var oldmonth = month - 1;
                         var oldyear = year;
@@ -107,13 +107,13 @@ namespace BildstudionDV.BI.MainLogic
                     if (i == deltagarAttendence.Count - 1)
                     {
                         var daysToCountFromMonday = 0;
-                        if (deltagarAttendence[i].DateConcerning.AddDays(2).Month == deltagarAttendence[i].DateConcerning.Month)
+                        if (deltagarAttendence[i].DateConcerning.AddDays(1).Month == deltagarAttendence[i].DateConcerning.Month)
                             daysToCountFromMonday = 1;
-                        if (deltagarAttendence[i].DateConcerning.AddDays(3).Month == deltagarAttendence[i].DateConcerning.Month)
+                        if (deltagarAttendence[i].DateConcerning.AddDays(2).Month == deltagarAttendence[i].DateConcerning.Month)
                             daysToCountFromMonday = 2;
-                        if (deltagarAttendence[i].DateConcerning.AddDays(4).Month == deltagarAttendence[i].DateConcerning.Month)
+                        if (deltagarAttendence[i].DateConcerning.AddDays(3).Month == deltagarAttendence[i].DateConcerning.Month)
                             daysToCountFromMonday = 3;
-                        if (deltagarAttendence[i].DateConcerning.AddDays(5).Month == deltagarAttendence[i].DateConcerning.Month)
+                        if (deltagarAttendence[i].DateConcerning.AddDays(4).Month == deltagarAttendence[i].DateConcerning.Month)
                             daysToCountFromMonday = 4;
 
                         if(daysToCountFromMonday == 4)
