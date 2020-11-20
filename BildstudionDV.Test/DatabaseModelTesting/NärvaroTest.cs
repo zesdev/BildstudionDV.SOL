@@ -20,6 +20,7 @@ namespace BildstudionDV.Test
         Deltagare deltagareDb;
         DeltagareVMLogic deltagareVMLogic;
         NärvaroVMLogic närvaroVMLogic;
+        string deltagarNamn = "UTestDeltagare";
         
 
         [SetUp]
@@ -37,34 +38,35 @@ namespace BildstudionDV.Test
         [Test]
         public void a1TestLäggTillDeltagare()
         {
-            var deltagarModel = new DeltagareModel { DeltagarNamn = "Erik", IsActive = true, Måndag = WorkDay.Heldag.ToString(), Tisdag = WorkDay.Heldag.ToString(), Onsdag = WorkDay.Heldag.ToString(), Torsdag = WorkDay.Heldag.ToString(), Fredag = WorkDay.Halvdag.ToString() };
+            var deltagarModel = new DeltagareModel { DeltagarNamn = deltagarNamn, IsActive = true, Måndag = WorkDay.Heldag.ToString(), Tisdag = WorkDay.Heldag.ToString(), Onsdag = WorkDay.Heldag.ToString(), Torsdag = WorkDay.Heldag.ToString(), Fredag = WorkDay.Halvdag.ToString() };
             deltagareDb.AddDeltagare(deltagarModel);
             Assert.AreEqual(1, deltagareDb.GetAllDeltagarModels().Count);
         }
         [Test]
         public void a2TestRedigeraDeltagare()
         {
-            var deltagare = deltagareDb.GetAllDeltagarModels().FirstOrDefault();
+            var deltagare = deltagareDb.GetAllDeltagarModels().FirstOrDefault(x => x.DeltagarNamn == deltagarNamn);
             deltagare.Måndag = WorkDay.Halvdag.ToString();
             deltagareDb.UpdateDeltagare(deltagare);
-            Assert.AreEqual(WorkDay.Halvdag.ToString(), deltagareDb.GetAllDeltagarModels().FirstOrDefault().Måndag);
+            Assert.AreEqual(WorkDay.Halvdag.ToString(), deltagareDb.GetAllDeltagarModels().FirstOrDefault(x => x.DeltagarNamn == deltagarNamn).Måndag);
         }
         [Test]
         public void a3TestAddAttendence()
         {
-            var deltagare = deltagareDb.GetAllDeltagarModels().FirstOrDefault();
+            var deltagare = deltagareDb.GetAllDeltagarModels().FirstOrDefault(x => x.DeltagarNamn == deltagarNamn);
             var attendenceModel = new AttendenceModel { 
                 DateConcerning = DateTime.Now, DeltagarIdInQuestion = deltagare.Id, 
                 ExpectedMåndag = deltagare.Måndag, ExpectedTisdag = deltagare.Tisdag, ExpectedOnsdag = deltagare.Onsdag, ExpectedTorsdag = deltagare.Torsdag, ExpectedFredag = deltagare.Fredag,
                 Måndag = AttendenceOption.HalvdagMat.ToString(), Tisdag = AttendenceOption.Heldag.ToString(), Onsdag = AttendenceOption.Heldag.ToString(), Torsdag = AttendenceOption.Heldag.ToString(), Fredag = AttendenceOption.Halvdag.ToString()
             };
             närvaroDb.AddAttendence(attendenceModel);
-            Assert.AreEqual(AttendenceOption.HalvdagMat.ToString(), närvaroDb.GetAllAttendenceItems().FirstOrDefault().Måndag);
+            Assert.AreEqual(AttendenceOption.HalvdagMat.ToString(), närvaroDb.GetAllAttendenceItems().FirstOrDefault(x => x.DeltagarIdInQuestion == deltagare.Id).Måndag);
         }
         [Test]
         public void a4TestEditAttendence()
         {
-            var attendenceItem = närvaroDb.GetAllAttendenceItems().FirstOrDefault();
+            var deltagare = deltagareDb.GetAllDeltagarModels().FirstOrDefault(x => x.DeltagarNamn == deltagarNamn);
+            var attendenceItem = närvaroDb.GetAllAttendenceItems().FirstOrDefault(x => x.DeltagarIdInQuestion == deltagare.Id);
             attendenceItem.Måndag = AttendenceOption.HeldagMat.ToString();
             närvaroDb.UpdateAttendence(attendenceItem);
             Assert.AreEqual(AttendenceOption.HeldagMat.ToString(), närvaroDb.GetAttendenceItem(attendenceItem.Id).Måndag);
@@ -72,16 +74,19 @@ namespace BildstudionDV.Test
         [Test]
         public void a5TestTaBortDeltagare()
         {
-            var deltagarModel = deltagareDb.GetAllDeltagarModels().FirstOrDefault();
+            var deltagarModels = deltagareDb.GetAllDeltagarModels();
+            var deltagarModel = deltagarModels.FirstOrDefault(x => x.DeltagarNamn == deltagarNamn);
+            var precount = deltagarModels.Count;
             deltagareDb.RemoveDeltagare(deltagarModel.Id);
-            Assert.AreEqual(0, deltagareDb.GetAllDeltagarModels().Count);
+            Assert.AreEqual(precount-1, deltagareDb.GetAllDeltagarModels().Count);
         }
         [Test]
         public void b5TestAddDeltagare()
         {
+            deltagarNamn = "UTestUser2";
             var viewModel = new DeltagareViewModel
             {
-                DeltagarNamn = "Lina",
+                DeltagarNamn = deltagarNamn,
                 Måndag = WorkDay.Halvdag,
                 Tisdag = WorkDay.Halvdag,
                 Onsdag = WorkDay.Halvdag,
@@ -90,21 +95,21 @@ namespace BildstudionDV.Test
                 IsActive = true
             };
             deltagareVMLogic.AddDeltagare(viewModel);
-            Assert.AreEqual(1, deltagareVMLogic.GetAllDeltagare().Count);
+            Assert.AreEqual(1, deltagareVMLogic.GetAllDeltagare().Where(x => x.DeltagarNamn == deltagarNamn).ToList().Count);
         }
         [Test]
         public void b6TestUpdateDeltagare()
         {
-            var deltagare = deltagareVMLogic.GetAllDeltagare().FirstOrDefault(x => x.DeltagarNamn == "Lina");
+            var deltagare = deltagareVMLogic.GetAllDeltagare().FirstOrDefault(x => x.DeltagarNamn == deltagarNamn);
             deltagare.Måndag = WorkDay.Heldag;
 
             deltagareVMLogic.UpdateDeltagare(deltagare);
-            Assert.AreEqual(WorkDay.Heldag, deltagareVMLogic.GetAllDeltagare().First(x => x.DeltagarNamn == "Lina").Måndag);
+            Assert.AreEqual(WorkDay.Heldag, deltagareVMLogic.GetAllDeltagare().First(x => x.DeltagarNamn == deltagarNamn).Måndag);
         }
         [Test]
         public void b7AddAttendence()
         {
-            var deltagare = deltagareVMLogic.GetAllDeltagare().First(x => x.DeltagarNamn == "Lina");
+            var deltagare = deltagareVMLogic.GetAllDeltagare().First(x => x.DeltagarNamn == deltagarNamn);
 
             var viewModels = närvaroVMLogic.GetAttendenceForDate(DateTime.Now);
             Assert.AreEqual(1, viewModels.Count);
@@ -119,7 +124,7 @@ namespace BildstudionDV.Test
         [Test]
         public void b8AddAttendence2()
         {
-            var lina = deltagareVMLogic.GetAllDeltagare().First(x => x.DeltagarNamn == "Lina");
+            var lina = deltagareVMLogic.GetAllDeltagare().First(x => x.DeltagarNamn == deltagarNamn);
             var attendenceVms = närvaroVMLogic.GetAttendenceForDate(DateTime.Now.AddDays(7));
             var attendenceForLina = attendenceVms.First(x => x.DeltagarIdInQuestion == lina.Id);
             var indexOfLina = attendenceVms.IndexOf(attendenceForLina);
@@ -131,9 +136,10 @@ namespace BildstudionDV.Test
         [Test]
         public void p1TestRemoveDeltagare()
         {
-            var lina = deltagareVMLogic.GetAllDeltagare().First(x => x.DeltagarNamn == "Lina");
+            var lina = deltagareVMLogic.GetAllDeltagare().First(x => x.DeltagarNamn == deltagarNamn);
+            var precount = deltagareVMLogic.GetAllDeltagare().Count;
             deltagareVMLogic.RemoveDeltagare(lina.Id);
-            Assert.AreEqual(0, deltagareVMLogic.GetAllDeltagare().Count);
+            Assert.AreEqual(precount-1, deltagareVMLogic.GetAllDeltagare().Count);
         }
    
     }

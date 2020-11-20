@@ -21,6 +21,8 @@ namespace BildstudionDV.Test
         KundVMLogic kundVmLogic;
         JobbVMLogic jobbVmLogic;
         DelJobbVMLogic delJobbVMLogic;
+        string kundNamn = "Bert Karlsson TEST";
+        string kundNamn2 = "Uffe Larsson TEST";
 
         [SetUp]
         public void Setup()
@@ -39,22 +41,24 @@ namespace BildstudionDV.Test
         [Test]
         public void a1TestCreateKund()
         {
-            var kundModel = new KundModel { KundNamn = "Bert Karlsson" };
+            var precount = kundDb.GetAllKunder().Count;
+            var kundModel = new KundModel { KundNamn = kundNamn };
             kundDb.AddKund(kundModel);
-            Assert.AreEqual(1, kundDb.GetAllKunder().Count);
+            Assert.AreEqual(precount+1, kundDb.GetAllKunder().Count);
         }
         [Test]
         public void a2TestChangeKundNamn()
         {
-            var kund = kundDb.GetAllKunder().FirstOrDefault();
-            kund.KundNamn = "Bert Larsson";
+            var kund = kundDb.GetAllKunder().FirstOrDefault(x => x.KundNamn == kundNamn);
+            kundNamn = kundNamn + " bytt namn";
+            kund.KundNamn = kundNamn;
             kundDb.UpdateKund(kund);
-            Assert.AreEqual("Bert Larsson", kundDb.GetAllKunder().FirstOrDefault().KundNamn);
+            Assert.AreEqual(kundNamn, kundDb.GetAllKunder().FirstOrDefault().KundNamn);
         }
         [Test]
         public void a3TestAddJobb()
         {
-            var kund = kundDb.GetAllKunder().FirstOrDefault();
+            var kund = kundDb.GetAllKunder().FirstOrDefault(x => x.KundNamn == kundNamn);
             var jobbModel = new JobbModel { KundId = kund.Id, StatusPåJobbet = StatusTyp.Påbörjat.ToString(), DatumRegistrerat = DateTime.Now, Title="Bildjobb", TypAvJobb = JobbTyp.Bilder.ToString(), TypAvPrioritet = PrioritetTyp.Låg.ToString() };
             jobbDb.AddJobb(jobbModel);
             Assert.AreEqual(1, jobbDb.GetAllJobbs().Count);
@@ -62,7 +66,7 @@ namespace BildstudionDV.Test
         [Test]
         public void a4TestEditJobb()
         {
-            var kund = kundDb.GetAllKunder().FirstOrDefault();
+            var kund = kundDb.GetAllKunder().FirstOrDefault(x => x.KundNamn == kundNamn);
             var jobb = jobbDb.GetAllJobbs().FirstOrDefault();
             jobb.StatusPåJobbet = StatusTyp.KlarOchAvhämtat.ToString();
             jobbDb.UpdateJobb(jobb);
@@ -71,8 +75,8 @@ namespace BildstudionDV.Test
         [Test]
         public void a5TestAddDelJobb()
         {
-            var kund = kundDb.GetAllKunder().FirstOrDefault();
-            var jobb = jobbDb.GetAllJobbs().FirstOrDefault();
+            var kund = kundDb.GetAllKunder().FirstOrDefault(x => x.KundNamn == kundNamn);
+            var jobb = jobbDb.GetAllJobbs().FirstOrDefault(x => x.KundId == kund.Id);
             var delJobbModel = new DelJobbModel { StatusPåJobbet = DelJobbStatus.AttGöras.ToString(), JobbId = jobb.Id, Namn = "Deljob blabla", VemGör = "Erik" };
             delJobbDb.AddDelJobb(delJobbModel);
             Assert.AreEqual(1, delJobbDb.GetDelJobbsInJobb(jobb.Id).Count);
@@ -80,8 +84,8 @@ namespace BildstudionDV.Test
         [Test]
         public void a6TestRedigeraDeljJobb()
         {
-            var kund = kundDb.GetAllKunder().FirstOrDefault();
-            var jobb = jobbDb.GetAllJobbs().FirstOrDefault();
+            var kund = kundDb.GetAllKunder().FirstOrDefault(x => x.KundNamn == kundNamn);
+            var jobb = jobbDb.GetAllJobbs().FirstOrDefault(x => x.KundId == kund.Id);
             var delJobbModel = delJobbDb.GetDelJobbsInJobb(jobb.Id).FirstOrDefault();
             delJobbModel.StatusPåJobbet = DelJobbStatus.Klar.ToString();
             delJobbDb.UpdateDelJobb(delJobbModel);
@@ -90,34 +94,35 @@ namespace BildstudionDV.Test
         [Test]
         public void a7TestTaBortDelJobb()
         {
-            var kund = kundDb.GetAllKunder().FirstOrDefault();
-            var jobb = jobbDb.GetAllJobbs().FirstOrDefault();
+            var kund = kundDb.GetAllKunder().FirstOrDefault(x => x.KundNamn == kundNamn);
+            var jobb = jobbDb.GetAllJobbs().FirstOrDefault(x => x.KundId == kund.Id);
             var delJobbModel = delJobbDb.GetDelJobbsInJobb(jobb.Id).FirstOrDefault();
             delJobbDb.RemoveDelJobb(delJobbModel.Id);
             Assert.AreEqual(0, delJobbDb.GetDelJobbsInJobb(jobb.Id).Count);
         }
         [Test]
-        public void b1TestAddKundV()
+        public void b1TestAddKundVM()
         {
             var kundVm = new KundViewModel()
             {
-                KundNamn = "Uffe Larsson"
+                KundNamn = kundNamn2
             };
             kundVmLogic.AddKund(kundVm);
-            Assert.AreEqual(1, kundVmLogic.GetKunder().Where(x => x.KundNamn == "Uffe Larsson").ToList().Count);
+            Assert.AreEqual(1, kundVmLogic.GetKunder().Where(x => x.KundNamn == kundNamn2).ToList().Count);
         }
         [Test]
         public void b2TestBytKundNamnVM()
         {
-            var kundVm = kundVmLogic.GetKunder().FirstOrDefault(x => x.KundNamn == "Uffe Larsson");
-            kundVm.KundNamn = "Nils Larsson";
+            var kundVm = kundVmLogic.GetKunder().FirstOrDefault(x => x.KundNamn == kundNamn2);
+            kundNamn2 = kundNamn2 + " bytt namn";
+            kundVm.KundNamn = kundNamn2;
             kundVmLogic.UpdateKund(kundVm);
-            Assert.AreEqual("Nils Larsson", kundVmLogic.GetKunder().FirstOrDefault(x => x.Id == kundVm.Id).KundNamn);
+            Assert.AreEqual(kundNamn2, kundVmLogic.GetKunder().FirstOrDefault(x => x.Id == kundVm.Id).KundNamn);
         }
         [Test]
         public void b3AddJobbVM()
         {
-            var kundVm = kundVmLogic.GetKunder().FirstOrDefault(x => x.KundNamn == "Nils Larsson");
+            var kundVm = kundVmLogic.GetKunder().FirstOrDefault(x => x.KundNamn == kundNamn2);
             var kundJobb = new JobbViewModel
             {
                 StatusPåJobbet = StatusTyp.Påbörjat,
@@ -132,16 +137,9 @@ namespace BildstudionDV.Test
         }
 
         [Test]
-        public void d1TestRemoveKundVm()
-        {
-            var kundVm = kundVmLogic.GetKunder().FirstOrDefault(x => x.KundNamn == "Nils Larsson");
-            kundVmLogic.RemoveKund(kundVm.Id);
-            Assert.AreEqual(1, kundVmLogic.GetKunder().Count);
-        }
-        [Test]
         public void b4EditJobbVm()
         {
-            var kundVm = kundVmLogic.GetKunder().FirstOrDefault(x => x.KundNamn == "Nils Larsson");
+            var kundVm = kundVmLogic.GetKunder().FirstOrDefault(x => x.KundNamn == kundNamn2);
             var kundJobb = jobbVmLogic.GetJobbsForKund(kundVm.Id).FirstOrDefault();
             kundJobb.StatusPåJobbet = StatusTyp.SkaKollas;
             jobbVmLogic.UpdateJobb(kundJobb);
@@ -151,7 +149,7 @@ namespace BildstudionDV.Test
         [Test]
         public void b5TestAddDeljobb()
         {
-            var kundVm = kundVmLogic.GetKunder().FirstOrDefault(x => x.KundNamn == "Nils Larsson");
+            var kundVm = kundVmLogic.GetKunder().FirstOrDefault(x => x.KundNamn == kundNamn2);
             var kundJobb = jobbVmLogic.GetJobbsForKund(kundVm.Id).FirstOrDefault();
             var delJobbVM = new DelJobbViewModel
             {
@@ -167,7 +165,7 @@ namespace BildstudionDV.Test
         [Test]
         public void b6TestEditDeljobb()
         {
-            var kundVm = kundVmLogic.GetKunder().FirstOrDefault(x => x.KundNamn == "Nils Larsson");
+            var kundVm = kundVmLogic.GetKunder().FirstOrDefault(x => x.KundNamn == kundNamn2);
             var kundJobb = jobbVmLogic.GetJobbsForKund(kundVm.Id).FirstOrDefault();
             var delJobbVM = delJobbVMLogic.GetDelJobbsInJobb(kundJobb.Id).FirstOrDefault();
             delJobbVM.StatusPåJobbet = DelJobbStatus.Klar;
@@ -178,7 +176,7 @@ namespace BildstudionDV.Test
         [Test]
         public void b7TestRemoveDeljobb()
         {
-            var kundVm = kundVmLogic.GetKunder().FirstOrDefault(x => x.KundNamn == "Nils Larsson");
+            var kundVm = kundVmLogic.GetKunder().FirstOrDefault(x => x.KundNamn == kundNamn2);
             var kundJobb = jobbVmLogic.GetJobbsForKund(kundVm.Id).FirstOrDefault();
             var delJobbVM = delJobbVMLogic.GetDelJobbsInJobb(kundJobb.Id).FirstOrDefault();
             delJobbVMLogic.RemoveDelJobb(delJobbVM.Id);
@@ -187,17 +185,29 @@ namespace BildstudionDV.Test
         [Test]
         public void p1TestRemoveJobb()
         {
-            var kund = kundDb.GetAllKunder().FirstOrDefault();
+            var kund = kundDb.GetAllKunder().FirstOrDefault(x => x.KundNamn == kundNamn2);
             var jobb = jobbDb.GetAllJobbs().FirstOrDefault();
+            var precount = jobbDb.GetAllJobbs().Count;
             jobbDb.RemoveJobb(jobb.Id);
-            Assert.AreEqual(0, jobbDb.GetAllJobbs().Count);
+            Assert.AreEqual(precount-1, jobbDb.GetAllJobbs().Count);
+        }
+
+        [Test]
+        public void d1TestRemoveKundVm()
+        {
+            var precount = kundDb.GetAllKunder().Count;
+            var kundVm = kundVmLogic.GetKunder().FirstOrDefault(x => x.KundNamn == kundNamn2);
+            kundVmLogic.RemoveKund(kundVm.Id);
+            Assert.AreEqual(precount - 1, kundVmLogic.GetKunder().Count);
         }
         [Test]
         public void q1RemoveKund()
         {
-            var kund = kundDb.GetAllKunder().FirstOrDefault();
+            var kunder = kundDb.GetAllKunder();
+            var precount = kunder.Count;
+            var kund = kunder.FirstOrDefault(x => x.KundNamn == kundNamn);
             kundDb.RemoveKund(kund.Id);
-            Assert.AreEqual(0, kundDb.GetAllKunder().Count);
+            Assert.AreEqual(precount-1, kundDb.GetAllKunder().Count);
         }
     }
 }

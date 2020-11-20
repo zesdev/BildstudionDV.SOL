@@ -16,6 +16,7 @@ namespace BildstudionDV.Test
         Enhet enhetDb;
         Grupp gruppDb;
         Inventarie inventarieDb;
+        string enhetNamn;
         [SetUp]
         public void Setup()
         {
@@ -30,33 +31,38 @@ namespace BildstudionDV.Test
         [Test]
         public void a1TestAddEnhet()
         {
-            enhetDb.AddEnhet(new BI.Models.Inventarie.EnhetModel { ChefNamn = "Bert Karlsson", Namn = "Enhet 1" });
-            Assert.AreEqual(1, enhetDb.GetAllEnheter().Count);
+            var precount = enhetDb.GetAllEnheter().Count;
+            enhetNamn = "Enhet 404";
+            enhetDb.AddEnhet(new BI.Models.Inventarie.EnhetModel { ChefNamn = "Bert Karlsson", Namn = enhetNamn });
+            Assert.AreEqual(precount+1, enhetDb.GetAllEnheter().Count);
         }
         [Test]
         public void a2TestUpdateEnhetNamn()
         {
-            var enhet = enhetDb.GetAllEnheter().FirstOrDefault();
-            enhet.Namn = "Enhet 1 bytt namn";
+            var enhet = enhetDb.GetAllEnheter().FirstOrDefault(x => x.Namn == enhetNamn);
+            enhetNamn = "Enhet 404 bytt namn";
+            enhet.Namn = enhetNamn;
+            
             enhetDb.UpdateEnhet(enhet);
-            Assert.AreEqual("Enhet 1 bytt namn", enhetDb.GetAllEnheter()[0].Namn);
+            Assert.AreEqual("Enhet 404 bytt namn", enhetDb.GetAllEnheter().FirstOrDefault(x => x.Namn == enhetNamn).Namn);
         }
         [Test]
         public void a3TestAddGruppToEnhet()
         {
-            var enhet = enhetDb.GetAllEnheter().FirstOrDefault();
+            var enhet = enhetDb.GetAllEnheter().FirstOrDefault(x => x.Namn == enhetNamn);
             var gruppModel = new GruppModel { EnhetId = enhet.Id, GruppNamn = "Bildstudion" };
+            var precount = gruppDb.GetAllGruppsInEnhet(enhet.Id).Count;
             gruppDb.AddGrupp(gruppModel);
-            Assert.AreEqual(1, gruppDb.GetAllGruppsInEnhet(enhet.Id).Count);
+            Assert.AreEqual(precount+1, gruppDb.GetAllGruppsInEnhet(enhet.Id).Count);
         }
         [Test]
         public void a4TestBytNamnPåGrupp()
         {
-            var enhet = enhetDb.GetAllEnheter().FirstOrDefault();
+            var enhet = enhetDb.GetAllEnheter().FirstOrDefault(x => x.Namn == enhetNamn);
             var gruppModel = gruppDb.GetAllGruppsInEnhet(enhet.Id).FirstOrDefault();
             gruppModel.GruppNamn = "Bildstudion bytt namn";
             gruppDb.UpdateGruppModel(gruppModel);
-            enhet = enhetDb.GetAllEnheter().FirstOrDefault();
+            enhet = enhetDb.GetAllEnheter().FirstOrDefault(x => x.Namn == enhetNamn);
             var gruppNamnUpdated = gruppDb.GetAllGruppsInEnhet(enhet.Id).First().GruppNamn;
             Assert.AreEqual("Bildstudion bytt namn", gruppNamnUpdated);
         }
@@ -64,7 +70,7 @@ namespace BildstudionDV.Test
         [Test]
         public void a5TestAddInventarie()
         {
-            var enhet = enhetDb.GetAllEnheter().FirstOrDefault();
+            var enhet = enhetDb.GetAllEnheter().FirstOrDefault(x => x.Namn == enhetNamn);
             var grupp = gruppDb.GetAllGruppsInEnhet(enhet.Id).FirstOrDefault();
             var inventarieModel = new InventarieModel { Antal="1", Fabrikat= "Toshiba", GruppId = grupp.Id, InventarieKommentar="jättestark dator", InventarieNamn="Dator", Pris= "20kr" };
             inventarieDb.AddInventarie(inventarieModel);
@@ -73,7 +79,7 @@ namespace BildstudionDV.Test
         [Test]
         public void a6TestEditInventarie()
         {
-            var enhet = enhetDb.GetAllEnheter().FirstOrDefault();
+            var enhet = enhetDb.GetAllEnheter().FirstOrDefault(x => x.Namn == enhetNamn);
             var grupp = gruppDb.GetAllGruppsInEnhet(enhet.Id).FirstOrDefault();
             var inventarie = inventarieDb.GetListOfInventarierInGrupp(grupp.Id).FirstOrDefault();
             inventarie.InventarieNamn = "Gammal dator";
@@ -83,7 +89,7 @@ namespace BildstudionDV.Test
         [Test]
         public void u1TestTaBortInventarie()
         {
-            var enhet = enhetDb.GetAllEnheter().FirstOrDefault();
+            var enhet = enhetDb.GetAllEnheter().FirstOrDefault(x => x.Namn == enhetNamn);
             var grupp = gruppDb.GetAllGruppsInEnhet(enhet.Id).FirstOrDefault();
             var inventarie = inventarieDb.GetListOfInventarierInGrupp(grupp.Id).FirstOrDefault();
             inventarieDb.RemoveInventarie(inventarie.Id);
@@ -92,16 +98,17 @@ namespace BildstudionDV.Test
         [Test]
         public void x1TestTaBortGrupp()
         {
-            var enhet = enhetDb.GetAllEnheter().FirstOrDefault();
+            var enhet = enhetDb.GetAllEnheter().FirstOrDefault(x => x.Namn == enhetNamn);
             var grupp = gruppDb.GetAllGruppsInEnhet(enhet.Id).FirstOrDefault();
             gruppDb.RemoveGrupp(grupp.Id);
         }
         [Test]
         public void y1RemoveEnhet()
         {
-            var enhet = enhetDb.GetAllEnheter().FirstOrDefault();
+            var precount = enhetDb.GetAllEnheter().Count;
+            var enhet = enhetDb.GetAllEnheter().FirstOrDefault(x => x.Namn == enhetNamn);
             enhetDb.RemoveEnhet(enhet.Id);
-            Assert.AreEqual(0, enhetDb.GetAllEnheter().Count);
+            Assert.AreEqual(precount-1, enhetDb.GetAllEnheter().Count);
         }
     }
 }
