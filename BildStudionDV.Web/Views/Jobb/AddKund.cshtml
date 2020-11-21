@@ -1,21 +1,22 @@
 ﻿@model BildstudionDV.BI.ViewModels.KundViewModel
-    <center>
-        <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../jobb/index"' value="Tillbaka till Index" />
-        <b>
+@{ViewBag.Title = "Lägger till Kund"; }
+<center>
+    <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../jobb/index"' value="Tillbaka till Index" />
+    <b>
 
-            <font color="red">@ViewBag.Message</font>
+        <font color="red">@ViewBag.Message</font>
+        <br />
+
+        @using (Html.BeginForm())
+        {
+            <b>Kundens Namn:</b><br />
+            @Html.TextBoxFor(x => x.KundNamn);
             <br />
+            <br />
+            <button type="submit" class="btn btn-success">Lägg Till Kund</button>
+            <b><font color="red">@ViewBag.ErrorMessage</font></b>
 
-            @using (Html.BeginForm())
-            {
-                <b>Kundens Namn:</b><br />
-                @Html.TextBoxFor(x => x.KundNamn);
-                <br />
-                <br />
-                <button type="submit" class="btn btn-success">Lägg Till Kund</button>
-                <b><font color="red">@ViewBag.ErrorMessage</font></b>
+        }
 
-            }
-
-        </b>
-    </center>
+    </b>
+</center>

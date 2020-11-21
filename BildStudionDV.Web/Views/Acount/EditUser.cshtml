@@ -1,26 +1,28 @@
 ﻿@model BildstudionDV.BI.ViewModels.UserProfileViewModel
+
+@{ViewBag.Title = "Redigera konto"; }
 <center>
     <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../inventarie/index"' value="Tillbaka till Enheter" />
     @using (Html.BeginForm())
     {
 
 
-        <b>AnvändarNamn:</b><br />
-        @Html.TextBoxFor(x => x.UserName) <br />
-        <b>Tillhörandegrupp:</b><br />
-        <select id="grupp" name="grupp">
-    @for (int i = 0; i < ViewBag.gruppNamnList.Count; i++)
+    <b>AnvändarNamn:</b><br />
+    @Html.TextBoxFor(x => x.UserName)  <br />
+    <b>Tillhörandegrupp:</b><br />
+    <select id="grupp" name="grupp">
+        @for (int i = 0; i < ViewBag.gruppNamnList.Count; i++)
     {
         if (ViewBag.gruppNamnList[i] == Model.AssociatedGrupp)
         {
-            <option selected value="@ViewBag.gruppNamnList[i]">@ViewBag.gruppNamnList[i]</option>
+        <option selected value="@ViewBag.gruppNamnList[i]">@ViewBag.gruppNamnList[i]</option>
         }
         else
         {
         <option value="@ViewBag.gruppNamnList[i]">@ViewBag.gruppNamnList[i]</option>
         }
     }
-        </select> <br />
-        <input type="submit" class="btn btn-success" value="Updatera Användaren" />
+    </select>  <br />
+    <input type="submit" class="btn btn-success" value="Updatera Användaren" />
     }
 </center>

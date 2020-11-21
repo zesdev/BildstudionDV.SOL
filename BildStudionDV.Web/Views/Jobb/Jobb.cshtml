@@ -1,65 +1,65 @@
 ﻿@model List<BildstudionDV.BI.ViewModels.JobbViewModel>
+@{ViewBag.Title = "Jobb för @ViewBag.KundNamn"; }
 <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../jobb/index"' value="Tillbaka till Index" />
 <br />
 <h1>Visar jobb för @ViewBag.KundNamn</h1>
 <form action="~/jobb/addjobb?KundNamn=@ViewBag.KundNamn">
-    <button class="btn-outline-success btn-block btn nav-link">Lägg Till Nytt Jobb</button>
+    <button class="btn-success btn-block btn nav-link">Lägg Till Nytt Jobb</button>
 </form>
+<br />
 @if (Model.Count != 0)
 {
-<table class="table table-striped table-bordered">
-        <thead>
-            <tr style="background-color: darkgray;color:black;">
-                <th>JobbTyp</th>
-                <th>Titel</th>
-                <th>DelJobb Gjorda/Klara</th>
-                <th>Redigera jobb</th>
-                <th>DelJobb</th>
-            </tr>
-        </thead>
-        @foreach (var jobb in Model.Where(x => x.StatusPåJobbet != BildstudionDV.BI.Models.Jobb.StatusTyp.KlarOchAvhämtat))
-        {
-            <tr style="color:white;">
-                <td>@jobb.TypAvJobb</td>
-                <td>@jobb.Title</td>
-                <td>@jobb.delJobbs.Where(x => x.StatusPåJobbet == BildstudionDV.BI.Models.Jobb.DelJobbStatus.Klar).ToList().Count / @jobb.delJobbs.Count - @jobb.StatusPåJobbet.ToString()</td>
-                <td>
-                    <input type="button" class="btn btn-info" onclick='window.location.href = "../jobb/EditJobb?AccessId=@jobb.AccessId"' value="Redigera" />
-                </td>
-                <td>
-                    <input type="button" class="btn btn-dark" onclick='window.location.href = "../jobb/deljobb?AccessId=@jobb.AccessId"' value="Se DelJobb" />
-                </td>
+<center>
+    @foreach (var jobb in Model.Where(x => x.StatusPåJobbet != BildstudionDV.BI.Models.Jobb.StatusTyp.KlarOchAvhämtat))
+    {
+    <div class="row">
+        <div class="col"></div>
+        <div style="background-color:darkred;color:white;" class="col-8">
+            <h1>@jobb.TypAvJobb</h1>
+            <h3>@jobb.Title</h3>
+            @jobb.delJobbs.Where(x => x.StatusPåJobbet == BildstudionDV.BI.Models.Jobb.DelJobbStatus.Klar).ToList().Count / @jobb.delJobbs.Count - @jobb.StatusPåJobbet.ToString() <br />
 
-            </tr>
-        }
+            <input type="button" class="btn btn-info btn-block" onclick='window.location.href = "../jobb/EditJobb?AccessId=@jobb.AccessId"' value="Redigera" />
+            <input type="button" class="btn btn-dark btn-block" onclick='window.location.href = "../jobb/deljobb?AccessId=@jobb.AccessId"' value="Se DelJobb" /><br />
+
+        </div>
+        <div class="col"></div>
+    </div>
+    <br />
+    }
+    <button class="btn-success btn-block btn nav-link" onclick="HideShow()">Se Färdiga Jobb</button>
+    <div style="display:none" name="finishidjobbs" id="finishidjobbs">
         @foreach (var jobb in Model.Where(x => x.StatusPåJobbet == BildstudionDV.BI.Models.Jobb.StatusTyp.KlarOchAvhämtat))
-        {
-            <tr style="background: darkgreen; color:white">
-                <td>@jobb.TypAvJobb</td>
-                <td>@jobb.Title</td>
-                <td>@jobb.delJobbs.Where(x => x.StatusPåJobbet == BildstudionDV.BI.Models.Jobb.DelJobbStatus.Klar).ToList().Count / @jobb.delJobbs.Count - @jobb.StatusPåJobbet.ToString()</td>
-                <td>
-                    <input type="button" class="btn btn-info" onclick='window.location.href = "../jobb/EditJobb?AccessId=@jobb.AccessId"' value="Redigera" />
-                </td>
-                <td>
-                    <input type="button" class="btn btn-dark" onclick='window.location.href = "../jobb/deljobb?AccessId=@jobb.AccessId"' value="Se DelJobb" />
-                </td>
+    {
+        <div class="row">
+            <div class="col"></div>
+            <div style="background-color:darkgreen;color:white;" class="col-8">
+                <h1>@jobb.TypAvJobb</h1>
+                <h3>@jobb.Title</h3>
+                @jobb.delJobbs.Where(x => x.StatusPåJobbet == BildstudionDV.BI.Models.Jobb.DelJobbStatus.Klar).ToList().Count / @jobb.delJobbs.Count - @jobb.StatusPåJobbet.ToString()<br />
+                <br />
+                <input type="button" class="btn btn-info btn-block" onclick='window.location.href = "../jobb/EditJobb?AccessId=@jobb.AccessId"' value="Redigera" />
+                <input type="button" class="btn btn-dark btn-block" onclick='window.location.href = "../jobb/deljobb?AccessId=@jobb.AccessId"' value="Se DelJobb" /><br />
 
-            </tr>
-        }
-        <tfoot>
-            <tr style="background-color: darkgray;color:black;">
-                <th>JobbTyp</th>
-                <th>Titel</th>
-                <th>DelJobb Gjorda/Klara</th>
-                <th>Redigera jobb</th>
-                <th>DelJobb</th>
-            </tr>
-        </tfoot>
-</table>
+            </div>
+            <div class="col"></div>
+        </div>
+        <br />
+    }
+    </div>
+</center>
 
+<script>
+    function HideShow() {
+        var e = document.getElementById('finishidjobbs');
+        if (e.style.display == 'block')
+            e.style.display = 'none';
+        else
+            e.style.display = 'block';
+    }
+</script>
 }
-@if(Model.Count == 0)
+@if (Model.Count == 0)
 {
-    <h1>Här var det tomt! Lägg till ett jobb så blir det lite liv...</h1>
+<h1>Här var det tomt! Lägg till ett jobb så blir det lite liv...</h1>
 }

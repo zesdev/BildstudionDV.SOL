@@ -1,30 +1,39 @@
 ﻿@model BildstudionDV.BI.ViewModels.UserProfileViewModel
 
 @{
-    ViewData["Title"] = "User Login";
+    ViewData["Title"] = "Inloggning";
 }
 
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="UserLogin">
-            <h2><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-    <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-</svg>Logga in</h2>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input type="password" asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Logga In" class="btn btn-default btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>   
+<center>
+    <img src="~/img/icon.png" width="30%;" />
+            <form asp-action="UserLogin">
+                <h2>
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                    </svg>Logga in
+                </h2>
+                <div class="row">
+                    <div class="col"></div>
+
+                    <div class="col-8">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group center-block">
+                            <label asp-for="UserName" class="control-label"></label>
+                            <input asp-for="UserName" class="form-control" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group center-block">
+                            <label asp-for="Password" class="control-label"></label>
+                            <input type="password" asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group center-block">
+                            <input type="submit" value="Logga In" class="btn btn-default btn-primary" />
+                        </div>
+                    </div>
+                    <div class="col"></div>
+                </div>
+            </form>
+
+</center>

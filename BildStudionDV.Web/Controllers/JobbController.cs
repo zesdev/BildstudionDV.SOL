@@ -14,18 +14,20 @@ namespace BildStudionDV.Web.Controllers
         IJobbVMLogic jobbLogic;
         IKundVMLogic kundLogic;
         IDelJobbVMLogic delJobbLogic;
+        List<KundViewModel> kundLista;
         public JobbController(IJobbVMLogic _jobbLogic, IDelJobbVMLogic _delJobbLogic, IKundVMLogic _kundLogic)
         {
             jobbLogic = _jobbLogic;
             kundLogic = _kundLogic;
             delJobbLogic = _delJobbLogic;
+            kundLista = kundLogic.GetKunder();
         }
         [Authorize]
         public IActionResult Index()
         {
             if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
                 return RedirectToAction("index", "inventarie");
-            return View(kundLogic.GetKunder());
+            return View(kundLista);
         }
         [Authorize]
         public IActionResult AddKund()
@@ -46,6 +48,7 @@ namespace BildStudionDV.Web.Controllers
                 return View();
             }
             kundLogic.AddKund(model);
+            kundLista = kundLogic.GetKunder();
             return RedirectToAction("Index");
         }
         [Authorize]
@@ -53,7 +56,7 @@ namespace BildStudionDV.Web.Controllers
         {
             if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
                 return RedirectToAction("index", "inventarie");
-            var model = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == kundNamn);
+            var model = kundLista.FirstOrDefault(x => x.KundNamn == kundNamn);
             model.OldName = model.KundNamn;
             return View(model);
         }
@@ -68,9 +71,10 @@ namespace BildStudionDV.Web.Controllers
                 ViewBag.ErrorMessage = "Kunden måste ha ett namn!";
                 return View(model);
             }
-            var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == model.OldName);
+            var kund = kundLista.FirstOrDefault(x => x.KundNamn == model.OldName);
             kund.KundNamn = model.KundNamn;
             kundLogic.UpdateKund(kund);
+            kundLista = kundLogic.GetKunder();
             return RedirectToAction("Index");
         }
         [Authorize]
@@ -84,8 +88,8 @@ namespace BildStudionDV.Web.Controllers
             }
             ViewBag.KundNamn = KundNamn;
             
-            var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
-            var model = jobbLogic.GetJobbsForKund(kund.Id);
+            var kund = kundLista.FirstOrDefault(x => x.KundNamn == KundNamn);
+            var model = kund.listOfJobbs;
             HttpContext.Response.Cookies.Append("userSelectedKund", KundNamn);
             return View(model);
         }
@@ -97,8 +101,9 @@ namespace BildStudionDV.Web.Controllers
                 return RedirectToAction("index", "inventarie");
             try
             {
-                var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == kundNamn);
+                var kund = kundLista.FirstOrDefault(x => x.KundNamn == kundNamn);
                 kundLogic.RemoveKund(kund.Id);
+                kundLista = kundLogic.GetKunder();
             }
             catch
             {
@@ -126,6 +131,7 @@ namespace BildStudionDV.Web.Controllers
             model.KundId = kund.Id;
             model.DatumRegistrerat = DateTime.Now;
             jobbLogic.AddJobb(model);
+            kundLista = kundLogic.GetKunder();
             return RedirectToAction("jobb", "jobb", model.KundNamn, null);
         }
         [Authorize]
@@ -134,8 +140,8 @@ namespace BildStudionDV.Web.Controllers
             if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
                 return RedirectToAction("index", "inventarie");
             var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
-            var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
-            var model = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == AccessId);
+            var kund = kundLista.FirstOrDefault(x => x.KundNamn == KundNamn);
+            var model = kund.listOfJobbs.FirstOrDefault(x => x.AccessId == AccessId);
             ViewBag.AccessId = AccessId;
             model.KundNamn = KundNamn;
             return View(model);
@@ -149,9 +155,10 @@ namespace BildStudionDV.Web.Controllers
             try
             {
                 var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
-                var kund = kundLogic.GetKunder().First(x => x.KundNamn == KundNamn);
+                var kund = kundLista.First(x => x.KundNamn == KundNamn);
                 var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == AccessId);
                 jobbLogic.RemoveJobb(jobb.Id);
+                kundLista = kundLogic.GetKunder();
             }
             catch
             {
@@ -164,14 +171,15 @@ namespace BildStudionDV.Web.Controllers
         {
             if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
                 return RedirectToAction("index", "inventarie");
-            var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == model.KundNamn);
-            var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == model.AccessId);
+            var kund = kundLista.FirstOrDefault(x => x.KundNamn == model.KundNamn);
+            var jobb = kund.listOfJobbs.FirstOrDefault(x => x.AccessId == model.AccessId);
             jobb.KundId = kund.Id;
             jobb.StatusPåJobbet = model.StatusPåJobbet;
             jobb.Title = model.Title;
             jobb.TypAvJobb = model.TypAvJobb;
             jobb.TypAvPrioritet = model.TypAvPrioritet;
             jobbLogic.UpdateJobb(jobb);
+            kundLista = kundLogic.GetKunder();
             return RedirectToAction("Jobb");
         }
         [Authorize]
@@ -190,9 +198,9 @@ namespace BildStudionDV.Web.Controllers
             }
             var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
             HttpContext.Response.Cookies.Append("userSelectedJobbAccessId", AccessIdInt.ToString());
-            var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
-            var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == AccessIdInt);
-            var model = delJobbLogic.GetDelJobbsInJobb(jobb.Id);
+            var kund = kundLista.FirstOrDefault(x => x.KundNamn == KundNamn);
+            var jobb = kund.listOfJobbs.FirstOrDefault(x => x.AccessId == AccessIdInt);
+            var model = jobb.delJobbs;
             ViewBag.JobbTitel = jobb.Title;
             ViewBag.KundNamn = kund.KundNamn;
             ViewBag.AccessId = AccessId;
@@ -207,10 +215,11 @@ namespace BildStudionDV.Web.Controllers
             {
                 var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
                 var JobbAccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
-                var kund = kundLogic.GetKunder().First(x =>x.KundNamn == KundNamn);
-                var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == JobbAccessId);
-                var deljobb = delJobbLogic.GetDelJobbsInJobb(jobb.Id).FirstOrDefault(x => x.AccessId == AccessId);
+                var kund = kundLista.First(x =>x.KundNamn == KundNamn);
+                var jobb = kund.listOfJobbs.FirstOrDefault(x => x.AccessId == JobbAccessId);
+                var deljobb = jobb.delJobbs.FirstOrDefault(x => x.AccessId == AccessId);
                 delJobbLogic.RemoveDelJobb(deljobb.Id);
+                kundLista = kundLogic.GetKunder();
             }
             catch
             {
@@ -225,8 +234,8 @@ namespace BildStudionDV.Web.Controllers
                 return RedirectToAction("index", "inventarie");
             var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
             var JobbAccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
-            var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
-            var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == JobbAccessId);
+            var kund = kundLista.FirstOrDefault(x => x.KundNamn == KundNamn);
+            var jobb = kund.listOfJobbs.FirstOrDefault(x => x.AccessId == JobbAccessId);
             ViewBag.KundNamn = kund.KundNamn;
             ViewBag.JobbTitel = jobb.Title;
             return View(new DelJobbViewModel());
@@ -239,10 +248,11 @@ namespace BildStudionDV.Web.Controllers
                 return RedirectToAction("index", "inventarie");
             var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
             var JobbAccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
-            var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
-            var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == JobbAccessId);
+            var kund = kundLista.FirstOrDefault(x => x.KundNamn == KundNamn);
+            var jobb = kund.listOfJobbs.FirstOrDefault(x => x.AccessId == JobbAccessId);
             model.JobbId = jobb.Id;
             delJobbLogic.AddDelJobb(model);
+            kundLista = kundLogic.GetKunder();
             return RedirectToAction("DelJobb");
         }
         [Authorize]
@@ -252,9 +262,9 @@ namespace BildStudionDV.Web.Controllers
                 return RedirectToAction("index", "inventarie");
             var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
             var JobbAccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
-            var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
-            var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == JobbAccessId);
-            var model = delJobbLogic.GetDelJobbsInJobb(jobb.Id).FirstOrDefault(x => x.AccessId == AccessId);
+            var kund = kundLista.FirstOrDefault(x => x.KundNamn == KundNamn);
+            var jobb = kund.listOfJobbs.FirstOrDefault(x => x.AccessId == JobbAccessId);
+            var model = jobb.delJobbs.FirstOrDefault(x => x.AccessId == AccessId);
             ViewBag.KundNamn = kund.KundNamn;
             ViewBag.JobbTitel = jobb.Title;
             return View(model);
@@ -267,14 +277,15 @@ namespace BildStudionDV.Web.Controllers
                 return RedirectToAction("index", "inventarie");
             var KundNamn = HttpContext.Request.Cookies["userSelectedKund"].ToString();
             var JobbAccessId = Convert.ToInt32(HttpContext.Request.Cookies["userSelectedJobbAccessId"]);
-            var kund = kundLogic.GetKunder().FirstOrDefault(x => x.KundNamn == KundNamn);
-            var jobb = jobbLogic.GetJobbsForKund(kund.Id).FirstOrDefault(x => x.AccessId == JobbAccessId);
-            var deljobb = delJobbLogic.GetDelJobbsInJobb(jobb.Id).FirstOrDefault(x => x.AccessId == model.AccessId);
+            var kund = kundLista.FirstOrDefault(x => x.KundNamn == KundNamn);
+            var jobb = kund.listOfJobbs.FirstOrDefault(x => x.AccessId == JobbAccessId);
+            var deljobb = jobb.delJobbs.FirstOrDefault(x => x.AccessId == model.AccessId);
             deljobb.StatusPåJobbet = model.StatusPåJobbet;
             deljobb.VemGör = model.VemGör;
             deljobb.Namn = model.Namn;
             deljobb.Kommentar = model.Kommentar;
             delJobbLogic.UpdateDelJobb(deljobb);
+            kundLista = kundLogic.GetKunder();
             return RedirectToAction("DelJobb");
         }
     }

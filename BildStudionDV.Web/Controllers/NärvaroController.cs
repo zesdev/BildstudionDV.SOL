@@ -19,12 +19,14 @@ namespace BildStudionDV.Web.Controllers
         IDeltagareVMLogic deltagarLogic;
         IDeltagarViewLogic deltagarViewLogic;
         IMatlistaLogic matlistaLogic;
+        List<DeltagareViewModel> deltagarList;
         public NärvaroController(INärvaroVMLogic _närvaroLogic, IDeltagareVMLogic _deltagarLogic, IDeltagarViewLogic _deltagarViewLogic, IMatlistaLogic _matlistaLogic)
         {
             närvaroLogic = _närvaroLogic;
             deltagarLogic = _deltagarLogic;
             deltagarViewLogic = _deltagarViewLogic;
             matlistaLogic = _matlistaLogic;
+            deltagarList = deltagarLogic.GetAllDeltagare();
         }
         [Authorize]
         public IActionResult RemoveDeltagare(int id)
@@ -33,8 +35,9 @@ namespace BildStudionDV.Web.Controllers
                 return RedirectToAction("index", "inventarie");
             try
             {
-                var deltagaren = deltagarLogic.GetAllDeltagare().First(x => x.IdAcesss == id);
+                var deltagaren = deltagarList.First(x => x.IdAcesss == id);
                 deltagarLogic.RemoveDeltagare(deltagaren.Id);
+                deltagarList = deltagarLogic.GetAllDeltagare();
             }
             catch
             {
@@ -83,6 +86,7 @@ namespace BildStudionDV.Web.Controllers
             if (viewModel.DeltagarNamn == null)
                 return Redirect("../Närvaro/AddDeltagare?message=InkorrektInmatning");
             deltagarLogic.AddDeltagare(viewModel);
+            deltagarList = deltagarLogic.GetAllDeltagare();
             return RedirectToAction("index");
 
         }
@@ -93,7 +97,7 @@ namespace BildStudionDV.Web.Controllers
                 return RedirectToAction("index", "inventarie");
             try
             {
-                var model = deltagarLogic.GetAllDeltagare().First(x => x.IdAcesss == id);
+                var model = deltagarList.First(x => x.IdAcesss == id);
                 ViewBag.Workday = Enum.GetValues(typeof(WorkDay)).Cast<WorkDay>().ToList();
                 ViewBag.Message = message;
                 return View(model);
@@ -109,11 +113,12 @@ namespace BildStudionDV.Web.Controllers
         {
             if (User.Identity.Name != "admin" && User.Identity.Name != "piahag")
                 return RedirectToAction("index", "inventarie");
-            var ogDeltagare = deltagarLogic.GetAllDeltagare().First(x => x.IdAcesss == viewModel.IdAcesss);
+            var ogDeltagare = deltagarList.First(x => x.IdAcesss == viewModel.IdAcesss);
             viewModel.Id = ogDeltagare.Id;
             if (viewModel.DeltagarNamn == null)
                 return Redirect("../Närvaro/EditDeltagare?id="+viewModel.IdAcesss.ToString()+"&message=InkorrektInmatning");
             deltagarLogic.UpdateDeltagare(viewModel);
+            deltagarList = deltagarLogic.GetAllDeltagare();
             return RedirectToAction("index");
         }
         [HttpGet]
@@ -175,7 +180,7 @@ namespace BildStudionDV.Web.Controllers
                 return RedirectToAction("index", "inventarie");
             string rawdate = HttpContext.Request.Cookies["userSelectedDate"];
             DateTime date = Convert.ToDateTime(rawdate);
-            var deltagare = deltagarLogic.GetAllDeltagare().FirstOrDefault(x => x.DeltagarNamn == viewModel.DeltagarNamn);
+            var deltagare = deltagarList.FirstOrDefault(x => x.DeltagarNamn == viewModel.DeltagarNamn);
             var ogViewModel = närvaroLogic.GetAttendenceForDate(date).First(x => x.DeltagarNamn == viewModel.DeltagarNamn);
 
             ogViewModel.Måndag = viewModel.Måndag;
@@ -198,7 +203,7 @@ namespace BildStudionDV.Web.Controllers
             }
             ViewBag.SelectValue = month;
             ViewBag.accessid = accessid;
-            var deltagare = deltagarLogic.GetAllDeltagare().FirstOrDefault(x => x.IdAcesss == accessid);
+            var deltagare = deltagarList.FirstOrDefault(x => x.IdAcesss == accessid);
             ViewBag.DeltagarNamn = deltagare.DeltagarNamn;
             var model = deltagarViewLogic.GetMonthAttendenceForDeltagare(deltagare.Id, month);
             return View(model);
@@ -210,7 +215,7 @@ namespace BildStudionDV.Web.Controllers
                 return RedirectToAction("index", "inventarie");
             if (month == 0)
                 month = 12;
-            var deltagare = deltagarLogic.GetAllDeltagare().FirstOrDefault(x => x.IdAcesss == accessid);
+            var deltagare = deltagarList.FirstOrDefault(x => x.IdAcesss == accessid);
             var model = deltagarViewLogic.GetMonthAttendenceForDeltagare(deltagare.Id, month);
             bool alternatingrow = true;
             using (var workbook = new XLWorkbook())

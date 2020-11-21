@@ -1,5 +1,5 @@
 ﻿@model List<BildstudionDV.BI.ViewModels.MatListaMonthViewModel>
-
+@{ViewBag.Title = "Matlista"; }
 
 <input type="button" class="btn btn-block btn-dark text-white" onclick="window.location.href ='../Närvaro/Attendence?date'" value="Tillbaka till Redigera Närvaro" />
 <br />
@@ -7,9 +7,10 @@
     <input type="hidden" id="month" name="month" value="@ViewBag.Month" />
     <input type="hidden" id="year" name="year" value="@ViewBag.Year" />
     <input type="number" class="btn-block" id="pris" name="pris" value="@ViewBag.Pris" />
-    <input type="submit" value="Updatera MatlådaPris" class="btn-outline-info btn-block btn"></input>
+    <input type="submit" value="Updatera MatlådaPris" class="btn-info btn-block btn"></input>
 </form>
-<br /><br />
+<br />
+<br />
 @if (Model.Where(x => x.Antal > 0).ToList().Count != 0)
 {
     <input type="button" class="btn btn-block btn-light text-dark" onclick="window.location.href = '../Närvaro/ExportMatlista?month=@ViewBag.Month&year=@ViewBag.Year'" value="Export till excel" />
@@ -29,7 +30,7 @@
         @foreach (var deltagare in Model.Where(x => x.Antal > 0).ToList())
         {
 
-            <tr style="color:white;">
+            <tr style="color:black;">
                 <td>
                     <h3>@deltagare.DeltagarNamn - @deltagare.DateConcerning.ToString("yyyy-MM")</h3>
                 </td>
@@ -66,6 +67,6 @@
 
 }
 @if (Model.Where(x => x.Antal > 0).ToList().Count == 0)
-{ 
+{
     <h1>Här var det tomt! Ingen verkar ha beställt någon mat...</h1>
 }

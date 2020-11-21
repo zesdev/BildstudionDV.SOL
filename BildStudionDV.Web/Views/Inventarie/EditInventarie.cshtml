@@ -1,32 +1,33 @@
 ﻿@model BildstudionDV.BI.ViewModels.InventarieViewModel
 
+@{ViewBag.Title = "Redigera Inventarie"; }
 <center>
     <h1 style="color:red">
         @if (ViewBag.ErrorMessage != null)
         {
-            @Html.Raw(ViewBag.ErrorMessage)
+        @Html.Raw(ViewBag.ErrorMessage)
         }
 
     </h1>
     <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../inventarie/grupp"' value="Tillbaka till Gruppen" />
     @using (Html.BeginForm())
     {
-        <b>Namn på Inventarie:</b><br />
-        @Html.TextBoxFor(x => x.Namn) <br />
-        <b>Antal:</b><br />
-        @Html.TextBoxFor(x => x.Antal) <br />
-        <b>Fabrikat:</b><br />
-        @Html.TextBoxFor(x => x.Fabrikat) <br />
+    <b>Namn på Inventarie:</b><br />
+    @Html.TextBoxFor(x => x.Namn)  <br />
+    <b>Antal:</b><br />
+    @Html.TextBoxFor(x => x.Antal)  <br />
+    <b>Fabrikat:</b><br />
+    @Html.TextBoxFor(x => x.Fabrikat)  <br />
 
-        <b>Pris:</b><br />
-        @Html.TextBoxFor(x => x.Pris) <br />
-        <b>Kommentar:</b><br />
-        @Html.TextAreaFor(x => x.Kommentar) <br />
-        <font color="red">@ViewBag.error</font> <br />
-        <input type="submit" class="btn btn-success" value="Updatera Inventarien" />
-        <br />
-        <br />
-        <input type="button" class="btn btn-danger" onclick="Remove()" value="Ta bort Inventarien" />
+    <b>Pris:</b><br />
+    @Html.TextBoxFor(x => x.Pris)  <br />
+    <b>Kommentar:</b><br />
+    @Html.TextAreaFor(x => x.Kommentar)  <br />
+    <font color="red">@ViewBag.error</font>  <br />
+    <input type="submit" class="btn btn-success" value="Updatera Inventarien" />
+    <br />
+    <br />
+    <input type="button" class="btn btn-danger" onclick="Remove()" value="Ta bort Inventarien" />
     }
 </center>
 

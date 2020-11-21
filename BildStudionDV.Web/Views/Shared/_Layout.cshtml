@@ -1,11 +1,12 @@
 ﻿<!DOCTYPE html>    
 <html lang="en">    
-<head>    
-    <meta charset="utf-8" />    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
-    <title>@ViewBag.Title</title>    
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />    
-    <link rel="stylesheet" href="~/css/site.css" />    
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - DV Portal</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="icon" href="~/img/icon_256.ico">
 </head>    
 <body style="background-image: url(@Url.Content("~/img/cloudwp.png")); background-size: cover; background-repeat:no-repeat;">
     <header>
@@ -121,7 +122,9 @@
     <div class="container rounded" style="background-color: black; color:white; min-height: 80vh;">
         <main role="main" class="pb-3">
             <br />
-            @RenderBody()
+            <div class="container rounded" style="background-color:aliceblue; color:black;min-height:75vh;">
+                @RenderBody()
+                </div>
         </main>
     </div>
     <br />

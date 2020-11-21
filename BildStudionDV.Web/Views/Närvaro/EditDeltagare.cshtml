@@ -1,87 +1,88 @@
 ﻿@model BildstudionDV.BI.ViewModels.DeltagareViewModel
-    <center>
-        <b>
+@{ViewBag.Title = "Redigerar deltagare"; }
+<center>
+    <b>
 
-            <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../Närvaro/index"' value="Tillbaka till Index" /><br />
-            <font color="red">@ViewBag.Message</font>
-            <br />
-            @using (Html.BeginForm())
+        <input type="button" class="btn btn-block btn-info" onclick='window.location.href = "../Närvaro/index"' value="Tillbaka till Index" /><br />
+        <font color="red">@ViewBag.Message</font>
+        <br />
+        @using (Html.BeginForm())
             {
 
-            @Html.LabelFor(x => x.DeltagarNamn)
-            <br />
-            @Html.TextBoxFor(x => x.DeltagarNamn)
-            <br />
-            @Html.LabelFor(x => x.MatId)
-            <br />
-            @Html.TextBoxFor(x => x.MatId)
-            <br /><br />
-            @Html.LabelFor(x => x.Måndag)  <br />
-            @Html.DropDownListFor(x => x.Måndag, new List<SelectListItem>
-        {
-            new SelectListItem { Text = "--Välj--", Value = "2" },
-            new SelectListItem { Text = "Heldag", Value = "0" },
-            new SelectListItem { Text = "Halvdag", Value = "1" },
-            new SelectListItem { Text = "_", Value = "2" }
+        @Html.LabelFor(x => x.DeltagarNamn)
+        <br />
+        @Html.TextBoxFor(x => x.DeltagarNamn)
+        <br />
+        @Html.LabelFor(x => x.MatId)
+        <br />
+        @Html.TextBoxFor(x => x.MatId)
+        <br /><br />
+        @Html.LabelFor(x => x.Måndag)  <br />
+        @Html.DropDownListFor(x => x.Måndag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value = "2" },
+        new SelectListItem { Text = "Heldag", Value = "0" },
+        new SelectListItem { Text = "Halvdag", Value = "1" },
+        new SelectListItem { Text = "_", Value = "2" }
 
-        })
-            <br />
-            @Html.LabelFor(x => x.Tisdag)  <br />
-            @Html.DropDownListFor(x => x.Tisdag, new List<SelectListItem>
-        {
-            new SelectListItem { Text = "--Välj--", Value = "2" },
-            new SelectListItem { Text = "Heldag", Value = "0" },
-            new SelectListItem { Text = "Halvdag", Value = "1" },
-            new SelectListItem { Text = "_", Value = "2" }
+    })
+        <br />
+        @Html.LabelFor(x => x.Tisdag)  <br />
+        @Html.DropDownListFor(x => x.Tisdag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value = "2" },
+        new SelectListItem { Text = "Heldag", Value = "0" },
+        new SelectListItem { Text = "Halvdag", Value = "1" },
+        new SelectListItem { Text = "_", Value = "2" }
 
-        })
-            <br />
-            @Html.LabelFor(x => x.Onsdag)  <br />
-            @Html.DropDownListFor(x => x.Onsdag, new List<SelectListItem>
-        {
-            new SelectListItem { Text = "--Välj--", Value = "2" },
-            new SelectListItem { Text = "Heldag", Value = "0" },
-            new SelectListItem { Text = "Halvdag", Value = "1" },
-            new SelectListItem { Text = "_", Value = "2" }
+    })
+        <br />
+        @Html.LabelFor(x => x.Onsdag)  <br />
+        @Html.DropDownListFor(x => x.Onsdag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value = "2" },
+        new SelectListItem { Text = "Heldag", Value = "0" },
+        new SelectListItem { Text = "Halvdag", Value = "1" },
+        new SelectListItem { Text = "_", Value = "2" }
 
-        })
-            <br />
-            @Html.LabelFor(x => x.Torsdag)<br />
-            @Html.DropDownListFor(x => x.Torsdag, new List<SelectListItem>
-        {
-            new SelectListItem { Text = "--Välj--", Value = "2" },
-            new SelectListItem { Text = "Heldag", Value = "0" },
-            new SelectListItem { Text = "Halvdag", Value = "1" },
-            new SelectListItem { Text = "_", Value = "2" }
+    })
+        <br />
+        @Html.LabelFor(x => x.Torsdag)<br />
+        @Html.DropDownListFor(x => x.Torsdag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value = "2" },
+        new SelectListItem { Text = "Heldag", Value = "0" },
+        new SelectListItem { Text = "Halvdag", Value = "1" },
+        new SelectListItem { Text = "_", Value = "2" }
 
-        })
-            <br />
-            @Html.LabelFor(x => x.Fredag)<br />
-            @Html.DropDownListFor(x => x.Fredag, new List<SelectListItem>
-        {
-            new SelectListItem { Text = "--Välj--", Value = "2" },
-            new SelectListItem { Text = "Heldag", Value = "0" },
-            new SelectListItem { Text = "Halvdag", Value = "1" },
-            new SelectListItem { Text = "_", Value = "2" }
+    })
+        <br />
+        @Html.LabelFor(x => x.Fredag)<br />
+        @Html.DropDownListFor(x => x.Fredag, new List<SelectListItem>
+    {
+        new SelectListItem { Text = "--Välj--", Value = "2" },
+        new SelectListItem { Text = "Heldag", Value = "0" },
+        new SelectListItem { Text = "Halvdag", Value = "1" },
+        new SelectListItem { Text = "_", Value = "2" }
 
-        })
-            <br />@Html.Label("Är aktiv: ")
-            @Html.CheckBoxFor(x => x.IsActive);
+    })
+        <br />@Html.Label("Är aktiv: ")
+        @Html.CheckBoxFor(x => x.IsActive);
 
-            @Html.HiddenFor(x => x.IdAcesss)
-            <br />
-            <br />
-            <button type="submit" class="btn btn-success"> Updatera Deltagaren</button>
-            <br /><br />
-            <input type="button" class="btn btn-danger " onclick="Remove(@Model.IdAcesss)" value="Ta Bort Deltagaren" />
+        @Html.HiddenFor(x => x.IdAcesss)
+        <br />
+        <br />
+        <button type="submit" class="btn btn-success"> Updatera Deltagaren</button>
+        <br /><br />
+        <input type="button" class="btn btn-danger " onclick="Remove(@Model.IdAcesss)" value="Ta Bort Deltagaren" />
             }
-        </b>
-    </center>
-    <script>
-        function Remove(accessid) {
-            var r = confirm("Du ta nu bort denna deltagare, är du säker på att du vill göra det? All hens närvaro kommer då försvinna.");
-            if (r == true) {
-                window.location.href = "../närvaro/RemoveDeltagare?id=" + accessid;
-            }
+    </b>
+</center>
+<script>
+    function Remove(accessid) {
+        var r = confirm("Du ta nu bort denna deltagare, är du säker på att du vill göra det? All hens närvaro kommer då försvinna.");
+        if (r == true) {
+            window.location.href = "../närvaro/RemoveDeltagare?id=" + accessid;
         }
-    </script>
+    }
+</script>

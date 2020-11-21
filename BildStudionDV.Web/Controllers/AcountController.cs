@@ -20,10 +20,12 @@ namespace BildStudionDV.Web.Controllers
     {
         IUserProfileVMLogic userLogic;
         IGruppVMLogic gruppLogic;
+        List<UserProfileViewModel> userProfileList;
         public AcountController(IUserProfileVMLogic _userLogic, IGruppVMLogic _gruppLogic)
         {
             gruppLogic = _gruppLogic;
             userLogic = _userLogic;
+            userProfileList = userLogic.GetUserViewModels();
         }
         [Authorize]
         public IActionResult Index()
@@ -61,6 +63,7 @@ namespace BildStudionDV.Web.Controllers
                     {
                         model.AssociatedGrupp = grupp;
                         userLogic.CreateUserAccount(model);
+                        userProfileList = userLogic.GetUserViewModels();
                         return RedirectToAction("index");
                     }
                     else
@@ -84,7 +87,7 @@ namespace BildStudionDV.Web.Controllers
         {
             if (User.Identity.Name == "admin" || User.Identity.Name == "piahag")
             {
-                var user = userLogic.GetUserViewModels().FirstOrDefault(x => x.UserName == namn);
+                var user = userProfileList.FirstOrDefault(x => x.UserName == namn);
                 userLogic.RemoveAccount(user.UserName);
                 return RedirectToAction("index");
             }
@@ -101,7 +104,7 @@ namespace BildStudionDV.Web.Controllers
                     gruppNamnList.Add(gruppNamn.GruppNamn);
                 }
                 ViewBag.gruppNamnList = gruppNamnList;
-                var user = userLogic.GetUserViewModels().FirstOrDefault(x => x.UserName == namn);
+                var user = userProfileList.FirstOrDefault(x => x.UserName == namn);
                 HttpContext.Response.Cookies.Append("userSelected", user.UserName);
                 return View(user);
             }
@@ -120,6 +123,7 @@ namespace BildStudionDV.Web.Controllers
                     user.UserName = model.UserName;
                     user.AssociatedGrupp = grupp;
                     userLogic.UpdateUser(user);
+                    userProfileList = userLogic.GetUserViewModels();
                     return RedirectToAction("index");
                 }
                 var gruppNamnList = new List<string>();
